@@ -19,7 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedWorkplace } from "../../../store/workpaceSlice";
 import { isInvalidText } from "../../../utils/isInvalidText";
 import styles from '../users.module.scss';
-import { relative } from "path";
 import isValidEmail from "../../../utils/isValidEmail";
 
 const EditUser = () => {
