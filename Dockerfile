@@ -1,14 +1,14 @@
-FROM node:20.17 AS build
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
+FROM node:20.17-alpine AS builder
+WORKDIR /usr/app/service
+COPY package.json pnpm-lock.yaml ./
+RUN npm install -g pnpm && pnpm install --frozen-lockfile
 COPY . .
-RUN npm run build
+RUN pnpm run build
 
 FROM nginx:latest
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 ENTRYPOINT ["/entrypoint.sh"]
