@@ -14,7 +14,7 @@ export default defineConfig(({ command, mode }) => {
       environment: 'jsdom',
       setupFiles: './src/setupTests.ts',
     },
-    base: '/mobile/',
+    base: '/mes/',
     server: {
       host: true,
     },
