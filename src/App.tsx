@@ -107,21 +107,21 @@ function App() {
     }
   }, [dispatch]);
 
-  useEffect(() => {
-    if (cookies.token) {
-      isVerifyToken(cookies.token)
-        .then(response => {
-          if (Object.keys(response.data).length === 0) {
-            // console.log("token is available");
-          } else {
-            removeCookie("token");
-          }
-        })
-        .catch(error => {
-          removeCookie("token");
-        });
-    }
-  }, [cookies]);
+  // useEffect(() => {
+  //   if (cookies.token) {
+  //     isVerifyToken(cookies.token)
+  //       .then(response => {
+  //         if (Object.keys(response.data).length === 0) {
+  //           // console.log("token is available");
+  //         } else {
+  //           removeCookie("token");
+  //         }
+  //       })
+  //       .catch(error => {
+  //         removeCookie("token");
+  //       });
+  //   }
+  // }, [cookies]);
 
   const notAllowed = (
     <div className="ion-padding">
