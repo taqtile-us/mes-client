@@ -4,16 +4,15 @@ import { authorizationRequest } from "../../api/authorization";
 import { Input } from "../../components/inputs/input/Input";
 
 import { FiveS } from "../../assets/svg/SVGcomponent";
-import logo from "../../assets/svg/icon.svg";
 
 import "./Authorization.scss";
 import { useTranslation } from "react-i18next";
-import { getCurrentUserInfo } from "../../api/users";
 import { setUserRole } from "../../store/userSlice";
 import { useDispatch } from "react-redux";
 import { ROUTES } from "../../shared/constants/routes";
 import { Link } from "react-router-dom";
 import { IonContent, IonPage } from "@ionic/react";
+import { AuthResponse } from "../../models/interfaces/authResponse.interface";
 
 export const Authorization = () => {
   const dispatch = useDispatch();
@@ -42,35 +41,37 @@ export const Authorization = () => {
     }
   }, [email]);
 
-  const post = () => {
-    if (password.length > 0) {
-      authorizationRequest(email, password)
-        .then(response => {
-          if (response.status === 200 && response.data.access) {
-            setCookie("token", `JWT ${response.data.access}`, { path: "/" });
-            return response.data.access;
-          }
-        })
-        .then(token => getCurrentUserInfo(`JWT ${token}`))
-        .then((response: any) => {
-          if (response.data) {
-            const role = response.data.role;
-            localStorage.setItem("userRole", role);
-            dispatch(setUserRole(role));
-            history.go(0);
-          }
-        })
-        .catch(error => {
-          setErrorResponse(error.message);
-        });
-    } else {
+  const handleLogin = async () => {
+    if (password.length === 0) {
       setErrorPassword(true);
+      return;
+    }
+  
+    try {
+      const user: AuthResponse = await authorizationRequest(email, password);
+      const { role, token } = user;
+  
+      if (token) {
+        setCookie("token", `JWT ${token}`, { path: "/" });
+      }
+  
+      if (role) {
+        localStorage.setItem("userRole", role);
+        dispatch(setUserRole(role));
+        history.go(0);
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorResponse(error.message);
+      } else {
+        setErrorResponse('An unknown error occurred');
+      }
     }
   };
 
   const pressEnter = (event: React.KeyboardEvent) => {
     if (event.key === "Enter" && correctEmail && correctPassword) {
-      post();
+      handleLogin();
     }
   };
 
@@ -112,7 +113,7 @@ export const Authorization = () => {
               <span className="authorization__error_response">{t("messages.incorrectCredentials")}</span>
             )}
             {errorPassword && <span className="authorization__error_password">{t("form.required")}</span>}
-            <button className={"authorization__button"} onClick={post}>
+            <button className={"authorization__button"} onClick={handleLogin}>
               {t("form.auth.submit")}
             </button>
           </div>

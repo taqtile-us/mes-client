@@ -10,14 +10,20 @@ export interface IUser {
   id: number,
   date_joined: string,
   username: string,
-  email: string,
-  first_name: string,
-  last_name: string,
+  email: string | null,
+  // first_name: string,
+  // last_name: string,
   role: ROLE,
-  password: string,
-  workplace: IWorkplace
-  work_start_time: string,
-  work_end_time: string
+  // password: string,
+  workplace: IWorkplace | null;
+  // work_start_time: string,
+  // work_end_time: string
+
+  firstName: string,
+  lastName: string,
+  dateJoined: string,
+  workStartTime: string |null,
+  workEndTime: string | null
 }
 
 export interface IAddUser {
