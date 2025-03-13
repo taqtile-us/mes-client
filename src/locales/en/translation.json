@@ -3,6 +3,10 @@
   "menu": {
     "ordersView": "Orders View",
     "configuration": "Configuration",
+    "databaseConnections": "Database connections",
+    "switchToDefault": "Switch to Default Database",
+    "switchToOdoo": "Switch to Odoo Database",
+    "currentConnection": "Current connection",
     "dataConfiguration": "Data configuration",
     "directories": "Directories",
     "generalDirectories": "General directories",
@@ -24,7 +28,8 @@
   },
   "config": {
     "title": "Configuration",
-    "erp": "ERP Connections"
+    "erp": "ERP Connections",
+    "dbConnections": "Database connections"
   },
   "messages": {
     "noData": "No data found",

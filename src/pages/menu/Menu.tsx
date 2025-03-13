@@ -97,6 +97,12 @@ export const Menu: React.FC = () => {
                   handleItemClick={() => handleItemClick(ROUTES.CONFIGURATION)}
                 />
               </Restricted>
+              <Restricted to="view_reference">
+                <MenuListButton
+                  title={t("menu.databaseConnections")}
+                  handleItemClick={() => handleItemClick(ROUTES.SWITCHER)}
+                />
+              </Restricted>
               {!isMobile && (
                 <Restricted to="view_cameras">
                   <MenuListButton

@@ -4,6 +4,10 @@
     "ordersView": "Widok zamówień",
     "configuration": "Konfiguracja",
     "dataConfiguration": "Konfiguracja danych",
+    "databaseConnections": "Połączenia z bazami danych",
+    "switchToDefault": "Przełaż do bazy danych domowych",
+    "switchToOdoo": "Przełaż do bazy danych odoo",
+    "currentConnection": "Połączenie bazy danych",
     "directories": "Katalogi",
     "generalDirectories": "Ogólne katalogi",
     "accountSettings": "Ustawienia konta",
@@ -23,7 +27,8 @@
   },
   "config": {
     "title": "Konfiguracja",
-    "erp": "Połączenia ERP"
+    "erp": "Połączenia ERP",
+    "dbConnections": "Połączenia z bazami danych"
   },
   "messages": {
     "noData": "Nie znaleziono danych",

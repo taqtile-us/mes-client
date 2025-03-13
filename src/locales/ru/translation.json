@@ -5,6 +5,10 @@
     "configuration": "Конфигурация",
     "directories": "Справочники",
     "dataConfiguration": "Настройка данных",
+    "databaseConnections": "Подключения к базам данных",
+    "switchToDefault": "Переход на базу данных по умолчанию",
+    "switchToOdoo": "Переход на базу данных odoo",
+    "currentConnection": "Подключение к базе данных",
     "generalDirectories": "Универсальные справочники",
     "accountSettings": "Настройки учетной записи",
     "orders": "Заказы",
@@ -23,7 +27,8 @@
   },
   "config": {
     "title": "Конфигурация",
-    "erp": "Подключения ERP"
+    "erp": "Подключения ERP",
+    "dbConnections": "Подключения к базам данных"
   },
   "messages": {
     "noData": "Ничего не найдено",

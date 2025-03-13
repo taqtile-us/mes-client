@@ -5,6 +5,7 @@ const BASE_URL: string = API_BASE_URL;
 const API_STATUSDATA = "api/connector/status/";
 const API_CONNECTIONS = "api/connector/connections/";
 const GET_CONNECTIONS = "api/order/get-connections/";
+const SETTINGS_DATA_SOURCE = "settings/data-source";
 
 const axiosConfig = (cookies: string) => ({
   headers: {
@@ -31,4 +32,18 @@ export const getConnectionsToDatabases = (
   cookies: string
 ) => {
   return axios.get(constructUrl(GET_CONNECTIONS), axiosConfig(cookies));
+};
+
+export const changeDataSource = async (cookies: string, source: string) => {
+  try {
+    const response = await axios.post(
+      constructUrl(SETTINGS_DATA_SOURCE),
+      { source },
+      axiosConfig(cookies)
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error changing data source:", error);
+    throw error;
+  }
 };

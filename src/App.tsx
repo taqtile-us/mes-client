@@ -90,6 +90,7 @@ import EmployeeTasks from "./pages/tasks/employeeTasks/EmployeeTasks";
 import GetTask from "./pages/tasks/getTask/GetTask";
 import EditTask from "./pages/tasks/editTask/EditTask";
 import RecoverPassword from "./pages/authorization/recoverPassword/RecoverPassword";
+import ConnectionSwitcher from "./pages/connections/connectionSwitcher";
 
 
 setupIonicReact();
@@ -144,6 +145,9 @@ function App() {
               </Route>
               <Route exact path={ROUTES.CONNECTIONS}>
                 <Connections />
+              </Route>
+              <Route exact path={ROUTES.SWITCHER}>
+                <ConnectionSwitcher />
               </Route>
               <Route exact path={ROUTES.CONNECTIONS_ADD}>
                 <NewConnection />

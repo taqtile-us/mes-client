@@ -5,6 +5,7 @@ export const ROUTES = {
   AUTHORIZATION: "/authorization",
   RECOVER_PASSWORD: "/recover-password",
   CONFIGURATION: "/configuration",
+  SWITCHER: "/switcher",
   CONNECTIONS: "/configuration/connections",
   CONNECTIONS_ADD: "/configuration/connections/add",
   CONNECTIONS_ITEM: (erp: string) => `/configuration/connections/${erp}`,
