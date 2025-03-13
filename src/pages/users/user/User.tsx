@@ -78,7 +78,7 @@ const User = () => {
   return (
     <IonPage>
       <Header 
-        title={item?.last_name + " " + item?.first_name} 
+        title={item?.lastName + " " + item?.firstName} 
         backButtonHref={ROUTES.USERS} 
         endButton={<IonIcon onClick={handleOpenModal} style={{ fontSize: "24px" }} icon={TrashBin}></IonIcon>}/>
       <IonContent>
@@ -99,9 +99,9 @@ const User = () => {
               </div>
               }
                 <InputReadonly label={t("users.username")} value={item.username} />
-                <InputReadonly label={"Email"} value={item.email} />
-                <InputReadonly label={t("users.firstName")} value={item.first_name} />
-                <InputReadonly label={t("users.lastName")} value={item.last_name} />
+                <InputReadonly label={"Email"} value={item.email ?? "-"} />
+                <InputReadonly label={t("users.firstName")} value={item.firstName} />
+                <InputReadonly label={t("users.lastName")} value={item.lastName} />
                 <IonItem className="input__field">
                         <IonLabel className="input__label">{t("users.role")}</IonLabel>
                         <RoleLabel role={item.role} />
@@ -109,11 +109,11 @@ const User = () => {
                 {item.workplace && <InputReadonly label={t("users.workplace")} value={item.workplace?.name || '-'} />}
                 <InputReadonly 
                   label={t("users.workStartTime")} 
-                  value={item.work_start_time ? item.work_start_time.slice(0, 5) : t("users.timeNotSet")} 
+                  value={item.workStartTime ? item.workStartTime.slice(0, 5) : t("users.timeNotSet")} 
                 />
                 <InputReadonly 
                   label={t("users.workEndTime")} 
-                  value={item.work_end_time ? item.work_end_time.slice(0, 5) : t("users.timeNotSet")} 
+                  value={item.workEndTime ? item.workEndTime.slice(0, 5) : t("users.timeNotSet")} 
                 />
                 
                 <Fab
@@ -125,7 +125,7 @@ const User = () => {
                     isOpen={showConfirmationModal}
                     onConfirm={handleDeleteClick}
                     onClose={handleCancelClick}
-                    title={`${t("operations.users.delete")} "${item.last_name + " " + item.first_name}"?`}
+                    title={`${t("operations.users.delete")} "${item.lastName + " " + item.firstName}"?`}
                     confirmText={t("operations.delete")}
                     cancelText={t("operations.cancel")}
                     preventDismiss={true}

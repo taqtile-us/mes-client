@@ -65,7 +65,7 @@ const Users = () => {
   }, [items]);
 
   const constructName = (user: IUser) => {
-    return `${user.last_name} ${user.first_name}`;
+    return `${user.lastName} ${user.firstName}`;
   }
 
   return (

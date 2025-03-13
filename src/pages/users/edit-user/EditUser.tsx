@@ -90,13 +90,13 @@ const EditUser = () => {
   const getUpdatedUser = () => {
     const updatedUser = {
       username: user.username,
-      first_name: user.first_name,
-      last_name: user.last_name,
+      first_name: user.firstName,
+      last_name: user.lastName,
       role: user.role,
       email: user.email,
       workplace_id: user.role === ROLE.WORKER ? (selectedWorkplace?.id || user.workplace?.id || null) : null,
-      work_start_time: user.work_start_time,
-      work_end_time: user.work_end_time
+      work_start_time: user.workStartTime,
+      work_end_time: user.workEndTime
     };
     if (password && password === confirmPassword){
       Object.assign(updatedUser, {password});
@@ -131,14 +131,14 @@ const EditUser = () => {
   const isFormValid = () => {
     if (
       !user.username ||
-      !user.first_name ||
-      !user.last_name ||
+      !user.firstName ||
+      !user.lastName ||
       !user.email ||
       (password && password.length < minPasswordLength) ||
       !isValidEmail(user.email) ||
       isInvalidText(user.username, { numbers: true }) ||
-      isInvalidText(user.first_name) ||
-      isInvalidText(user.last_name) ||
+      isInvalidText(user.firstName) ||
+      isInvalidText(user.lastName) ||
       password !== confirmPassword
     ) {
       setHighlightRequired(true);
@@ -200,7 +200,7 @@ const EditUser = () => {
                     required 
                     handleChange={event => setUser({ ...user, email: event.target.value })}
                     state={highlightRequired && (!user.email || !isValidEmail(user.email) || userExists) ? "error" : "neutral" }
-                    errorMessage={userExists ? t("messages.employeeExists") : (!isValidEmail(user.email) ? t("form.invalidEmail") : t("form.required"))}
+                    errorMessage={userExists ? t("messages.employeeExists") : (!isValidEmail(user.email ?? "") ? t("form.invalidEmail") : t("form.required"))}
                     maxLength={30}/>  
                 <Input 
                     label={t("users.newPassword")} 
@@ -234,20 +234,20 @@ const EditUser = () => {
 
                 <Input
                     label={t("users.lastName")} 
-                    value={user?.last_name || ""} 
+                    value={user?.lastName || ""} 
                     required 
-                    handleChange={event => setUser({ ...user, last_name: event.target.value })}
-                    state={highlightRequired && (!user.last_name || isInvalidText(user.last_name)) ? "error" : "neutral" }
-                    errorMessage={isInvalidText(user.last_name) ? t("form.invalidCharacters") : t("form.required")}
+                    handleChange={event => setUser({ ...user, lastName: event.target.value })}
+                    state={highlightRequired && (!user.lastName || isInvalidText(user.lastName)) ? "error" : "neutral" }
+                    errorMessage={isInvalidText(user.lastName) ? t("form.invalidCharacters") : t("form.required")}
                     maxLength={30}
                     type="text"/>
                 <Input 
                     label={t("users.firstName")} 
-                    value={user?.first_name || ""} 
+                    value={user?.firstName || ""} 
                     required 
-                    handleChange={event => setUser({ ...user, first_name: event.target.value })}
-                    state={highlightRequired && (!user.first_name || isInvalidText(user.first_name)) ? "error" : "neutral" }
-                    errorMessage={isInvalidText(user.first_name) ? t("form.invalidCharacters") : t("form.required")}
+                    handleChange={event => setUser({ ...user, firstName: event.target.value })}
+                    state={highlightRequired && (!user.firstName || isInvalidText(user.firstName)) ? "error" : "neutral" }
+                    errorMessage={isInvalidText(user.firstName) ? t("form.invalidCharacters") : t("form.required")}
                     maxLength={30}
                     type="text"/>
 
@@ -267,15 +267,15 @@ const EditUser = () => {
                   </IonList>
                   <Input
                   label={t("users.workStartTime")}
-                  value={user.work_start_time || ""}
-                  handleChange={event => setUser({ ...user, work_start_time: event.target.value })}
+                  value={user.workStartTime || ""}
+                  handleChange={event => setUser({ ...user, workStartTime: event.target.value })}
                   type="time"
                   required={false}
                 />
                 <Input
                   label={t("users.workEndTime")}
-                  value={user.work_end_time || ""}
-                  handleChange={event => setUser({ ...user, work_end_time: event.target.value })}
+                  value={user.workEndTime || ""}
+                  handleChange={event => setUser({ ...user, workEndTime: event.target.value })}
                   type="time"
                   required={false}
                 />
