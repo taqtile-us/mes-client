@@ -2,8 +2,9 @@ import axios from "axios";
 import { IAddUser, IUpdateUser, IUser } from "../models/interfaces/employee.interface";
 import { API_BASE_URL } from "../config";
 
-const API_USERLIST = "api/employees/";
-const API_USERINFO = "api/employees/get-user-info/"
+const API_USERLIST = "employees";
+// const API_USERINFO = "api/employees/get-user-info/"
+const API_USERINFO = "auth/odoo/user-info"
 const API_USER_ADD = "api/employees/create/"
 const API_WORKPLACES = "api/employees/workplaces/";
 
@@ -27,7 +28,9 @@ export const getCurrentUserInfo = (cookies: string) => {
 };
 
 export const getUser = (id: number,cookies: string) => {
-  return axios.get(`${API_BASE_URL}${API_USERLIST}${id}/`, {
+  console.log(99);
+  
+  return axios.get(`${API_BASE_URL}${API_USERLIST}/${id}/`, {
     headers: {
       Authorization: cookies,
       "ngrok-skip-browser-warning": "true",

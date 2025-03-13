@@ -2,8 +2,8 @@ import axios from "axios";
 import { API_BASE_URL } from "../../config";
 
 const BASE_URL = API_BASE_URL;
-const API_DIRECTORY = "api/erp-reference/references/";
-const API_STATIC_DIRECTORY = "api/erp-reference/references/static/";
+const API_DIRECTORY = "references";
+const API_STATIC_DIRECTORY = "references/static";
 
 const axiosConfig = (cookies: string) => ({
   headers: {

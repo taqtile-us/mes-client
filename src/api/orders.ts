@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getCookieValueByName } from "../utils/helpers";
-import { ICompleteOrder, IOrderItemTimespan, IOrders, IReference, ITimespan } from "../models/interfaces/orders.interface";
+import { ICompleteOrder, IOrders, ITimespan } from "../models/interfaces/orders.interface";
 import {
   IOrderOperation,
   IOrderOperationAddBody,
@@ -11,20 +11,20 @@ import { IItem, IItemAddBody, IOrderItemAddBody, IOrderItemUpdateBody, Item } fr
 import { API_BASE_URL } from "../config";
 
 const BASE_URL = API_BASE_URL;
-const BASE = "api/erp-reference";
+// const BASE = "api/erp-reference";
 
 const URLS = {
-  ORDERS: `/orders/`,
+  ORDERS: `orders/`,
 
-  OPERATIONS: `/operations/`,
+  OPERATIONS: `operations/`,
 
-  ITEMS: `/items/`,
+  ITEMS: `items/`,
 
-  ORDER_ITEMS: `/order-items/`,
+  ORDER_ITEMS: `order-items/`,
 
-  ORDER_ITEM_OPERATIONS: `/order-operations/`,
+  ORDER_ITEM_OPERATIONS: `order-operations/`,
 
-  TIMESPANS: `/order-operation-timespans/`,
+  TIMESPANS: `order-operation-timespans/`,
 };
 
 const axiosConfig = () => ({
@@ -34,7 +34,7 @@ const axiosConfig = () => ({
   },
 });
 
-const constructUrl = (endpoint: string) => `${BASE_URL}${BASE}${endpoint}`;
+const constructUrl = (endpoint: string) => `${BASE_URL}${endpoint}`;
 
 export const ORDERS_API = {
   getOrders: () => axios.get(constructUrl(URLS.ORDERS), axiosConfig()),

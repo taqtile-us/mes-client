@@ -2,7 +2,7 @@ import axios from "axios";
 import { API_BASE_URL } from "../config";
 
 const BASE_URL = API_BASE_URL;
-const API_REPORTS = "api/erp-reference/reports/work-hours/";
+const API_REPORTS = "reports/work-hours/";
 const ORDERS = 'orders/';
 const ORDER_ITEMS = 'order-items/'
 

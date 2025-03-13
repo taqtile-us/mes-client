@@ -29,7 +29,7 @@ export type CollectionMeta = {
 
 export const directoriesMeta: CollectionMeta = {
 	collection: "directories",
-	url: 'api/erp-reference/references/',
+	url: '/references/',
 	label: "Directories",
 	displayTemplate: "list",
 	displayField: "name",

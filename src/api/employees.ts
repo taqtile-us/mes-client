@@ -2,7 +2,7 @@ import axios from "axios";
 import { API_BASE_URL } from "../config";
 
 const BASE_URL = API_BASE_URL;
-const API_EMPLOYEE = "api/erp-reference/employees/";
+const API_EMPLOYEE = "employees";
 
 const axiosConfig = (cookies: string) => ({
   headers: {
@@ -18,8 +18,10 @@ export const getAllEmployees = (cookies: string) => {
 };
 
 export const getEmployee = (employeeId: number, cookies: string) => {
+  console.log(88);
+  
   return axios.get(
-    constructUrl(`${API_EMPLOYEE}${employeeId}/`),
+    constructUrl(`${API_EMPLOYEE}/${employeeId}/`),
     axiosConfig(cookies)
   );
 };
