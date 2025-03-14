@@ -1,24 +1,29 @@
 import React, { useState } from "react";
 import { IonContent, IonButton, IonPage } from "@ionic/react";
 import { useCookies } from "react-cookie";
-import { changeDataSource } from "../../api/connections";
+import { updateDataSource } from "../../api/connections";
 import { Header } from "../../components/header/Header";
 import { ROUTES } from "../../shared/constants/routes";
 import { useTranslation } from "react-i18next";
 import "./ConnectionSwitcher.scss";
 
-const ConnectionSwitcher: React.FC = () => {
+
+interface ConnectionSwitcherProps {
+    initialConnection?: string;
+}
+
+const ConnectionSwitcher: React.FC<ConnectionSwitcherProps> = ({ initialConnection = "5s control" }) => {
   const [cookies] = useCookies(["token"]);
-  const [currentConnection, setCurrentConnection] = useState<string>("Default");
+  const storedConnection = localStorage.getItem("chosenConnection") || initialConnection;
+  const [currentConnection, setCurrentConnection] = useState<string>(storedConnection);
   const { t } = useTranslation();
 
-  const switchConnection = async (connection: string) => {
+  const switchConnection = async (connection: "default" | "odoo") => {
     try {
-      const data = await changeDataSource(cookies.token, connection);
-      if (data) {
-        setCurrentConnection(connection);
-        console.log(`${connection} connection selected`);
-      }
+      await updateDataSource(cookies.token, connection);
+      const newConnection = connection === "default" ? "5s control" : connection;
+      setCurrentConnection(newConnection);
+      localStorage.setItem("chosenConnection", newConnection);
     } catch (error) {
       console.error("Error changing data source:", error);
     }
@@ -28,18 +33,28 @@ const ConnectionSwitcher: React.FC = () => {
     <IonPage>
       <IonContent>
         <Header title={t("config.dbConnections")} backButtonHref={ROUTES.MENU} />
-        
-        <div className="connection-info">
-          <h2>{t("menu.currentConnection")}: {currentConnection}</h2>
-        </div>
 
-        <div className="button-container">
-          <IonButton onClick={() => switchConnection("default")} className="switch-button">
-            {t("menu.switchToDefault")}
-          </IonButton>
-          <IonButton onClick={() => switchConnection("odoo")} className="switch-button">
-            {t("menu.switchToOdoo")}
-          </IonButton>
+        <div className="connection-switcher">
+          <div className="connection-info">
+            <h2 className="connection-title">
+              {t("menu.currentConnection")}: <span className="connection-name">{currentConnection.toUpperCase()}</span>
+            </h2>
+          </div>
+
+          <div className="button-container">
+            <IonButton
+              onClick={() => switchConnection("default")}
+              className="switch-button default-button"
+            >
+              {t("menu.switchToDefault")}
+            </IonButton>
+            <IonButton
+              onClick={() => switchConnection("odoo")}
+              className="switch-button odoo-button"
+            >
+              {t("menu.switchToOdoo")}
+            </IonButton>
+          </div>
         </div>
       </IonContent>
     </IonPage>
