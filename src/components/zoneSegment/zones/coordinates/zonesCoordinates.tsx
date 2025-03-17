@@ -65,6 +65,23 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
     };
   });
 
+    useEffect(() => {
+    const handleResize = () => {
+      if (image.current) {
+        handleImageLoad();
+        onChangeSize();
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    document.addEventListener("fullscreenchange", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      document.removeEventListener("fullscreenchange", handleResize);
+    };
+  }, []);
+
   useEffect(() => {
     if (oldBox.length > 0) {
       const old = JSON.parse(JSON.stringify(oldBox))
