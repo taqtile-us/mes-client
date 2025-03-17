@@ -17,6 +17,7 @@ import Chip from "../../../components/chip/chip";
 import RoleLabel from "../../../components/roleLabel/RoleLabel";
 import Fab from "../../../components/fab/Fab";
 import MenuListButton from "../../../components/menuListButton/MenuListButton";
+import { ROLE } from "../../../models/enums/roles.enum";
 
 
 const User = () => {
@@ -107,15 +108,18 @@ const User = () => {
                         <RoleLabel role={item.role} />
                 </IonItem>
                 {item.workplace && <InputReadonly label={t("users.workplace")} value={item.workplace?.name || '-'} />}
-                <InputReadonly 
-                  label={t("users.workStartTime")} 
-                  value={item.workStartTime ? item.workStartTime.slice(0, 5) : t("users.timeNotSet")} 
-                />
-                <InputReadonly 
-                  label={t("users.workEndTime")} 
-                  value={item.workEndTime ? item.workEndTime.slice(0, 5) : t("users.timeNotSet")} 
-                />
-                
+                {item.role === ROLE.WORKER && (
+                  <>
+                    <InputReadonly 
+                      label={t("users.workStartTime")} 
+                      value={item.workStartTime ? item.workStartTime.slice(0, 5) : t("users.timeNotSet")}
+                    />
+                    <InputReadonly 
+                      label={t("users.workEndTime")} 
+                      value={item.workEndTime ? item.workEndTime.slice(0, 5) : t("users.timeNotSet")} 
+                    />
+                  </>
+                )}
                 <Fab
                     icon={EditWhiteIcon}
                     handleFabClick={handleFabClick}/>
