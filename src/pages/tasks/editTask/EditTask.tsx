@@ -44,19 +44,13 @@ const EditTask: React.FC = () => {
   const location = useLocation<LocationState>();
   const {orderName} = location.state || "";
   const [timespan, setTimespan] = useState<ITimespan>({} as ITimespan);
-  // const [isDateChange, setIsDateChange] = useState<boolean>(false);
-  // const [startDateTime, setStartDateTime] = useState<string>("");
   const [durationTime, setDurationTime] = useState<number>(0);
-  // const [isStart, setIsStart] = useState<boolean>(true);
-  // const [finishDateTime, setFinishDateTime] = useState<string>("");
   const [isSave, setSave] = useState<boolean>(true);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isLoading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const history = useHistory();
-  // const startModalRef = useRef<HTMLIonModalElement>(null);
-  // const finishModalRef = useRef<HTMLIonModalElement>(null);
   const { hours, minutes } = formatTime(durationTime);
   const userRole = useSelector((state: RootState) => state.user.role);
 
@@ -74,11 +68,6 @@ const EditTask: React.FC = () => {
   });
 
   useEffect(() => {
-    // if (timespan) {
-    //   timespan.startedAt && setStartDateTime(formatYMD(timespan.startedAt));
-    //   timespan.finishedAt && setFinishDateTime(formatYMD(timespan.finishedAt));
-    //   setDurationTime(timespan?.duration ?? null)
-    // }
      if (timespan) {
           if (timespan.startedAt) {      
             setStartDate(parseToDate(timespan.startedAt));
@@ -118,26 +107,6 @@ const EditTask: React.FC = () => {
     history.go(-1);
     setIsSaveModalOpen(false);
   };
-
-  // const handleSave = () => {
-  //   if (!startDateTime) {
-  //     showToastMessage(t("messages.validDate"));
-  //   } else {
-  //     timespanId &&
-  //       TIMESPAN_REQUEST.updateTimespan(
-  //         parseInt(timespanId),
-  //         { startedAt: formatISOBeforeSend(startDateTime), finishedAt: formatISOBeforeSend(finishDateTime) || "" },
-  //         setLoading,
-  //         setToastMessage,
-  //         handleNavigate
-  //       )
-  //       .catch(() =>{
-  //         setToastMessage(t("orders.timeOverlap"));
-  //       });
-  //     setSave(true);
-  //     setIsModalOpen(false);
-  //   }
-  // };
 
    const handleSave = () => {
       if (!startDate) {
@@ -200,47 +169,6 @@ const EditTask: React.FC = () => {
         setSave(false);
       };
 
-  // const handleStartDateChange = (date: string | string[]) => {
-  //   if (Array.isArray(date)) return;
-  //   if (finishDateTime) {
-  //     setFinishDateTime(mergeDateAndTime(date, finishDateTime));
-  //   }
-  //   setStartDateTime(date);
-  //   setSave(false);
-  // };
-
-  // const handleStartTime = (time: string | string[]) => {
-  //   if (!startDateTime) setStartDateTime(getCurrentDateTimeISO());
-  //   if (Array.isArray(time)) return;
-  //   if (finishDateTime && time > finishDateTime) {
-  //     setToastMessage(t("messages.startTime"));
-  //     return;
-  //   }
-  //   setStartDateTime(time);
-  //   setSave(false);
-  // };
-
-  // const handleFinishTime = (time: string | string[]) => {
-  //   if (!finishDateTime) setFinishDateTime(getCurrentDateTimeISO());
-  //   if (Array.isArray(time)) return;
-  //   if (time < startDateTime) {
-  //     setToastMessage(t("messages.finishDate"));
-  //     return;
-  //   }
-  //   setFinishDateTime(time);
-  //   setSave(false);
-  // };
-
-  // const openModal = () => {
-  //   setIsModalOpen(true);
-  // };
-
-  // const handleFinishNow = () => {
-  //   setFinishDateTime(updateTimeInDate(getCurrentDateTimeISO()));
-  //   openModal();
-  //   setSave(false);
-  // };
-
   const backClick = () => {
     if (isSave) {
       handleNavigate();
@@ -281,16 +209,9 @@ const EditTask: React.FC = () => {
                 <InputReadonly label={t("orders.orderItem")} value={String(timespan.orderOperation.orderItem.name)} />
                 
                 <IonList className={`${style.page} ion-padding`}>
-                  {/* <IonList className={style.list}>
-                    <IonLabel className={style.label}>{t("form.operationDate")}</IonLabel>
-                    <InputDate value={formatDate(startDateTime)} onClick={() => setIsDateChange(true)}></InputDate>
-                  </IonList> */}
                   <IonList className={style.sized}>
                     <div className={style.container}>
                       <IonLabel className={style.label}>{t("orders.startOperation")}</IonLabel>
-                      {/* {isStart && (
-                        <TimeSelector time={startDateTime} modalRef={startModalRef} setTime={handleStartTime} />
-                      )} */}
                        {startDate && startTime && (
                           <>
                           <DateSelector
@@ -315,9 +236,6 @@ const EditTask: React.FC = () => {
                   <IonList className={style.sized}>
                     <div className={style.container}>
                     <IonLabel className={style.label}>{t("orders.finishOperation")}</IonLabel>
-                      {/* {finishDateTime && (
-                        <TimeSelector time={finishDateTime} modalRef={finishModalRef} setTime={handleFinishTime} />
-                      )} */}
                      {finishDate && finishTime &&(
                        <>
                       <DateSelector

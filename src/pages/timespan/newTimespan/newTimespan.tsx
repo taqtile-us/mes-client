@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, SetStateAction, useMemo } from "rea
 import { IonButton, IonContent, IonLabel, IonToast, IonPage, IonList, useIonViewWillEnter } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router";
-// import InputDate from "../../../components/inputs/inputDate/inputDate";
 import { getTimeDifference, getCurrentDateTimeISO, formatISOBeforeSend, formatTime, getDateTimeISO, mergeDateAndTime, parseToDate, parseToTime } from "./../../../utils/parseInputDate";
 import { TIMESPAN_REQUEST } from "./../../../dispatcher";
 import style from "./style.module.scss";
@@ -27,14 +26,11 @@ const NewTimespan: React.FC = () => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isLoading, setLoading] = useState(false);
   const history = useHistory();
-  // const startModalRef = useRef<HTMLIonModalElement>(null);
-  // const finishModalRef = useRef<HTMLIonModalElement>(null);
   const { t } = useTranslation();
   const [cookies] = useCookies();
   const {orderName, orderYear, orderItem, orderOperation} = useSelector((state: RootState) => state.currentTimespan);
   const [timespans, setTimespans] = useState<ITimespan[] | undefined>(undefined);
   const [activeTimespan, setActiveTimespan] = useState<ITimespan>({} as ITimespan);
-  // const [needSave, setNeedSave] = useState(false);
 
   const startDateTime = useMemo(() => 
     activeTimespan.startedAt ? getDateTimeISO(new Date(activeTimespan.startedAt)) : getCurrentDateTimeISO(),
@@ -154,71 +150,6 @@ const NewTimespan: React.FC = () => {
     };
   }, [startDate, startTime, finishDate, finishTime]);
   
-
-  // const handleStartTime = (time: string | string[]) => {
-  //   if (Array.isArray(time)) return;
-  //   const currentDateTime = getCurrentDateTimeISO();
-
-  //   if (time > currentDateTime){
-  //     setToastMessage(t("messages.timespanLimit"));
-  //     return;
-  //   }
-
-  //   if (finishDateTime && time > finishDateTime) {
-  //     setToastMessage(t("messages.startTime")); 
-  //     return;
-  //   }
-
-  //   const savedTime = startDateTime;
-  //   setTimespan(timespan => ({
-  //       ...timespan,
-  //       startedAt: time,
-  //   }));
-  //   const payload = {
-  //     orderId: parseInt(orderId),
-  //     orderOperationId: parseInt(operationId),
-  //     startedAt: formatISOBeforeSend(time),
-  //     finishedAt: (finishDateTime ? formatISOBeforeSend(finishDateTime) : null) as string,
-  //   };
-  //   operationId && TIMESPAN_REQUEST.updateTimespan(timespan.timespanId, payload, setLoading, setToastMessage)
-  //   .catch(() =>{
-  //     setToastMessage(t("orders.timeOverlap"));
-  //     setTimespan(timespan =>({...timespan, startedAt: savedTime}))
-  //   });
-  //   setNeedSave(true);
-  // };
-
-  // const handleFinishTime = (time: string | string[]) => {
-  //   if (Array.isArray(time)) return;
-  //   const currentDateTime = getCurrentDateTimeISO();
-
-  //   if (time < startDateTime) {
-  //     setToastMessage(t("messages.finishDate"));
-  //     return;
-  //   }
-
-  //   if (time > currentDateTime){
-  //     setToastMessage(t("messages.timespanLimit"));
-  //     return;
-  //   }
-  //   const savedTime = finishDateTime;
-  //   setTimespan(timespan => ({
-  //     ...timespan,
-  //     finishedAt: time,
-  //   }));
-  //   const payload = {
-  //     orderId: parseInt(orderId),
-  //     orderOperationId: parseInt(operationId),
-  //     startedAt: formatISOBeforeSend(startDateTime),
-  //     finishedAt: formatISOBeforeSend(time),
-  //   };
-  //   operationId && TIMESPAN_REQUEST.updateTimespan(timespan.timespanId, payload, setLoading, setToastMessage)
-  //   .catch(() =>{
-  //     setToastMessage(t("orders.timeOverlap"));
-  //     setTimespan(timespan =>({...timespan, finishedAt: savedTime as string}))
-  //   });
-  //   setNeedSave(true);
-  // };
   const showToastMessage = (message: string) => {
     setToastMessage(message);
   };
@@ -299,14 +230,8 @@ const NewTimespan: React.FC = () => {
               value={activeTimespan?.orderOperation?.orderItem?.name || orderItem || "-"}
             />
             <IonList className={`${style.page} ion-padding`}>
-              {/* <IonList className={style.list}>
-                <IonLabel className={style.label}>{t("form.operationDate")}</IonLabel>
-                <InputDate value={formatDate(startDateTime)} />
-              </IonList> */}
               <IonList className={style.sized}>
                 <div className={style.container}>
-                  
-                  {/* {isStart && <TimeSelector time={startDateTime} modalRef={startModalRef} setTime={handleStartTime} />} */}
                   {startDate && startTime && isStart && (
                         <>
                           <IonLabel className={style.label}>{t("orders.startOperation")}</IonLabel>
@@ -337,10 +262,6 @@ const NewTimespan: React.FC = () => {
 
               <IonList className={style.sized}>
                 <div className={style.container}>
-                  
-                  {/* {finishDateTime && (
-                    <TimeSelector time={finishDateTime} modalRef={finishModalRef} setTime={handleFinishTime} />
-                  )} */}
                    {finishDate && finishTime && finishDateTime && (
                        <>
                         <IonLabel className={style.label}>{t("orders.finishOperation")}</IonLabel>
