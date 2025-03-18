@@ -1,6 +1,8 @@
 import React from 'react';
-import styles from './notification.module.scss';
+
 import { NotificationBad, NotificationGood } from '../../assets/svg/SVGcomponent';
+
+import styles from './notification.module.scss';
 
 type PropsType = {
   status: boolean;

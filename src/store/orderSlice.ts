@@ -28,5 +28,11 @@ const orderSlice = createSlice({
   },
 });
 
-export const { setOrderName, setOrderItems, setMaxOrderItemId, setTempOrderItemId, setOrderItemOperations } = orderSlice.actions;
+export const {
+  setOrderName,
+  setOrderItems,
+  setMaxOrderItemId,
+  setTempOrderItemId,
+  setOrderItemOperations,
+} = orderSlice.actions;
 export default orderSlice.reducer;

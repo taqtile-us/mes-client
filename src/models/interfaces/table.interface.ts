@@ -1,13 +1,13 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 export interface TableRow {
-    id: number;
-    values: ReactNode[];
-    navigateTo: string;
-    navigationAllowed?: boolean;
+  id: number;
+  values: ReactNode[];
+  navigateTo: string;
+  navigationAllowed?: boolean;
 }
 
 export interface TableCol {
-    size: number;
-    label: string;
+  size: number;
+  label: string;
 }

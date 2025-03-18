@@ -1,13 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
-import moment from "moment";
+import { createSlice } from '@reduxjs/toolkit';
+import moment from 'moment';
 
 const ordersViewDateSlice = createSlice({
   name: 'ordersViewDate',
   initialState: {
     startDate: moment()
-    .set({ hour: 10, minute: 0, second: 0 })
-    .startOf('day')
-    .format("YYYY-MM-DDTHH:mm:ss"),
+      .set({ hour: 10, minute: 0, second: 0 })
+      .startOf('day')
+      .format('YYYY-MM-DDTHH:mm:ss'),
   },
   reducers: {
     setStartOrdersViewDate(state, action) {

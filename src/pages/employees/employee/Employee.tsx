@@ -1,27 +1,27 @@
-import { useParams } from "react-router-dom";
-import { useState } from "react";
-import { useCookies } from "react-cookie";
-import { IonContent, IonPage, useIonViewWillEnter } from "@ionic/react";
+import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { IonContent, IonPage, useIonViewWillEnter } from '@ionic/react';
 
-import { Preloader } from "../../../components/preloader/preloader";
-import Card from "../../../ui/card/Card";
-import { ROUTES } from "../../../shared/constants/routes";
-import { Header } from "../../../components/header/Header";
-import { IEmployee } from "../../../models/interfaces/employee.interface";
-import { getEmployee } from "../../../api/employees";
+import { Preloader } from '../../../components/preloader/preloader';
+import Card from '../../../ui/card/Card';
+import { ROUTES } from '../../../shared/constants/routes';
+import { Header } from '../../../components/header/Header';
+import { IEmployee } from '../../../models/interfaces/employee.interface';
+import { getEmployee } from '../../../api/employees';
 
 const Employee = () => {
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const { id }: { id: string } = useParams();
   const [item, setItem] = useState<IEmployee>();
   const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
 
   useIonViewWillEnter(() => {
     getEmployee(Number(id), cookies.token)
-      .then(response => {
+      .then((response) => {
         setItem(response.data);
       })
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
   });
 
   const handleCloseModal = () => {

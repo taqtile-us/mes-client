@@ -1,67 +1,67 @@
-import { useTranslation } from "react-i18next";
-import { useHistory, useParams } from "react-router-dom";
-import { useState } from "react";
-import { useCookies } from "react-cookie";
-import { IonContent, IonList, IonNote, IonPage, IonToast, useIonViewWillEnter } from "@ionic/react";
-import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next';
+import { useHistory, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { IonContent, IonList, IonNote, IonPage, IonToast, useIonViewWillEnter } from '@ionic/react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { ROUTES } from "../../../shared/constants/routes";
-import { Preloader } from "../../../components/preloader/preloader";
-import { Header } from "../../../components/header/Header";
-import { ConfirmationModal } from "../../../components/confirmationModal/confirmationModal";
-import { getUser, updateUser } from "../../../api/users";
-import { IUpdateUser, IUser } from "../../../models/interfaces/employee.interface";
-import { Input } from "../../../components/inputs/input/Input";
-import MenuListButton from "../../../components/menuListButton/MenuListButton";
-import Select from "../../../components/selects/select/Select";
-import { ROLE } from "../../../models/enums/roles.enum";
-import BottomButton from "../../../components/bottomButton/BottomButton";
-import { TOAST_DELAY } from "../../../constants/toastDelay";
-import { setSelectedWorkplace } from "../../../store/workpaceSlice";
-import { isInvalidText } from "../../../utils/isInvalidText";
-import styles from "../users.module.scss";
-import isValidEmail from "../../../utils/isValidEmail";
-import { RootState } from "../../../store";
+import { ROUTES } from '../../../shared/constants/routes';
+import { Preloader } from '../../../components/preloader/preloader';
+import { Header } from '../../../components/header/Header';
+import { ConfirmationModal } from '../../../components/confirmationModal/confirmationModal';
+import { getUser, updateUser } from '../../../api/users';
+import { IUpdateUser, IUser } from '../../../models/interfaces/employee.interface';
+import { Input } from '../../../components/inputs/input/Input';
+import MenuListButton from '../../../components/menuListButton/MenuListButton';
+import Select from '../../../components/selects/select/Select';
+import { ROLE } from '../../../models/enums/roles.enum';
+import BottomButton from '../../../components/bottomButton/BottomButton';
+import { TOAST_DELAY } from '../../../constants/toastDelay';
+import { setSelectedWorkplace } from '../../../store/workpaceSlice';
+import { isInvalidText } from '../../../utils/isInvalidText';
+import styles from '../users.module.scss';
+import isValidEmail from '../../../utils/isValidEmail';
+import { RootState } from '../../../store';
 
 const EditUser = () => {
   const { t } = useTranslation();
   const { id }: { id: string } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<IUser>({} as IUser);
   const [initialUser, setInitialUser] = useState({} as IUser);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [highlightRequired, setHighlightRequired] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState('');
   const [userExists, setUserExists] = useState(false);
   const roles = Object.values(ROLE)
-    .filter(role => !(getUserRole() === ROLE.ADMIN && role === ROLE.SUPERUSER))
-    .map(role => ({
+    .filter((role) => !(getUserRole() === ROLE.ADMIN && role === ROLE.SUPERUSER))
+    .map((role) => ({
       id: role,
       label: role,
       value: role,
     }));
   const { selectedWorkplace } = useSelector((state: RootState) => state.workplace);
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [backOnClose, setBackOnClose] = useState(false);
   const minPasswordLength = 4;
 
   function getUserRole() {
-    return localStorage.getItem("userRole");
+    return localStorage.getItem('userRole');
   }
 
   useIonViewWillEnter(() => {
     if (user.id) return;
     setLoading(true);
     getUser(Number(id), cookies.token)
-      .then(response => {
+      .then((response) => {
         setUser(response.data);
         setInitialUser(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       })
       .finally(() => {
@@ -70,13 +70,13 @@ const EditUser = () => {
   });
 
   const isChanged =
-    Object.keys(initialUser).some(key => initialUser[key] != user[key]) ||
+    Object.keys(initialUser).some((key) => initialUser[key] != user[key]) ||
     initialUser?.workplace?.id != (selectedWorkplace?.id || user?.workplace?.id) ||
     password ||
     confirmPassword;
 
   const goBack = () => {
-    history.push(ROUTES.USER(id), { direction: "back" });
+    history.push(ROUTES.USER(id), { direction: 'back' });
     dispatch(setSelectedWorkplace(null));
   };
 
@@ -119,7 +119,7 @@ const EditUser = () => {
           setHighlightRequired(false);
           goBack();
         })
-        .catch(error => {
+        .catch((error) => {
           setUserExists(true);
           setHighlightRequired(true);
           console.error(error);
@@ -170,13 +170,13 @@ const EditUser = () => {
   };
 
   const navigateWorkplaceClick = () => {
-    history.push(ROUTES.USER_EDIT_WORKPLACES(id), { direction: "forward" });
+    history.push(ROUTES.USER_EDIT_WORKPLACES(id), { direction: 'forward' });
   };
 
   return (
     <IonPage>
       <Header
-        title={t("operations.users.edit")}
+        title={t('operations.users.edit')}
         onBackClick={onNavigateBack}
         backButtonHref={ROUTES.USER(id)}
       ></Header>
@@ -188,116 +188,116 @@ const EditUser = () => {
         ) : (
           <>
             <div
-              style={{ height: "calc(100vh - 150px)", overflow: "scroll", paddingBottom: "20px" }}
+              style={{ height: 'calc(100vh - 150px)', overflow: 'scroll', paddingBottom: '20px' }}
             >
               <div className={styles.section}>
                 <IonNote className={`ion-padding ${styles.sectionNote}`}>
-                  {t("users.settings")}
+                  {t('users.settings')}
                 </IonNote>
 
                 <Input
-                  label={t("users.username")}
-                  value={user?.username || ""}
+                  label={t('users.username')}
+                  value={user?.username || ''}
                   required
-                  handleChange={event => setUser({ ...user, username: event.target.value })}
+                  handleChange={(event) => setUser({ ...user, username: event.target.value })}
                   state={
                     highlightRequired &&
                     (!user.username ||
                       isInvalidText(user.username, { numbers: true }) ||
                       userExists)
-                      ? "error"
-                      : "neutral"
+                      ? 'error'
+                      : 'neutral'
                   }
                   errorMessage={
                     isInvalidText(user.username, { numbers: true })
-                      ? t("form.invalidCharacters")
+                      ? t('form.invalidCharacters')
                       : userExists
-                        ? t("messages.employeeExists")
-                        : t("form.required")
+                        ? t('messages.employeeExists')
+                        : t('form.required')
                   }
                   maxLength={30}
                 />
                 <Input
-                  label={"Email"}
-                  value={user?.email || ""}
+                  label={'Email'}
+                  value={user?.email || ''}
                   required
-                  handleChange={event => setUser({ ...user, email: event.target.value })}
+                  handleChange={(event) => setUser({ ...user, email: event.target.value })}
                   state={
                     highlightRequired && (!user.email || !isValidEmail(user.email) || userExists)
-                      ? "error"
-                      : "neutral"
+                      ? 'error'
+                      : 'neutral'
                   }
                   errorMessage={
                     userExists
-                      ? t("messages.employeeExists")
-                      : !isValidEmail(user.email ?? "")
-                        ? t("form.invalidEmail")
-                        : t("form.required")
+                      ? t('messages.employeeExists')
+                      : !isValidEmail(user.email ?? '')
+                        ? t('form.invalidEmail')
+                        : t('form.required')
                   }
                   maxLength={30}
                 />
                 <Input
-                  label={t("users.newPassword")}
+                  label={t('users.newPassword')}
                   value={password}
                   type="password"
                   hidePassword={false}
                   required
-                  handleChange={event => {
+                  handleChange={(event) => {
                     setPassword(event.target.value);
                   }}
                   state={
                     highlightRequired && password && password.length < minPasswordLength
-                      ? "error"
-                      : "neutral"
+                      ? 'error'
+                      : 'neutral'
                   }
-                  errorMessage={t("form.passwordLength")}
+                  errorMessage={t('form.passwordLength')}
                 />
                 <Input
-                  label={t("users.confirmPassword")}
+                  label={t('users.confirmPassword')}
                   value={confirmPassword}
                   type="password"
                   hidePassword={false}
                   required
-                  handleChange={event => {
+                  handleChange={(event) => {
                     setConfirmPassword(event.target.value);
                   }}
-                  state={highlightRequired && password != confirmPassword ? "error" : "neutral"}
-                  errorMessage={t("form.passwordsNotEqual")}
+                  state={highlightRequired && password != confirmPassword ? 'error' : 'neutral'}
+                  errorMessage={t('form.passwordsNotEqual')}
                 />
               </div>
               <div className={styles.section}>
-                <IonNote className={`ion-padding ${styles.sectionNote}`}>{t("users.info")}</IonNote>
+                <IonNote className={`ion-padding ${styles.sectionNote}`}>{t('users.info')}</IonNote>
 
                 <Input
-                  label={t("users.lastName")}
-                  value={user?.last_name || ""}
+                  label={t('users.lastName')}
+                  value={user?.last_name || ''}
                   required
-                  handleChange={event => setUser({ ...user, last_name: event.target.value })}
+                  handleChange={(event) => setUser({ ...user, last_name: event.target.value })}
                   state={
                     highlightRequired && (!user.last_name || isInvalidText(user.last_name))
-                      ? "error"
-                      : "neutral"
+                      ? 'error'
+                      : 'neutral'
                   }
                   errorMessage={
-                    isInvalidText(user.last_name) ? t("form.invalidCharacters") : t("form.required")
+                    isInvalidText(user.last_name) ? t('form.invalidCharacters') : t('form.required')
                   }
                   maxLength={30}
                   type="text"
                 />
                 <Input
-                  label={t("users.firstName")}
-                  value={user?.first_name || ""}
+                  label={t('users.firstName')}
+                  value={user?.first_name || ''}
                   required
-                  handleChange={event => setUser({ ...user, first_name: event.target.value })}
+                  handleChange={(event) => setUser({ ...user, first_name: event.target.value })}
                   state={
                     highlightRequired && (!user.first_name || isInvalidText(user.first_name))
-                      ? "error"
-                      : "neutral"
+                      ? 'error'
+                      : 'neutral'
                   }
                   errorMessage={
                     isInvalidText(user.first_name)
-                      ? t("form.invalidCharacters")
-                      : t("form.required")
+                      ? t('form.invalidCharacters')
+                      : t('form.required')
                   }
                   maxLength={30}
                   type="text"
@@ -307,7 +307,7 @@ const EditUser = () => {
                   value={user.role}
                   placeholder={user.role}
                   selectList={roles}
-                  handleChange={event => {
+                  handleChange={(event) => {
                     setUser({ ...user, role: event.target.value });
                   }}
                 />
@@ -316,7 +316,7 @@ const EditUser = () => {
                     <IonList inset={true}>
                       <MenuListButton
                         title={
-                          selectedWorkplace?.name || user.workplace?.name || t("users.workplace")
+                          selectedWorkplace?.name || user.workplace?.name || t('users.workplace')
                         }
                         handleItemClick={navigateWorkplaceClick}
                         // state={highlightRequired && !(selectedWorkplace || user.workplace?.id) && user.role === ROLE.WORKER ? "error" : "neutral"}
@@ -324,18 +324,18 @@ const EditUser = () => {
                       />
                     </IonList>
                     <Input
-                      label={t("users.workStartTime")}
-                      value={user.work_start_time || ""}
-                      handleChange={event =>
+                      label={t('users.workStartTime')}
+                      value={user.work_start_time || ''}
+                      handleChange={(event) =>
                         setUser({ ...user, work_end_time: event.target.value })
                       }
                       type="time"
                       required={false}
                     />
                     <Input
-                      label={t("users.workEndTime")}
-                      value={user.work_start_time || ""}
-                      handleChange={event =>
+                      label={t('users.workEndTime')}
+                      value={user.work_start_time || ''}
+                      handleChange={(event) =>
                         setUser({ ...user, work_end_time: event.target.value })
                       }
                       type="time"
@@ -348,13 +348,13 @@ const EditUser = () => {
                 isOpen={!!toastMessage}
                 message={toastMessage || undefined}
                 duration={TOAST_DELAY}
-                onDidDismiss={() => setToastMessage("")}
+                onDidDismiss={() => setToastMessage('')}
               />
             </div>
             {/* <div style={{position: "absolute"}}> */}
             <BottomButton
               handleClick={openModal}
-              label={t("operations.save")}
+              label={t('operations.save')}
               disabled={!isChanged}
             />
             {/* </div> */}
@@ -366,9 +366,9 @@ const EditUser = () => {
         isOpen={isOpenModal}
         onClose={closeModal}
         onConfirm={handleConfirmModal}
-        title={`${t("operations.saveChanges")}?`}
-        confirmText={t("operations.save")}
-        cancelText={t("operations.cancel")}
+        title={`${t('operations.saveChanges')}?`}
+        confirmText={t('operations.save')}
+        cancelText={t('operations.cancel')}
       />
     </IonPage>
   );

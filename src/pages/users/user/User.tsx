@@ -1,24 +1,24 @@
-import { useHistory, useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { useState } from "react";
-import { useCookies } from "react-cookie";
-import { IonContent, IonIcon, IonItem, IonLabel, IonPage, useIonViewWillEnter } from "@ionic/react";
+import { useHistory, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { IonContent, IonIcon, IonItem, IonLabel, IonPage, useIonViewWillEnter } from '@ionic/react';
 
-import { Preloader } from "../../../components/preloader/preloader";
-import { ROUTES } from "../../../shared/constants/routes";
-import { Header } from "../../../components/header/Header";
-import { deleteUser, getUser } from "../../../api/users";
-import { IUser } from "../../../models/interfaces/employee.interface";
-import InputReadonly from "../../../components/inputs/inputReadonly/inputReadonly";
-import { EditWhiteIcon, TrashBin } from "../../../assets/svg/SVGcomponent";
-import { ConfirmationModal } from "../../../components/confirmationModal/confirmationModal";
-import RoleLabel from "../../../components/roleLabel/RoleLabel";
-import Fab from "../../../components/fab/Fab";
-import MenuListButton from "../../../components/menuListButton/MenuListButton";
-import { ROLE } from "../../../models/enums/roles.enum";
+import { Preloader } from '../../../components/preloader/preloader';
+import { ROUTES } from '../../../shared/constants/routes';
+import { Header } from '../../../components/header/Header';
+import { deleteUser, getUser } from '../../../api/users';
+import { IUser } from '../../../models/interfaces/employee.interface';
+import InputReadonly from '../../../components/inputs/inputReadonly/inputReadonly';
+import { EditWhiteIcon, TrashBin } from '../../../assets/svg/SVGcomponent';
+import { ConfirmationModal } from '../../../components/confirmationModal/confirmationModal';
+import RoleLabel from '../../../components/roleLabel/RoleLabel';
+import Fab from '../../../components/fab/Fab';
+import MenuListButton from '../../../components/menuListButton/MenuListButton';
+import { ROLE } from '../../../models/enums/roles.enum';
 
 const User = () => {
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const { id }: { id: string } = useParams();
   const { t } = useTranslation();
   const [item, setItem] = useState<IUser>();
@@ -29,10 +29,10 @@ const User = () => {
   useIonViewWillEnter(() => {
     setLoading(true);
     getUser(Number(id), cookies.token)
-      .then(response => {
+      .then((response) => {
         setItem(response.data);
       })
-      .catch(error => console.error(error))
+      .catch((error) => console.error(error))
       .finally(() => {
         setLoading(false);
       });
@@ -59,9 +59,9 @@ const User = () => {
     deleteCard(Number(id), cookies.token)
       .then(() => {
         handleCancelClick();
-        history.push(ROUTES.USERS, { direction: "back" });
+        history.push(ROUTES.USERS, { direction: 'back' });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       })
       .finally(() => {
@@ -76,10 +76,10 @@ const User = () => {
   return (
     <IonPage>
       <Header
-        title={item?.last_name + " " + item?.first_name}
+        title={item?.last_name + ' ' + item?.first_name}
         backButtonHref={ROUTES.USERS}
         endButton={
-          <IonIcon onClick={handleOpenModal} style={{ fontSize: "24px" }} icon={TrashBin}></IonIcon>
+          <IonIcon onClick={handleOpenModal} style={{ fontSize: '24px' }} icon={TrashBin}></IonIcon>
         }
       />
       <IonContent>
@@ -89,12 +89,12 @@ const User = () => {
           </div>
         ) : (
           <>
-            {item.role === "admin" ? (
-              ""
+            {item.role === 'admin' ? (
+              ''
             ) : (
               <div className="ion-padding">
                 <MenuListButton
-                  title={t("text.tasks")}
+                  title={t('text.tasks')}
                   lines="none"
                   handleItemClick={() =>
                     history.push(ROUTES.EMPLOYEE_TASKS(String(item.id)), {
@@ -104,29 +104,29 @@ const User = () => {
                 />
               </div>
             )}
-            <InputReadonly label={t("users.username")} value={item.username} />
-            <InputReadonly label={"Email"} value={item.email ?? "-"} />
-            <InputReadonly label={t("users.firstName")} value={item.first_name} />
-            <InputReadonly label={t("users.lastName")} value={item.last_name} />
+            <InputReadonly label={t('users.username')} value={item.username} />
+            <InputReadonly label={'Email'} value={item.email ?? '-'} />
+            <InputReadonly label={t('users.firstName')} value={item.first_name} />
+            <InputReadonly label={t('users.lastName')} value={item.last_name} />
             <IonItem className="input__field">
-              <IonLabel className="input__label">{t("users.role")}</IonLabel>
+              <IonLabel className="input__label">{t('users.role')}</IonLabel>
               <RoleLabel role={item.role} />
             </IonItem>
             {item.workplace && (
-              <InputReadonly label={t("users.workplace")} value={item.workplace?.name || "-"} />
+              <InputReadonly label={t('users.workplace')} value={item.workplace?.name || '-'} />
             )}
             {item.role === ROLE.WORKER && (
               <>
                 <InputReadonly
-                  label={t("users.workStartTime")}
+                  label={t('users.workStartTime')}
                   value={
-                    item.work_start_time ? item.work_start_time.slice(0, 5) : t("users.timeNotSet")
+                    item.work_start_time ? item.work_start_time.slice(0, 5) : t('users.timeNotSet')
                   }
                 />
                 <InputReadonly
-                  label={t("users.workEndTime")}
+                  label={t('users.workEndTime')}
                   value={
-                    item.work_end_time ? item.work_end_time.slice(0, 5) : t("users.timeNotSet")
+                    item.work_end_time ? item.work_end_time.slice(0, 5) : t('users.timeNotSet')
                   }
                 />
               </>
@@ -138,9 +138,9 @@ const User = () => {
               isOpen={showConfirmationModal}
               onConfirm={handleDeleteClick}
               onClose={handleCancelClick}
-              title={`${t("operations.users.delete")} "${item.last_name + " " + item.first_name}"?`}
-              confirmText={t("operations.delete")}
-              cancelText={t("operations.cancel")}
+              title={`${t('operations.users.delete')} "${item.last_name + ' ' + item.first_name}"?`}
+              confirmText={t('operations.delete')}
+              cancelText={t('operations.cancel')}
               preventDismiss={true}
             />
           </>

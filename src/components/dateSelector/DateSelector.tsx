@@ -1,8 +1,9 @@
-import { RefObject, useEffect, useState } from "react";
-import { IonButton, IonDatetime, IonModal, IonList, IonLabel } from "@ionic/react";
-import { formatDate } from "../../utils/parseInputDate";
-import { useTranslation } from "react-i18next";
-import InputDate from "../inputs/inputDate/inputDate";
+import { RefObject, useEffect, useState } from 'react';
+import { IonButton, IonDatetime, IonModal, IonList, IonLabel } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+
+import { formatDate } from '../../utils/parseInputDate';
+import InputDate from '../inputs/inputDate/inputDate';
 
 type DataSelectorProps = {
   label: string;
@@ -15,7 +16,16 @@ type DataSelectorProps = {
   time?: boolean;
 };
 
-const DateSelector = ({ label, date, modalRef, setSave, maxDate, minDate, time, setDate }: DataSelectorProps) => {
+const DateSelector = ({
+  label,
+  date,
+  modalRef,
+  setSave,
+  maxDate,
+  minDate,
+  time,
+  setDate,
+}: DataSelectorProps) => {
   const { t } = useTranslation();
   const [selectedDate, setSelectedDate] = useState<string>(date);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
@@ -47,23 +57,27 @@ const DateSelector = ({ label, date, modalRef, setSave, maxDate, minDate, time, 
     <div>
       <IonList inset={true}>
         <IonLabel className="text-bold">{label}</IonLabel>
-        <InputDate value={date ? formatDate(date) : ""} isOpen={isModalOpen} onClick={handleDateClick} />
+        <InputDate
+          value={date ? formatDate(date) : ''}
+          isOpen={isModalOpen}
+          onClick={handleDateClick}
+        />
       </IonList>
 
       <IonModal ref={modalRef} onWillDismiss={handleCancel}>
         <IonDatetime
-          presentation={time ? "time" : "date"}
+          presentation={time ? 'time' : 'date'}
           value={selectedDate}
-          onIonChange={e => setSelectedDate(e.detail.value as string)}
-          locale={t("lang")}
+          onIonChange={(e) => setSelectedDate(e.detail.value as string)}
+          locale={t('lang')}
           min={minDate}
           max={maxDate}
         />
-        <IonButton onClick={handleSave} style={{ margin: ".5rem", marginBottom: 0 }}>
-          {t("operations.save")}
+        <IonButton onClick={handleSave} style={{ margin: '.5rem', marginBottom: 0 }}>
+          {t('operations.save')}
         </IonButton>
-        <IonButton style={{ margin: ".5rem" }} color="danger" fill="outline" onClick={handleCancel}>
-          {t("operations.cancel")}
+        <IonButton style={{ margin: '.5rem' }} color="danger" fill="outline" onClick={handleCancel}>
+          {t('operations.cancel')}
         </IonButton>
       </IonModal>
     </div>

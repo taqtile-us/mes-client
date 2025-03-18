@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   IonButton,
   IonCheckbox,
@@ -11,20 +11,22 @@ import {
   IonPage,
   IonToast,
   useIonViewWillEnter,
-} from "@ionic/react";
-import { Header } from "../../../components/header/Header";
-import { useLocation, useHistory } from "react-router-dom";
-import { OPERATION_REQUEST, ORDER_REQUEST } from "../../../dispatcher";
-import { IProductOperation } from "../../../models/interfaces/operationItem.interface";
-import ModalSave from "../../../components/modalSave/modalSave";
-import { ROUTES } from "../../../shared/constants/routes";
-import { useTranslation } from "react-i18next";
-import { TOAST_DELAY } from "./../../../constants/toastDelay";
-import { IReference } from "../../../models/interfaces/orders.interface";
-import BottomButton from "../../../components/bottomButton/BottomButton";
-import { Preloader } from "../../../components/preloader/preloader";
-import UserInfo from "../../../components/userInfo/userInfo";
-import { ROLE } from "../../../models/enums/roles.enum";
+} from '@ionic/react';
+import { useLocation, useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
+import { IProductOperation } from '../../../models/interfaces/operationItem.interface';
+import ModalSave from '../../../components/modalSave/modalSave';
+import { ROUTES } from '../../../shared/constants/routes';
+import { OPERATION_REQUEST, ORDER_REQUEST } from '../../../dispatcher';
+import { Header } from '../../../components/header/Header';
+import { IReference } from '../../../models/interfaces/orders.interface';
+import BottomButton from '../../../components/bottomButton/BottomButton';
+import { Preloader } from '../../../components/preloader/preloader';
+import UserInfo from '../../../components/userInfo/userInfo';
+import { ROLE } from '../../../models/enums/roles.enum';
+
+import { TOAST_DELAY } from './../../../constants/toastDelay';
 
 const PreScannerConfiguration: React.FC = () => {
   const history = useHistory();
@@ -43,7 +45,7 @@ const PreScannerConfiguration: React.FC = () => {
     setSelectedOperation(id);
   };
   const navigateTo = () => {
-    history.push(ROUTES.MENU, { direction: "back" });
+    history.push(ROUTES.MENU, { direction: 'back' });
   };
 
   const handleSubmit = async () => {
@@ -57,13 +59,13 @@ const PreScannerConfiguration: React.FC = () => {
   };
 
   const getUserRole = () => {
-    return localStorage.getItem("userRole");
+    return localStorage.getItem('userRole');
   };
 
   return (
     <IonPage>
       <Header
-        title={t("form.selectOperation")}
+        title={t('form.selectOperation')}
         onBackClick={navigateTo}
         // backButtonHref="#"
       />
@@ -76,14 +78,14 @@ const PreScannerConfiguration: React.FC = () => {
           <>
             {getUserRole() === ROLE.WORKER && <UserInfo />}
             <IonList className="ion-padding scrollable">
-              {operations.map(item => (
+              {operations.map((item) => (
                 <IonItem key={item.id}>
                   <IonLabel>{item.name}</IonLabel>
                   <IonCheckbox
-                    style={{ "--border-radius": "none" }}
+                    style={{ '--border-radius': 'none' }}
                     className="single-checkbox"
                     slot="end"
-                    onIonChange={e => handleCheckboxChange(item.id)}
+                    onIonChange={(e) => handleCheckboxChange(item.id)}
                     checked={selectedOperation === item.id}
                   />
                 </IonItem>
@@ -96,8 +98,16 @@ const PreScannerConfiguration: React.FC = () => {
               duration={TOAST_DELAY}
               onDidDismiss={() => setToastMessage(null)}
             />
-            <ModalSave isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} handleSubmit={handleSubmit} />
-            <BottomButton handleClick={handleSubmit} label={t("operations.save")} disabled={operations.length === 0} />
+            <ModalSave
+              isModalOpen={isModalOpen}
+              setIsModalOpen={setIsModalOpen}
+              handleSubmit={handleSubmit}
+            />
+            <BottomButton
+              handleClick={handleSubmit}
+              label={t('operations.save')}
+              disabled={operations.length === 0}
+            />
           </>
         )}
       </IonContent>

@@ -1,24 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { IonContent, IonLabel, IonList, IonPage, IonLoading, IonToast, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../../components/header/Header";
-import style from "./orderOperations.module.scss";
-import { useHistory, useParams } from "react-router-dom";
-import { IOrderOperation, IProductOperation, Timespan } from "../../../models/interfaces/operationItem.interface";
-import { formatDate } from "../../../utils/parseInputDate";
-import { OPERATION_REQUEST, ORDER_REQUEST, TIMESPAN_REQUEST } from "../../../dispatcher";
-import { formatTime } from "../../../utils/parseInputDate";
-import { ROUTES } from "../../../shared/constants/routes";
-import { useTranslation } from "react-i18next";
-import { TOAST_DELAY } from "../../../constants/toastDelay";
-import { IReference } from "../../../models/interfaces/orders.interface";
-import { InputLookup } from "../../../components/inputs/inputLookup/inputLookup";
-import { Table } from "../../../components/table/Table";
-import { ROLE } from "../../../models/enums/roles.enum";
-import AddButton from "../../../components/addButton/AddButton";
-import { TableRow } from "../../../models/interfaces/table.interface";
-import InputReadonly from "../../../components/inputs/inputReadonly/inputReadonly";
-import { Preloader } from "../../../components/preloader/preloader";
-import Chip from "../../../components/chip/chip";
+import React, { useEffect, useState } from 'react';
+import {
+  IonContent,
+  IonLabel,
+  IonList,
+  IonPage,
+  IonLoading,
+  IonToast,
+  useIonViewWillEnter,
+} from '@ionic/react';
+import { useHistory, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
+import {
+  IOrderOperation,
+  IProductOperation,
+  Timespan,
+} from '../../../models/interfaces/operationItem.interface';
+import { formatDate } from '../../../utils/parseInputDate';
+import { OPERATION_REQUEST, ORDER_REQUEST, TIMESPAN_REQUEST } from '../../../dispatcher';
+import { formatTime } from '../../../utils/parseInputDate';
+import { ROUTES } from '../../../shared/constants/routes';
+import { Header } from '../../../components/header/Header';
+import { TOAST_DELAY } from '../../../constants/toastDelay';
+import { IReference } from '../../../models/interfaces/orders.interface';
+import { InputLookup } from '../../../components/inputs/inputLookup/inputLookup';
+import { Table } from '../../../components/table/Table';
+import { ROLE } from '../../../models/enums/roles.enum';
+import AddButton from '../../../components/addButton/AddButton';
+import { TableRow } from '../../../models/interfaces/table.interface';
+import InputReadonly from '../../../components/inputs/inputReadonly/inputReadonly';
+import { Preloader } from '../../../components/preloader/preloader';
+import Chip from '../../../components/chip/chip';
+
+import style from './orderOperations.module.scss';
 
 const RADIX = 10;
 
@@ -38,7 +52,7 @@ const OrderOperations = () => {
   const history = useHistory();
 
   const onDeleteHandle = () => {
-    console.log("Delete");
+    console.log('Delete');
   };
 
   const handleFabClick = (path: string) => {
@@ -46,11 +60,16 @@ const OrderOperations = () => {
   };
 
   const getUserRole = () => {
-    return localStorage.getItem("userRole");
+    return localStorage.getItem('userRole');
   };
 
   useIonViewWillEnter(() => {
-    ORDER_REQUEST.getOrderOperationById(parseInt(operationId, RADIX), setOperation, setLoading, setToastMessage);
+    ORDER_REQUEST.getOrderOperationById(
+      parseInt(operationId, RADIX),
+      setOperation,
+      setLoading,
+      setToastMessage,
+    );
   });
 
   const timespanItems: TableRow[] =
@@ -63,15 +82,18 @@ const OrderOperations = () => {
         const dateB = new Date(b.startedAt);
         return dateA.getTime() - dateB.getTime();
       })
-      .map(timespan => {
+      .map((timespan) => {
         const { hours, minutes } = formatTime(timespan.duration);
         let timestring;
         if (timespan.duration === null) {
           timestring = <Chip name="in_progress" />;
         } else {
-          timestring = [hours && `${hours} ${t("time.hour")}`, minutes && `${minutes} ${t("time.min")}`]
+          timestring = [
+            hours && `${hours} ${t('time.hour')}`,
+            minutes && `${minutes} ${t('time.min')}`,
+          ]
             .filter(Boolean)
-            .join(" ");
+            .join(' ');
         }
 
         return {
@@ -80,7 +102,7 @@ const OrderOperations = () => {
             String(orderId),
             String(itemId),
             String(operationId),
-            String(timespan.id)
+            String(timespan.id),
           ),
           navigationAllowed: getUserRole() === ROLE.WORKER,
           values: [formatDate(timespan.startedAt), timespan.employeeName, timestring || 0],
@@ -90,7 +112,10 @@ const OrderOperations = () => {
   return (
     <IonPage>
       <>
-        <Header title={operation.name} backButtonHref={ROUTES.ORDER_ITEM(String(orderId), String(itemId))} />
+        <Header
+          title={operation.name}
+          backButtonHref={ROUTES.ORDER_ITEM(String(orderId), String(itemId))}
+        />
         <IonContent>
           {isLoading ? (
             <div className="preloader">
@@ -101,28 +126,34 @@ const OrderOperations = () => {
               {isLoaded && (
                 <>
                   <IonList className={style.page}>
-                    <InputReadonly label={t("orders.operation")} value={operation.name} />
+                    <InputReadonly label={t('orders.operation')} value={operation.name} />
                     <IonList className={style.list}>
                       {timespanItems?.length ? (
                         <Table
-                          label={t("orders.implementation")}
+                          label={t('orders.implementation')}
                           cols={[
-                            { label: t("form.date"), size: 4 },
-                            { label: t("orders.worker"), size: 4 },
-                            { label: t("form.duration"), size: 4 },
+                            { label: t('form.date'), size: 4 },
+                            { label: t('orders.worker'), size: 4 },
+                            { label: t('form.duration'), size: 4 },
                           ]}
                           rows={timespanItems}
                         />
                       ) : (
                         <IonLabel slot="center" className="ion-padding">
-                          {t("text.norecords")}
+                          {t('text.norecords')}
                         </IonLabel>
                       )}
                       <AddButton
                         handleClick={() =>
-                          handleFabClick(ROUTES.ORDER_TIMESPAN(String(orderId), String(itemId), String(operationId)))
+                          handleFabClick(
+                            ROUTES.ORDER_TIMESPAN(
+                              String(orderId),
+                              String(itemId),
+                              String(operationId),
+                            ),
+                          )
                         }
-                        label={t("operations.add")}
+                        label={t('operations.add')}
                       ></AddButton>
                     </IonList>
                     <IonToast

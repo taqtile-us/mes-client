@@ -1,19 +1,23 @@
-import { useParams } from "react-router-dom";
-import { ROUTES } from "../../../../shared/constants/routes";
-import { useTranslation } from "react-i18next";
-import Card from "../../../../ui/card/Card";
-import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
-import { IonContent, IonIcon, IonItem, IonList, IonPage, useIonViewWillEnter } from "@ionic/react";
-import { DirectoryCategory } from "../../../../models/interfaces/directoryCategory.interface";
-import { deleteDirectoryCategory, getDirectoryCategory } from "../../../../api/directory/directoryCategories";
-import { Header } from "../../../../components/header/Header";
-import { TrashBin } from "../../../../assets/svg/SVGcomponent";
-import { Directory } from "../../../../models/interfaces/directory.interface";
-import { Preloader } from "../../../../components/preloader/preloader";
+import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { IonContent, IonIcon, IonItem, IonList, IonPage, useIonViewWillEnter } from '@ionic/react';
+
+import Card from '../../../../ui/card/Card';
+import { ROUTES } from '../../../../shared/constants/routes';
+import { DirectoryCategory } from '../../../../models/interfaces/directoryCategory.interface';
+import {
+  deleteDirectoryCategory,
+  getDirectoryCategory,
+} from '../../../../api/directory/directoryCategories';
+import { Header } from '../../../../components/header/Header';
+import { TrashBin } from '../../../../assets/svg/SVGcomponent';
+import { Directory } from '../../../../models/interfaces/directory.interface';
+import { Preloader } from '../../../../components/preloader/preloader';
 
 const DirectoryCategoryCard = () => {
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const { refId, id } = useParams() as { refId: string; id: string };
   const { t } = useTranslation();
   const [directory, setDirectory] = useState<DirectoryCategory>();
@@ -21,11 +25,13 @@ const DirectoryCategoryCard = () => {
 
   useIonViewWillEnter(() => {
     getDirectoryCategory(Number(refId), cookies.token)
-      .then(response => {
-        const currentCatalog = response.data.find((catalog: Directory) => catalog.id === Number(id));
+      .then((response) => {
+        const currentCatalog = response.data.find(
+          (catalog: Directory) => catalog.id === Number(id),
+        );
         setDirectory(currentCatalog);
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   });
 
   const handleCloseModal = () => {
@@ -53,7 +59,9 @@ const DirectoryCategoryCard = () => {
       <Header
         title={directory?.name}
         backButtonHref={ROUTES.DIRECTORY_CATEGORY(refId)}
-        endButton={<IonIcon onClick={handleOpenModal} style={{ fontSize: "24px" }} icon={TrashBin}></IonIcon>}
+        endButton={
+          <IonIcon onClick={handleOpenModal} style={{ fontSize: '24px' }} icon={TrashBin}></IonIcon>
+        }
       />
       <IonContent>
         {directory ? (

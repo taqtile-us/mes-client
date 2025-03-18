@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
-import { checkCamera } from "../../api/cameraRequest";
-import { Preloader } from "../preloader/preloader";
-import { Notification } from "../notification/notification";
-import { useTranslation } from "react-i18next";
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { checkCamera } from '../../api/cameraRequest';
+import { Preloader } from '../preloader/preloader';
+import { Notification } from '../notification/notification';
 
 type PropsType = {
   cameraIP: string;
@@ -12,15 +12,15 @@ type PropsType = {
 };
 
 const CameraTest: React.FC<PropsType> = ({ cameraIP, userName, password }): JSX.Element => {
-  const [imageTest, setImageTest] = useState("");
+  const [imageTest, setImageTest] = useState('');
   const [isPreloader, setPreloader] = useState(false);
   const [isNotification, setIsNotification] = useState(false);
   const { t } = useTranslation();
 
   const cameraChecking = async () => {
     setPreloader(true);
-    setImageTest("");
-   const response = await checkCamera(window.location.hostname, cameraIP, userName, password)
+    setImageTest('');
+    const response = await checkCamera(window.location.hostname, cameraIP, userName, password);
 
     if (response.ok) {
       const blob = await response.blob();
@@ -44,7 +44,7 @@ const CameraTest: React.FC<PropsType> = ({ cameraIP, userName, password }): JSX.
 
   return (
     <div className="cameras__settings_right">
-      {imageTest === "" ? (
+      {imageTest === '' ? (
         <div className="cameras__settings_img">
           <div className="cameras__settings_img_bad">{isPreloader && <Preloader />}</div>
         </div>
@@ -52,14 +52,16 @@ const CameraTest: React.FC<PropsType> = ({ cameraIP, userName, password }): JSX.
         <img src={imageTest} alt="Camera" className="cameras__settings_img" />
       )}
       <span className="cameras__settings_test" onClick={cameraChecking}>
-        {t("camera.cameraSegment.testConnection")}
+        {t('camera.cameraSegment.testConnection')}
       </span>
-      <span className="cameras__settings_text">{t("camera.cameraSegment.testTip")}</span>
+      <span className="cameras__settings_text">{t('camera.cameraSegment.testTip')}</span>
       {isNotification && (
         <Notification
           status={!!imageTest.length}
           message={
-            imageTest.length ? t("camera.cameraSegment.status.connected") : t("camera.cameraSegment.status.failed")
+            imageTest.length
+              ? t('camera.cameraSegment.status.connected')
+              : t('camera.cameraSegment.status.failed')
           }
           // isLil={true}
         />

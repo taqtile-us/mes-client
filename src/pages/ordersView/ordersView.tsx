@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 import {
   IonContent,
   IonListHeader,
@@ -13,40 +13,43 @@ import {
   IonModal,
   IonLoading,
   IonPage,
-} from "@ionic/react";
-import { ROUTES } from "../../shared/constants/routes";
-import { timeIntervals } from "../../constants/timeIntervals";
-import { parseInputDate } from "../../utils/parseInputDate";
-import { Header } from "../../components/header/Header";
-import TimelineChart from "../../components/timelineChart/TimelineChart";
-import moment from "moment";
-import { getOrderViewOperations, getOrderViewOrderList } from "../../api/ordersView";
-import { useCookies } from "react-cookie";
-import { OperationItem } from "../../models/interfaces/operationItem.interface";
-import { OrdersList } from "../../components/ordersList/OrdersList";
-import { OrderItem } from "../../models/interfaces/orderItem.interface";
-import "./styles.scss";
-import { useTranslation } from "react-i18next";
-import { Settings } from "../../assets/svg/SVGcomponent";
-import { SettingsModal } from "../../components/ordersView/settingsModal/SettingsModal";
-import { SearchModal } from "../../components/ordersView/searchModal/SearchModal";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { setStartOrdersViewDate } from "../../store/ordersViewDateSlice";
+} from '@ionic/react';
+import moment from 'moment';
+import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { ROUTES } from '../../shared/constants/routes';
+import { timeIntervals } from '../../constants/timeIntervals';
+import { parseInputDate } from '../../utils/parseInputDate';
+import { Header } from '../../components/header/Header';
+import TimelineChart from '../../components/timelineChart/TimelineChart';
+import { getOrderViewOperations, getOrderViewOrderList } from '../../api/ordersView';
+import { OperationItem } from '../../models/interfaces/operationItem.interface';
+import { OrdersList } from '../../components/ordersList/OrdersList';
+import { OrderItem } from '../../models/interfaces/orderItem.interface';
+
+import './styles.scss';
+
+import { Settings } from '../../assets/svg/SVGcomponent';
+import { SettingsModal } from '../../components/ordersView/settingsModal/SettingsModal';
+import { SearchModal } from '../../components/ordersView/searchModal/SearchModal';
+import { RootState } from '../../store';
+import { setStartOrdersViewDate } from '../../store/ordersViewDateSlice';
 
 export const OrdersView: React.FC = () => {
   const modal = useRef<HTMLIonModalElement>(null);
   const dispatch = useDispatch();
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const [showLoading, setShowLoading] = useState(false);
   const [orderListLoading, setOrderListLoading] = useState(true);
   const [openSettings, setOpenSettings] = useState(false);
   const [updateFilter, setUpdateFilter] = useState(false);
-  const [selectedInterval, setSelectedInterval] = useState<keyof typeof timeIntervals>("OneDay");
+  const [selectedInterval, setSelectedInterval] = useState<keyof typeof timeIntervals>('OneDay');
   const [showScheduled, setShowScheduled] = useState<boolean>(false);
   const [data, setData] = useState<OperationItem[]>([]);
   const [ordersList, setOrdersList] = useState<OrderItem[]>([]);
-  const [selectedOrderId, setSelectedOrderId] = useState<string>("");
+  const [selectedOrderId, setSelectedOrderId] = useState<string>('');
   const [openSearchModal, setOpenSearchModal] = useState<boolean>(false);
   const startDate = useSelector((state: RootState) => state.ordersViewDate.startDate);
   const [selectedRange, setSelectedRange] = useState(startDate);
@@ -63,9 +66,9 @@ export const OrdersView: React.FC = () => {
   }, [selectedRange, selectedInterval, updateFilter]);
 
   const fetchOrdersViewInfo = (selectedRange, firstFetch = false) => {
-    const currentDay = selectedRange.split("T")[0];
-    const endDay = moment(selectedRange).add(7, "days").format("YYYY-MM-DD");
-    const prevDay = prevRange.split("T")[0];
+    const currentDay = selectedRange.split('T')[0];
+    const endDay = moment(selectedRange).add(7, 'days').format('YYYY-MM-DD');
+    const prevDay = prevRange.split('T')[0];
     if ((selectedRange && currentDay !== prevDay) || firstFetch) {
       const fetchData = async () => {
         try {
@@ -85,16 +88,16 @@ export const OrdersView: React.FC = () => {
       fetchData();
     }
 
-    getOrderViewOrderList("", currentDay, endDay)
-      .then(response => {
+    getOrderViewOrderList('', currentDay, endDay)
+      .then((response) => {
         setOrdersList(response.data);
       })
-      .catch(error => console.log(error))
+      .catch((error) => console.log(error))
       .finally(() => setOrderListLoading(false));
   };
 
   const handleToggle = () => {
-    setShowScheduled(prev => !prev);
+    setShowScheduled((prev) => !prev);
   };
 
   const handleDateTimeChange = (e: CustomEvent<any>) => {
@@ -105,14 +108,14 @@ export const OrdersView: React.FC = () => {
 
   const selectOrder = (orId: string) => {
     if (orId === selectedOrderId) {
-      setSelectedOrderId("");
+      setSelectedOrderId('');
     } else {
       setSelectedOrderId(orId);
       setTimeout(() => {
-        const timeline = document.querySelector(".chartWrapper");
+        const timeline = document.querySelector('.chartWrapper');
         const barElement = timeline?.querySelector(`[data-or-id='${orId}']`);
         if (barElement) {
-          barElement.scrollIntoView({ behavior: "smooth", block: "center" });
+          barElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       }, 100);
     }
@@ -122,7 +125,7 @@ export const OrdersView: React.FC = () => {
     <IonPage>
       <IonContent>
         <Header
-          title={t("text.ordersView")}
+          title={t('text.ordersView')}
           backButtonHref={ROUTES.ORDERS}
           endButton={<img src={Settings} onClick={() => setOpenSettings(true)} />}
         />
@@ -131,7 +134,11 @@ export const OrdersView: React.FC = () => {
             <IonRow className="ion-align-items-center dateTimeControls">
               <IonCol id="openDateTimePicker">
                 <IonListHeader>
-                  {parseInputDate(selectedRange, timeIntervals[selectedInterval].milliseconds, t("lang"))}
+                  {parseInputDate(
+                    selectedRange,
+                    timeIntervals[selectedInterval].milliseconds,
+                    t('lang'),
+                  )}
                 </IonListHeader>
               </IonCol>
             </IonRow>
@@ -140,14 +147,14 @@ export const OrdersView: React.FC = () => {
             <IonSegment
               value={selectedInterval}
               scrollable={false}
-              onIonChange={e => {
+              onIonChange={(e) => {
                 const value = e.detail.value;
                 setSelectedInterval(value as keyof typeof timeIntervals);
               }}
             >
               {Object.entries(timeIntervals).map(([key, interval]) => (
                 <IonSegmentButton key={interval.milliseconds} value={key}>
-                  <IonLabel>{interval.label[t("lang")]}</IonLabel>
+                  <IonLabel>{interval.label[t('lang')]}</IonLabel>
                 </IonSegmentButton>
               ))}
             </IonSegment>
@@ -184,9 +191,9 @@ export const OrdersView: React.FC = () => {
             value={selectedRange}
             onIonChange={handleDateTimeChange}
             className="dateTimePickerWrapper"
-            locale={t("lang")}
+            locale={t('lang')}
           >
-            <span slot="time-label">{t("text.startTime")}</span>
+            <span slot="time-label">{t('text.startTime')}</span>
           </IonDatetime>
         </IonModal>
 

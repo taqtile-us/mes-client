@@ -1,6 +1,8 @@
-import { IonItem, IonList } from "@ionic/react";
-import { ExcelFile } from "../../assets/svg/SVGcomponent";
-import styles from "./file.module.css";
+import { IonItem, IonList } from '@ionic/react';
+
+import { ExcelFile } from '../../assets/svg/SVGcomponent';
+
+import styles from './file.module.css';
 
 type FileProps = {
   fileName: string;

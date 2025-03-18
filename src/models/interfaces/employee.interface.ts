@@ -1,6 +1,6 @@
-import { ROLE } from "../enums/roles.enum";
+import { ROLE } from '../enums/roles.enum';
 
-import { IWorkplace } from "./workplace.interface";
+import { IWorkplace } from './workplace.interface';
 
 export interface IEmployee {
   id: number;

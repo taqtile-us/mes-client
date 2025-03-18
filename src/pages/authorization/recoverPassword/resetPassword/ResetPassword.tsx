@@ -1,66 +1,71 @@
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Input } from "../../../../components/inputs/input/Input";
-import { IRecoverPasswordStepProps } from "../RecoverPassword";
-import { resetPassword } from "../../../../api/authorization";
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { Input } from '../../../../components/inputs/input/Input';
+import { IRecoverPasswordStepProps } from '../RecoverPassword';
+import { resetPassword } from '../../../../api/authorization';
 
 const ResetPassword = ({ onPrevStep, onNextStep, recoverData }: IRecoverPasswordStepProps) => {
   const { t } = useTranslation();
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handlePasswordChange = e => {
+  const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
 
-  const handleConfirmPasswordChange = e => {
+  const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
   };
 
   const onContinue = () => {
-    setErrorMessage("");
+    setErrorMessage('');
     if (password.length < 4) {
-      setErrorMessage(t("form.passwordLength"));
+      setErrorMessage(t('form.passwordLength'));
       return;
     }
     if (password != confirmPassword) {
-      setErrorMessage(t("form.passwordsNotEqual"));
+      setErrorMessage(t('form.passwordsNotEqual'));
       return;
     }
     resetPassword(recoverData.email, recoverData.code, password, confirmPassword)
       .then(onNextStep)
-      .catch(() => setErrorMessage(t("form.auth.failedUpdatePassword")));
+      .catch(() => setErrorMessage(t('form.auth.failedUpdatePassword')));
   };
 
   return (
     <>
-      <h1 className="step-title">{t("form.auth.enterPassword")}</h1>
+      <h1 className="step-title">{t('form.auth.enterPassword')}</h1>
       <Input
         type="password"
-        placeholder={t("form.enterPassword")}
+        placeholder={t('form.enterPassword')}
         value={password}
-        label={t("users.newPassword")}
+        label={t('users.newPassword')}
         required
         handleChange={handlePasswordChange}
-        state={errorMessage ? "error" : "neutral"}
+        state={errorMessage ? 'error' : 'neutral'}
       />
       <Input
         type="password"
-        placeholder={t("form.repeatPassword")}
+        placeholder={t('form.repeatPassword')}
         value={confirmPassword}
-        label={t("users.confirmPassword")}
+        label={t('users.confirmPassword')}
         required
         handleChange={handleConfirmPasswordChange}
-        state={errorMessage ? "error" : "neutral"}
+        state={errorMessage ? 'error' : 'neutral'}
       />
       {errorMessage && <span className="error-message">{errorMessage}</span>}
       <div>
-        <button className={"authorization__button"} onClick={onContinue} disabled={!password || !confirmPassword}>
-          {t("form.auth.continue")}
+        <button
+          className={'authorization__button'}
+          onClick={onContinue}
+          disabled={!password || !confirmPassword}
+        >
+          {t('form.auth.continue')}
         </button>
-        <button className={"authorization__button secondary"} onClick={onPrevStep}>
-          {t("form.auth.back")}
+        <button className={'authorization__button secondary'} onClick={onPrevStep}>
+          {t('form.auth.back')}
         </button>
       </div>
     </>

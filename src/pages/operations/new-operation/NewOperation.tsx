@@ -1,20 +1,21 @@
-import { ROUTES } from "../../../shared/constants/routes";
-import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import SingleInputPage from "../../../ui/signleInputPage/SingleInputPage";
-import { useCookies } from "react-cookie";
-import { IonContent, IonPage } from "@ionic/react";
-import { Header } from "../../../components/header/Header";
-import { ConfirmationModal } from "../../../components/confirmationModal/confirmationModal";
-import { createOperation } from "../../../api/operations";
-import { TimeUnit } from "../../../models/types/timeUnit";
+import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { IonContent, IonPage } from '@ionic/react';
+
+import SingleInputPage from '../../../ui/signleInputPage/SingleInputPage';
+import { ROUTES } from '../../../shared/constants/routes';
+import { Header } from '../../../components/header/Header';
+import { ConfirmationModal } from '../../../components/confirmationModal/confirmationModal';
+import { createOperation } from '../../../api/operations';
+import { TimeUnit } from '../../../models/types/timeUnit';
 
 const NewOperation = () => {
   const { t } = useTranslation();
   const history = useHistory();
-  const [cookies] = useCookies(["token"]);
-  const [operationName, setOperationName] = useState("");
+  const [cookies] = useCookies(['token']);
+  const [operationName, setOperationName] = useState('');
   const [estimatedTime, setEstimatedTime] = useState();
   const [timeUnit, setTimeUnit] = useState<TimeUnit>();
   const [initialOperationName, setInitialOperationName] = useState(operationName);
@@ -51,14 +52,14 @@ const NewOperation = () => {
   // });
 
   const navigateBack = () => {
-    history.push(ROUTES.OPERATIONS, { direction: "back" });
+    history.push(ROUTES.OPERATIONS, { direction: 'back' });
   };
 
   const handleSave = () => {
     if (operationName.trim()) {
       createOperation(operationName.trim(), estimatedTime, timeUnit, cookies.token)
         .then(() => navigateBack())
-        .catch(error => console.error(error));
+        .catch((error) => console.error(error));
       return;
     }
   };
@@ -71,7 +72,7 @@ const NewOperation = () => {
     }
   };
 
-  const handleChangeInput = e => {
+  const handleChangeInput = (e) => {
     setOperationName(e.target.value);
     if (e.target.value.trim() !== initialOperationName.trim()) {
       setOperationNameIsChanged(true);
@@ -105,15 +106,15 @@ const NewOperation = () => {
   return (
     <IonPage>
       <Header
-        title={t("directory.operations.newOperation")}
+        title={t('directory.operations.newOperation')}
         onBackClick={handleBackClick}
         backButtonHref={ROUTES.OPERATIONS}
       ></Header>
       <IonContent>
         <SingleInputPage
-          title={t("directory.operations.newOperation")}
+          title={t('directory.operations.newOperation')}
           backHref={ROUTES.OPERATIONS}
-          label={t("directory.operations.name")}
+          label={t('directory.operations.name')}
           value={operationName}
           required
           handleChange={handleChangeInput}
@@ -140,9 +141,9 @@ const NewOperation = () => {
         isOpen={isOpenModal}
         onClose={handleCloseModal}
         onConfirm={handleConfirmModal}
-        title={`${t("operations.saveChanges")}?`}
-        confirmText={t("operations.save")}
-        cancelText={t("operations.cancel")}
+        title={`${t('operations.saveChanges')}?`}
+        confirmText={t('operations.save')}
+        cancelText={t('operations.cancel')}
       />
     </IonPage>
   );

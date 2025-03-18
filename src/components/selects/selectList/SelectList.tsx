@@ -1,5 +1,6 @@
-import { IonItem, IonList, IonRadio, IonRadioGroup } from "@ionic/react";
-import { SelectItem } from "../../../models/types/selectItem";
+import { IonItem, IonList, IonRadio, IonRadioGroup } from '@ionic/react';
+
+import { SelectItem } from '../../../models/types/selectItem';
 
 type SelectListProps = {
   value: string;

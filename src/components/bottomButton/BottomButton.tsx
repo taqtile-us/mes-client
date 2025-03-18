@@ -1,4 +1,4 @@
-import { IonButton } from "@ionic/react";
+import { IonButton } from '@ionic/react';
 
 type BottomButtonProps = {
   handleClick: () => void;
@@ -8,7 +8,13 @@ type BottomButtonProps = {
 
 const BottomButton = ({ handleClick, disabled, label }: BottomButtonProps) => {
   return (
-    <IonButton className="bottom-50" expand="full" id="open-toast" onClick={handleClick} disabled={disabled}>
+    <IonButton
+      className="bottom-50"
+      expand="full"
+      id="open-toast"
+      onClick={handleClick}
+      disabled={disabled}
+    >
       {label}
     </IonButton>
   );

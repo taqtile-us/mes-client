@@ -1,6 +1,7 @@
-import { IonIcon, IonItem, IonLabel } from "@ionic/react";
-import { ReactNode } from "react";
-import styles from "./menuListButton.module.scss";
+import { IonIcon, IonItem, IonLabel } from '@ionic/react';
+import { ReactNode } from 'react';
+
+import styles from './menuListButton.module.scss';
 
 type MenuListButtonProps = {
   title: ReactNode;
@@ -10,12 +11,12 @@ type MenuListButtonProps = {
   icon?: string;
   height?: string;
   handleItemClick?: () => void;
-  state?: "neutral" | "error";
+  state?: 'neutral' | 'error';
   errorMessage?: string;
-  disabled?: boolean; 
-  children?: ReactNode
-  lines?: "none" | "full" | "inset"
-  detailIcon?: string
+  disabled?: boolean;
+  children?: ReactNode;
+  lines?: 'none' | 'full' | 'inset';
+  detailIcon?: string;
 };
 
 const MenuListButton = ({
@@ -26,21 +27,21 @@ const MenuListButton = ({
   height,
   button = true,
   handleItemClick,
-  state = "neutral",
+  state = 'neutral',
   errorMessage,
   disabled = false,
-  children, 
+  children,
   lines,
-  detailIcon
+  detailIcon,
 }: MenuListButtonProps) => {
   const itemContent = (
     <IonItem
       lines={lines}
-      button={button && !disabled} 
-      onClick={!disabled ? handleItemClick : undefined} 
-      style={{ "--min-height": height }}
-      className={`${state === "error" ? styles.error : ''} ${disabled ? styles.disabled : ''}`} 
-      {...(detailIcon ? {detailIcon} : {})}
+      button={button && !disabled}
+      onClick={!disabled ? handleItemClick : undefined}
+      style={{ '--min-height': height }}
+      className={`${state === 'error' ? styles.error : ''} ${disabled ? styles.disabled : ''}`}
+      {...(detailIcon ? { detailIcon } : {})}
     >
       {icon && <IonIcon icon={icon} />}
       {account ? (
@@ -49,7 +50,7 @@ const MenuListButton = ({
           {note && <p>{note}</p>}
         </IonLabel>
       ) : (
-        <IonLabel style={{padding: "0.5rem 0"}}>
+        <IonLabel style={{ padding: '0.5rem 0' }}>
           {title}
           {children}
         </IonLabel>
@@ -59,14 +60,14 @@ const MenuListButton = ({
 
   return (
     <>
-      {state === "error" ? (
+      {state === 'error' ? (
         <div>
           {itemContent}
-          {errorMessage && 
-          <div className={styles.footer}>
-            <p className={styles.errorMessage}>{errorMessage}</p>
-          </div>
-          }
+          {errorMessage && (
+            <div className={styles.footer}>
+              <p className={styles.errorMessage}>{errorMessage}</p>
+            </div>
+          )}
         </div>
       ) : (
         itemContent

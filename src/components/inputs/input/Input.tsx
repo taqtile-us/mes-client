@@ -1,7 +1,9 @@
-import { IonItem, IonLabel, IonInput, IonInputPasswordToggle } from "@ionic/react";
-import React, { useState } from "react";
-import styles from "./input.module.scss";
-import { TooltipCustom } from "../../tooltip/tooltip";
+import { IonItem, IonLabel, IonInput, IonInputPasswordToggle } from '@ionic/react';
+import React, { useState } from 'react';
+
+import { TooltipCustom } from '../../tooltip/tooltip';
+
+import styles from './input.module.scss';
 
 type InputProps = {
   label: string;
@@ -10,9 +12,9 @@ type InputProps = {
   handleChange: (e: any) => void;
   placeholder?: string;
   bold?: boolean;
-  type?: "text" | "password" | "email" | "number" | "search" | "tel" | "url" | "time";
+  type?: 'text' | 'password' | 'email' | 'number' | 'search' | 'tel' | 'url' | 'time';
   onKeyDown?: (e: any) => void;
-  state?: "error" | "neutral";
+  state?: 'error' | 'neutral';
   errorMessage?: string;
   description?: string;
   hint?: string;
@@ -21,7 +23,7 @@ type InputProps = {
   hidePassword?: boolean;
   tooltip?: string;
   zIndex?: number;
-  autocomplete?: "new-password" | "on" | "off" | undefined
+  autocomplete?: 'new-password' | 'on' | 'off' | undefined;
 };
 
 export const Input: React.FC<InputProps> = ({
@@ -32,8 +34,8 @@ export const Input: React.FC<InputProps> = ({
   onKeyDown,
   handleChange,
   bold = true,
-  type = "text",
-  state = "neutral",
+  type = 'text',
+  state = 'neutral',
   hidePassword = false,
   errorMessage,
   description,
@@ -42,7 +44,7 @@ export const Input: React.FC<InputProps> = ({
   tooltip,
   hint,
   zIndex,
-  autocomplete
+  autocomplete,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -50,7 +52,10 @@ export const Input: React.FC<InputProps> = ({
   const handleBlur = () => setIsFocused(false);
 
   return (
-    <IonItem className={`input__field ${tooltip ? styles.overflow : ""}`} style={{zIndex: zIndex}}>
+    <IonItem
+      className={`input__field ${tooltip ? styles.overflow : ''}`}
+      style={{ zIndex: zIndex }}
+    >
       <IonLabel className={bold ? styles.label__bold : styles.label}>
         {label}
         {tooltip && <TooltipCustom title={label} text={tooltip} />}
@@ -71,14 +76,16 @@ export const Input: React.FC<InputProps> = ({
         onFocus={handleFocus}
         onBlur={handleBlur}
         maxlength={maxLength}
-        className={`${styles.input} ${styles[state]} ${isFocused ? styles.focus : ""}`}
-        autocomplete={autocomplete || "off"}
-        {...(type == "number" ? {inputmode: "numeric"} : {})}
+        className={`${styles.input} ${styles[state]} ${isFocused ? styles.focus : ''}`}
+        autocomplete={autocomplete || 'off'}
+        {...(type == 'number' ? { inputmode: 'numeric' } : {})}
       >
-        {type === "password" && !hidePassword && <IonInputPasswordToggle slot="end" color="medium" />}
+        {type === 'password' && !hidePassword && (
+          <IonInputPasswordToggle slot="end" color="medium" />
+        )}
       </IonInput>
       <div className={styles.footer}>
-        {errorMessage && state === "error" && <p className={styles.errorMessage}>{errorMessage}</p>}
+        {errorMessage && state === 'error' && <p className={styles.errorMessage}>{errorMessage}</p>}
         {hint && <p className={styles.hint}>{hint}</p>}
       </div>
     </IonItem>

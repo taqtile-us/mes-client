@@ -1,10 +1,10 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { API_BASE_URL } from "../../config";
-import { getAxiosConfig } from "../../utils/getAxiosConfig";
+import { API_BASE_URL } from '../../config';
+import { getAxiosConfig } from '../../utils/getAxiosConfig';
 
-const API_DIRECTORY = "references/";
-const API_STATIC_DIRECTORY = "references/static/";
+const API_DIRECTORY = 'references/';
+const API_STATIC_DIRECTORY = 'references/static/';
 
 const constructUrl = (endpoint: string) => `${API_BASE_URL}${endpoint}`;
 
@@ -28,7 +28,7 @@ export const updateDirectory = (directoryId: number, name: string, cookies: stri
   return axios.patch(
     constructUrl(`${API_DIRECTORY}${directoryId}/`),
     { name },
-    getAxiosConfig(cookies)
+    getAxiosConfig(cookies),
   );
 };
 

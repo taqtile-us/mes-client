@@ -1,15 +1,16 @@
-import { IonContent, IonList, IonPage, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../components/header/Header";
-import { useTranslation } from "react-i18next";
-import { ROUTES } from "../../shared/constants/routes";
-import MenuListButton from "../../components/menuListButton/MenuListButton";
-import { useHistory, useParams } from "react-router";
-import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setEndReportDate, setReportDate, setStartReportDate } from "../../store/reportDateSlice";
-import { formatDateYMD, getCurrentDateTimeISO } from "../../utils/parseInputDate";
-import DateSelector from "../../components/dateSelector/DateSelector";
-import { Preloader } from "../../components/preloader/preloader";
+import { IonContent, IonList, IonPage, useIonViewWillEnter } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+import { useHistory, useParams } from 'react-router';
+import { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import MenuListButton from '../../components/menuListButton/MenuListButton';
+import { ROUTES } from '../../shared/constants/routes';
+import { Header } from '../../components/header/Header';
+import { setEndReportDate, setReportDate, setStartReportDate } from '../../store/reportDateSlice';
+import { formatDateYMD, getCurrentDateTimeISO } from '../../utils/parseInputDate';
+import DateSelector from '../../components/dateSelector/DateSelector';
+import { Preloader } from '../../components/preloader/preloader';
 
 const Reports = () => {
   const dispatch = useDispatch();
@@ -28,17 +29,17 @@ const Reports = () => {
 
   const handleSaveStartDate = (date: string) => {
     setStartDate(date);
-    const currentDate = JSON.parse(localStorage.getItem("reportDate")!);
+    const currentDate = JSON.parse(localStorage.getItem('reportDate')!);
     currentDate.startDate = date;
-    localStorage.setItem("reportDate", JSON.stringify(currentDate));
+    localStorage.setItem('reportDate', JSON.stringify(currentDate));
     dispatch(setStartReportDate(formatDateYMD(date)));
   };
 
   const handleSaveEndDate = (date: string) => {
     setEndDate(date);
-    const currentDate = JSON.parse(localStorage.getItem("reportDate")!);
+    const currentDate = JSON.parse(localStorage.getItem('reportDate')!);
     currentDate.endDate = date;
-    localStorage.setItem("reportDate", JSON.stringify(currentDate));
+    localStorage.setItem('reportDate', JSON.stringify(currentDate));
     dispatch(setEndReportDate(formatDateYMD(date)));
   };
 
@@ -50,19 +51,21 @@ const Reports = () => {
     setStartDate(getCurrentDateTimeISO());
     setEndDate(getCurrentDateTimeISO());
     dispatch(setReportDate(date));
-    localStorage.setItem("reportDate", JSON.stringify(date));
+    localStorage.setItem('reportDate', JSON.stringify(date));
     setLoading(false);
   });
 
   const routes = {
     backRoute: orderId ? ROUTES.REPORT_ORDERS : ROUTES.MENU,
     reportFullRoute: orderId ? ROUTES.REPORT_ORDER_FULL(orderId) : ROUTES.REPORT_FULL,
-    reportIndividualRoute: orderId ? ROUTES.REPORT_ORDER_INDIVIDUAL(orderId) : ROUTES.REPORT_INDIVIDUAL,
+    reportIndividualRoute: orderId
+      ? ROUTES.REPORT_ORDER_INDIVIDUAL(orderId)
+      : ROUTES.REPORT_INDIVIDUAL,
   };
 
   return (
     <IonPage>
-      <Header title={t("menu.reports")} backButtonHref={routes.backRoute} />
+      <Header title={t('menu.reports')} backButtonHref={routes.backRoute} />
       <IonContent>
         {loading ? (
           <div className="preloader">
@@ -73,7 +76,7 @@ const Reports = () => {
             {!orderId && (
               <>
                 <DateSelector
-                  label={t("reports.startDate")}
+                  label={t('reports.startDate')}
                   setDate={handleSaveStartDate}
                   date={startDate}
                   modalRef={startDateModalRef}
@@ -81,7 +84,7 @@ const Reports = () => {
                 />
 
                 <DateSelector
-                  label={t("reports.endDate")}
+                  label={t('reports.endDate')}
                   setDate={handleSaveEndDate}
                   date={endDate}
                   modalRef={endDateModalRef}
@@ -92,16 +95,16 @@ const Reports = () => {
             )}
             <IonList inset={true}>
               <MenuListButton
-                title={t("reports.fullReport")}
+                title={t('reports.fullReport')}
                 handleItemClick={() => handleItemClick(routes.reportFullRoute)}
               />
               <MenuListButton
-                title={t("reports.individualReports")}
+                title={t('reports.individualReports')}
                 handleItemClick={() => handleItemClick(routes.reportIndividualRoute)}
               />
               {!orderId && (
                 <MenuListButton
-                  title={t("reports.orderDetails")}
+                  title={t('reports.orderDetails')}
                   handleItemClick={() => handleItemClick(ROUTES.REPORT_ORDERS)}
                 />
               )}

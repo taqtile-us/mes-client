@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { API_BASE_URL } from "../config";
-import { getAxiosConfig } from "../utils/getAxiosConfig";
+import { API_BASE_URL } from '../config';
+import { getAxiosConfig } from '../utils/getAxiosConfig';
 
-const API_STATUS_DATA = "auth/odoo/django/api/connector/status/";
-const API_CONNECTIONS = "auth/odoo/django/api/connector/connections/";
-const API_GET_CONNECTIONS = "auth/odoo/django/api/order/get-connections/";
+const API_STATUS_DATA = 'auth/odoo/django/api/connector/status/';
+const API_CONNECTIONS = 'auth/odoo/django/api/connector/connections/';
+const API_GET_CONNECTIONS = 'auth/odoo/django/api/order/get-connections/';
 
 const constructUrl = (endpoint: string) => `${API_BASE_URL}${endpoint}`;
 

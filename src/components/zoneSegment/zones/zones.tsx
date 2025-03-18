@@ -1,21 +1,28 @@
-import { useEffect, useState } from "react";
-import styles from "./zones.module.scss";
-import { ZonesCoordinates } from "./coordinates/zonesCoordinates";
-import { ZoneList } from "./zoneList/zoneList";
-import { getCameraZones, patchCameraZones, postCameraZones, deleteCameraZones } from "../../../api/cameraRequest";
-import { useCookies } from "react-cookie";
-import { NoVideoBig } from "../../../assets/svg/SVGcomponent";
-import { getWorkplaceList } from "../../../api/ordersView";
-import { Preloader } from "../../preloader/preloader";
-import { Notification } from "../../notification/notification";
-import { IonToggle } from "@ionic/react";
-import { useTranslation } from "react-i18next";
+import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { IonToggle } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+
+import {
+  getCameraZones,
+  patchCameraZones,
+  postCameraZones,
+  deleteCameraZones,
+} from '../../../api/cameraRequest';
+import { NoVideoBig } from '../../../assets/svg/SVGcomponent';
+import { getWorkplaceList } from '../../../api/ordersView';
+import { Preloader } from '../../preloader/preloader';
+import { Notification } from '../../notification/notification';
+
+import { ZoneList } from './zoneList/zoneList';
+import { ZonesCoordinates } from './coordinates/zonesCoordinates';
+import styles from './zones.module.scss';
 
 const Zones = ({ cameraSelect, isCreateCamera }) => {
   const [coords, setCoords] = useState<any>([]);
-  const [itemName, setItemName] = useState("");
+  const [itemName, setItemName] = useState('');
   const [isScale, setIsScale] = useState(false);
-  const [cookie] = useCookies(["token"]);
+  const [cookie] = useCookies(['token']);
   const [cameraZones, setCameraZones] = useState([]);
   const [currentZoneId, setCurrentZoneId] = useState<number>();
   const [workplaceList, setWorkplaceList] = useState([]);
@@ -29,7 +36,7 @@ const Zones = ({ cameraSelect, isCreateCamera }) => {
   const [zoneType, setZoneType] = useState(2);
   const { t } = useTranslation();
 
-  const getRectanglePoints = coords => {
+  const getRectanglePoints = (coords) => {
     if (Object.keys(coords).length < 8) {
       const { x1, y1, x2, y2 } = coords;
 
@@ -94,7 +101,7 @@ const Zones = ({ cameraSelect, isCreateCamera }) => {
     return inside;
   };
 
-  const pointsToArray = coords => {
+  const pointsToArray = (coords) => {
     const newCoords = getRectanglePoints(coords);
     return [
       { x: newCoords.x1, y: newCoords.y1 },
@@ -133,89 +140,89 @@ const Zones = ({ cameraSelect, isCreateCamera }) => {
   const getZone = () => {
     setPreloader(true);
     getCameraZones(window.location.hostname, cookie.token, cameraSelect.id)
-      .then(res => {
+      .then((res) => {
         setCameraZones(res.data);
         setCurrentZoneId(-2);
         setCoords([]);
         setPreloader(false);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         setPreloader(false);
       });
   };
 
-  const deleteZone = id => {
+  const deleteZone = (id) => {
     setPreloader(true);
     deleteCameraZones(window.location.hostname, cookie.token, id)
       .then(() => {
-        setMessage({ status: true, message: t("camera.zoneSegment.messages.deleted") });
+        setMessage({ status: true, message: t('camera.zoneSegment.messages.deleted') });
         getZone();
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
-        setMessage({ status: false, message: t("camera.zoneSegment.messages.notDeleted") });
+        setMessage({ status: false, message: t('camera.zoneSegment.messages.notDeleted') });
         setPreloader(false);
       });
   };
 
   const saveZone = () => {
     const otherZones: any = cameraZones.filter((box: any) => box.id !== currentZoneId);
-    console.log("other Zones", otherZones);
-    console.log("save coords", coords);
+    console.log('other Zones', otherZones);
+    console.log('save coords', coords);
 
     if (coords.length === 0) {
-      setMessage({ status: false, message: t("camera.zoneSegment.messages.select") });
+      setMessage({ status: false, message: t('camera.zoneSegment.messages.select') });
       return;
     }
 
     if (!validZone) {
-      setMessage({ status: false, message: t("camera.zoneSegment.messages.notSaved") });
-      setHandleSaveError(prev => !prev);
+      setMessage({ status: false, message: t('camera.zoneSegment.messages.notSaved') });
+      setHandleSaveError((prev) => !prev);
       return;
     }
 
     const overlap = coords.some((figure, index) =>
-      coords.slice(index + 1).some(otherFigure => isOverlapping(figure, otherFigure))
+      coords.slice(index + 1).some((otherFigure) => isOverlapping(figure, otherFigure)),
     );
 
     if (overlap) {
-      setMessage({ status: false, message: t("camera.zoneSegment.messages.overlap") });
+      setMessage({ status: false, message: t('camera.zoneSegment.messages.overlap') });
       return;
     }
 
     for (const otherZone of otherZones) {
       for (const otherCoords of otherZone.coords) {
-        const overlap = coords.some(coord => isOverlapping(coord, otherCoords));
+        const overlap = coords.some((coord) => isOverlapping(coord, otherCoords));
 
         if (overlap) {
-          setMessage({ status: false, message: t("camera.zoneSegment.messages.overlap") });
+          setMessage({ status: false, message: t('camera.zoneSegment.messages.overlap') });
           return;
         }
       }
     }
 
     const body: any = {
-      coords: coords.map(coord => ({
+      coords: coords.map((coord) => ({
         ...coord,
         zoneType: zoneType,
       })),
       camera: cameraSelect.id,
       name: itemName,
     };
-    if (otherZones.map(zone => zone.name).includes(itemName)) {
-      setMessage({ status: false, message: t("camera.zoneSegment.messages.duplicateName") });
+    if (otherZones.map((zone) => zone.name).includes(itemName)) {
+      setMessage({ status: false, message: t('camera.zoneSegment.messages.duplicateName') });
       return;
     }
     if (!itemName.length) {
-      setMessage({ status: false, message: t("camera.zoneSegment.namePlaceholder") });
+      setMessage({ status: false, message: t('camera.zoneSegment.namePlaceholder') });
       return;
     }
     if (workplaceToSend) {
       body.index_workplace = workplaceToSend.id;
       body.workplace = workplaceToSend.operationName;
     } else {
-      setMessage({ status: false, message: t("camera.zoneSegment.messages.selectWorkplace") });
+      setMessage({ status: false, message: t('camera.zoneSegment.messages.selectWorkplace') });
       return;
     }
     if (currentZoneId === -1) {
@@ -223,24 +230,24 @@ const Zones = ({ cameraSelect, isCreateCamera }) => {
       postCameraZones(window.location.hostname, cookie.token, body)
         .then(() => {
           getZone();
-          setMessage({ status: true, message: t("camera.zoneSegment.messages.saved") });
+          setMessage({ status: true, message: t('camera.zoneSegment.messages.saved') });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           setPreloader(false);
-          setMessage({ status: false, message: t("camera.zoneSegment.messages.notSaved") });
+          setMessage({ status: false, message: t('camera.zoneSegment.messages.notSaved') });
         });
     } else {
       setPreloader(true);
       patchCameraZones(window.location.hostname, cookie.token, body, currentZoneId)
         .then(() => {
           getZone();
-          setMessage({ status: true, message: t("camera.zoneSegment.messages.saved") });
+          setMessage({ status: true, message: t('camera.zoneSegment.messages.saved') });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           setPreloader(false);
-          setMessage({ status: false, message: t("camera.zoneSegment.messages.notSaved") });
+          setMessage({ status: false, message: t('camera.zoneSegment.messages.notSaved') });
         });
     }
     setCurrentZoneId(-2);
@@ -249,18 +256,18 @@ const Zones = ({ cameraSelect, isCreateCamera }) => {
   useEffect(() => {
     getZone();
     getWorkplaceList(cookie.token)
-      .then(res => {
+      .then((res) => {
         setWorkplaceList(
-          res.data.map(place => {
+          res.data.map((place) => {
             return {
               ...place,
               value: place.operationName,
               label: place.operationName,
             };
-          })
+          }),
         );
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }, []);
@@ -289,15 +296,15 @@ const Zones = ({ cameraSelect, isCreateCamera }) => {
         {isCreateCamera ? (
           <section className={styles.creating}>
             <img src={NoVideoBig} />
-            <p>{t("camera.zoneSegment.notConnected")}</p>
+            <p>{t('camera.zoneSegment.notConnected')}</p>
           </section>
         ) : (
           <ZonesCoordinates
             currentSelect={cameraSelect.id}
-            setCoords={coords => setCoords(coords)}
+            setCoords={(coords) => setCoords(coords)}
             itemName={itemName}
             isScale={isScale}
-            setIsScale={e => setIsScale(e)}
+            setIsScale={(e) => setIsScale(e)}
             cameraBox={cameraZones.filter((box: any) => box.id !== currentZoneId)}
             oldBox={cameraZones.filter((box: any) => box.id === currentZoneId)}
             currentZoneId={currentZoneId}
@@ -312,18 +319,20 @@ const Zones = ({ cameraSelect, isCreateCamera }) => {
             saveZone={saveZone}
             deleteZone={deleteZone}
             cameraZones={cameraZones}
-            setItemName={name => setItemName(name)}
+            setItemName={(name) => setItemName(name)}
             itemName={itemName}
-            setCurrentZoneId={id => setCurrentZoneId(id)}
+            setCurrentZoneId={(id) => setCurrentZoneId(id)}
             currentZoneId={isCreateCamera ? -3 : currentZoneId}
-            setWorkplaceToSend={e => setWorkplaceToSend(e)}
+            setWorkplaceToSend={(e) => setWorkplaceToSend(e)}
             workplaceList={workplaceList}
-            workplace={workplaceToSend ? workplaceToSend.comboBoxName : ""}
+            workplace={workplaceToSend ? workplaceToSend.comboBoxName : ''}
             isNewZone={createZoneMode}
             setIsNewZone={setCreateZoneMode}
           />
           <div className={styles.zonesSwitcher}>
-            <IonToggle onIonChange={e => setZoneType(e.detail.checked ? 4 : 2)}>4 points zone mode</IonToggle>
+            <IonToggle onIonChange={(e) => setZoneType(e.detail.checked ? 4 : 2)}>
+              4 points zone mode
+            </IonToggle>
           </div>
         </div>
       </div>

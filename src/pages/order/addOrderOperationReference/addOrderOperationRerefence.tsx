@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   IonButton,
   IonCheckbox,
@@ -13,26 +13,31 @@ import {
   IonToast,
   useIonViewDidEnter,
   useIonViewWillEnter,
-} from "@ionic/react";
-import { Header } from "../../../components/header/Header";
-import { useHistory, useLocation, useParams } from "react-router-dom";
-import ModalSave from "../../../components/modalSave/modalSave";
-import { useTranslation } from "react-i18next";
-import { ROUTES } from "../../../shared/constants/routes";
-import { IReference } from "../../../models/interfaces/orders.interface";
-import { OPERATION_REQUEST, ORDER_REQUEST } from "../../../dispatcher";
-import { TOAST_DELAY } from "../../../constants/toastDelay";
-import "./addOrderOperationReference.scss";
-import BottomButton from "../../../components/bottomButton/BottomButton";
-import { IOrderOperation } from "../../../models/interfaces/operationItem.interface";
-import { Preloader } from "../../../components/preloader/preloader";
+} from '@ionic/react';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
+import { Header } from '../../../components/header/Header';
+import ModalSave from '../../../components/modalSave/modalSave';
+import { ROUTES } from '../../../shared/constants/routes';
+import { IReference } from '../../../models/interfaces/orders.interface';
+import { OPERATION_REQUEST, ORDER_REQUEST } from '../../../dispatcher';
+import { TOAST_DELAY } from '../../../constants/toastDelay';
+import './addOrderOperationReference.scss';
+import BottomButton from '../../../components/bottomButton/BottomButton';
+import { IOrderOperation } from '../../../models/interfaces/operationItem.interface';
+import { Preloader } from '../../../components/preloader/preloader';
 
 const AddOrderOperationReference: React.FC = () => {
   const history = useHistory();
   const { t } = useTranslation();
-  const { id, operationId, refId } = useParams<{ id: string; operationId: string; refId: string }>();
+  const { id, operationId, refId } = useParams<{
+    id: string;
+    operationId: string;
+    refId: string;
+  }>();
   const location = useLocation();
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>('');
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -42,7 +47,9 @@ const AddOrderOperationReference: React.FC = () => {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   useEffect(() => {
-    const filtered = references.filter(item => item.name.toLowerCase().includes(searchText.toLowerCase()));
+    const filtered = references.filter((item) =>
+      item.name.toLowerCase().includes(searchText.toLowerCase()),
+    );
     setFilteredItems(filtered);
   }, [searchText]);
 
@@ -72,16 +79,16 @@ const AddOrderOperationReference: React.FC = () => {
 
   const handleCheckboxChange = (id: number, checked: boolean) => {
     if (checked) {
-      setSelectedIds(prev => [...prev, id]);
+      setSelectedIds((prev) => [...prev, id]);
     } else {
-      setSelectedIds(prev => prev.filter(item => item !== id));
+      setSelectedIds((prev) => prev.filter((item) => item !== id));
     }
   };
 
   return (
     <IonPage color="light">
       <Header
-        title={t("operations.add")}
+        title={t('operations.add')}
         // backButtonHref={ROUTES.ORDER_OPERATION(id, operationId)}
         searchBar={true}
         searchText={searchText}
@@ -95,15 +102,16 @@ const AddOrderOperationReference: React.FC = () => {
         ) : (
           <>
             <IonList className="ion-padding scrollable">
-              {filteredItems.map(item => (
+              {filteredItems.map((item) => (
                 <IonItem key={item.id}>
                   <IonCheckbox
                     className="reference-item"
                     justify="space-between"
-                    onIonChange={e => handleCheckboxChange(item.id, e.detail.checked)}
+                    onIonChange={(e) => handleCheckboxChange(item.id, e.detail.checked)}
                     checked={
-                      (operation.extensions?.find(ref => ref.name === item.name) === undefined ? false : true) ||
-                      selectedIds.includes(item.id)
+                      (operation.extensions?.find((ref) => ref.name === item.name) === undefined
+                        ? false
+                        : true) || selectedIds.includes(item.id)
                     }
                   >
                     {item.name}
@@ -111,7 +119,11 @@ const AddOrderOperationReference: React.FC = () => {
                 </IonItem>
               ))}
             </IonList>
-            <BottomButton handleClick={openModal} disabled={selectedIds.length === 0} label={t("operations.save")} />
+            <BottomButton
+              handleClick={openModal}
+              disabled={selectedIds.length === 0}
+              label={t('operations.save')}
+            />
             <IonToast
               isOpen={!!toastMessage}
               message={toastMessage || undefined}

@@ -1,22 +1,12 @@
 export const parseInputDate = (
   startDateString: string,
   intervalMilliseconds: number,
-  language: string
+  language: string,
 ): string => {
-
   const translateMonths = {
-    en: [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    ],
-    ru: [
-      "Янв", "Фев", "Мар", "Апр", "Май", "Июн",
-      "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"
-    ],
-    pl: [
-      "Sty", "Lut", "Mar", "Kwi", "Maj", "Cze",
-      "Lip", "Sie", "Wrze", "Paź", "Lis", "Gru"
-    ]
+    en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    ru: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+    pl: ['Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrze', 'Paź', 'Lis', 'Gru'],
   };
 
   const months = translateMonths[language];
@@ -24,19 +14,18 @@ export const parseInputDate = (
 
   const startMonth: string = months[startDate.getMonth()];
   const startDay: number = startDate.getDate();
-  const startHours: string = startDate.getHours().toString().padStart(2, "0");
-  const startMinutes: string = startDate.getMinutes().toString().padStart(2, "0");
+  const startHours: string = startDate.getHours().toString().padStart(2, '0');
+  const startMinutes: string = startDate.getMinutes().toString().padStart(2, '0');
 
   const endMilliseconds = startDate.getTime() + intervalMilliseconds;
   const endDate = new Date(endMilliseconds);
   const endMonth: string = months[endDate.getMonth()];
   const endDay: number = endDate.getDate();
-  const endHours: string = endDate.getHours().toString().padStart(2, "0");
-  const endMinutes: string = endDate.getMinutes().toString().padStart(2, "0");
-
+  const endHours: string = endDate.getHours().toString().padStart(2, '0');
+  const endMinutes: string = endDate.getMinutes().toString().padStart(2, '0');
 
   if (endDate.getDate() !== startDate.getDate()) {
-    return `${startMonth} ${startDay} - ${endMonth} ${endDay}`
+    return `${startMonth} ${startDay} - ${endMonth} ${endDay}`;
   }
 
   return `${startMonth} ${startDay} | ${startHours}:${startMinutes} - ${endHours}:${endMinutes}`;
@@ -49,7 +38,7 @@ export const formatDate = (dateString: string): string => {
   const year = String(date.getFullYear());
 
   return `${day}.${month}.${year}`;
-}
+};
 
 export const formatDateYMD = (dateString: string): string => {
   const date = new Date(dateString);
@@ -58,7 +47,7 @@ export const formatDateYMD = (dateString: string): string => {
   const year = String(date.getFullYear());
 
   return `${year}-${month}-${day}`;
-}
+};
 
 export const formatDateUTC = (dateString: string): string => {
   const date = new Date(dateString);
@@ -67,7 +56,7 @@ export const formatDateUTC = (dateString: string): string => {
   const year = String(date.getUTCFullYear());
 
   return `${day}.${month}.${year}`;
-}
+};
 
 export const localDateString = (now: Date) => {
   const year = now.getFullYear();
@@ -77,18 +66,16 @@ export const localDateString = (now: Date) => {
   const minutes = String(now.getMinutes()).padStart(2, '0');
   const seconds = String(now.getSeconds()).padStart(2, '0');
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-}
+};
 export const getLocalDateString = () => {
   const now = new Date();
-  return localDateString(now)
-}
+  return localDateString(now);
+};
 export const localeFronString = (time: string) => {
   const date = new Date(time);
-  return localDateString(date)
-
-}
+  return localDateString(date);
+};
 export const updateDateTime = (originalDateTime: string, newDate: string) => {
-
   const originalDateObj = new Date(originalDateTime);
   const newDateObj = new Date(newDate);
   const hours = originalDateObj.getHours();
@@ -99,24 +86,54 @@ export const updateDateTime = (originalDateTime: string, newDate: string) => {
   newDateObj.setSeconds(seconds);
 
   return localDateString(newDateObj);
-}
+};
 
 export const formatDateWithFullMonthName = (dateString: string, language: string): string => {
   const translateFullMonths = {
     en: [
-      "January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ],
     ru: [
-      "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
-      "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"
+      'Января',
+      'Февраля',
+      'Марта',
+      'Апреля',
+      'Мая',
+      'Июня',
+      'Июля',
+      'Августа',
+      'Сентября',
+      'Октября',
+      'Ноября',
+      'Декабря',
     ],
     pl: [
-      "Stycznia", "Lutego", "Marca", "Kwietnia", "Maja", "Сzerwca",
-      "Lipca", "Sierpnia", "Września", "Października", "Listopada", "Grudnia"
-    ]
+      'Stycznia',
+      'Lutego',
+      'Marca',
+      'Kwietnia',
+      'Maja',
+      'Сzerwca',
+      'Lipca',
+      'Sierpnia',
+      'Września',
+      'Października',
+      'Listopada',
+      'Grudnia',
+    ],
   };
-  
+
   const months = translateFullMonths[language];
   const date = new Date(dateString);
 
@@ -124,10 +141,9 @@ export const formatDateWithFullMonthName = (dateString: string, language: string
   const month: string = months[date.getMonth()];
 
   return `${day} ${month}`;
-}
+};
 
 export const updateTime = (originalDateTime: string, newTime: string) => {
-
   const originalDateObj = new Date(originalDateTime);
   const newTimeObj = new Date(newTime);
   const year = originalDateObj.getFullYear();
@@ -138,25 +154,23 @@ export const updateTime = (originalDateTime: string, newTime: string) => {
   originalDateObj.setMinutes(newTimeObj.getMinutes());
   originalDateObj.setSeconds(newTimeObj.getSeconds());
 
-
   return localDateString(originalDateObj);
-}
+};
 
 export const getTimeDifference = (date1: string, date2: string) => {
   const dateObj1 = new Date(date1);
   const dateObj2 = new Date(date2);
 
   if (!isNaN(dateObj1.getTime()) && !isNaN(dateObj2.getTime())) {
-
     dateObj1.setSeconds(dateObj1.getSeconds(), dateObj1.getMilliseconds());
     dateObj2.setSeconds(dateObj2.getSeconds(), dateObj2.getMilliseconds());
 
     const differenceInMs = Math.abs(dateObj2.getTime() - dateObj1.getTime());
-    return differenceInMs/1000;
+    return differenceInMs / 1000;
   }
 
   return 0;
-}
+};
 
 // export const mergeDateAndTime = (dateStr1: string, dateStr2: string) => {
 
@@ -167,49 +181,41 @@ export const getTimeDifference = (date1: string, date2: string) => {
 // }
 
 export const mergeDateAndTime = (dateStr1: string, dateStr2: string) => {
+  const datePart = dateStr1.includes('T') ? dateStr1.split('T')[0] : dateStr1.split(' ')[0];
 
-  const datePart = dateStr1.includes('T')
-    ? dateStr1.split('T')[0]
-    : dateStr1.split(' ')[0];
-
-  let timePart = "";
+  let timePart = '';
   if (dateStr2.includes('T')) {
     const parts = dateStr2.split('T');
-    timePart = parts[1] || "";
+    timePart = parts[1] || '';
   } else if (dateStr2.includes(' ')) {
     const parts = dateStr2.split(' ');
-    timePart = parts[1] || "";
+    timePart = parts[1] || '';
   } else {
     timePart = dateStr2;
   }
 
   console.log(dateStr1, dateStr2, 777);
   return `${datePart}T${timePart}`;
-}
-
-
+};
 
 export const formatTime = (seconds: number, live = false) => {
   let hours = Math.floor(seconds / 3600);
-  let minutes = live
-    ? Math.floor((seconds % 3600) / 60)
-    : Math.round((seconds % 3600) / 60);
-  if(minutes >= 60){
-    hours +=1;
-    minutes = 0; 
+  let minutes = live ? Math.floor((seconds % 3600) / 60) : Math.round((seconds % 3600) / 60);
+  if (minutes >= 60) {
+    hours += 1;
+    minutes = 0;
   }
   return { hours, minutes };
-}
+};
 
 export const updateTimeInDate = (dateString: string): string => {
-
   const [datePart] = dateString.split('T');
   const now = new Date();
   const hours = String(now.getHours()).padStart(2, '0');
   const minutes = String(now.getMinutes()).padStart(2, '0');
 
   return `${datePart}T${hours}:${minutes}`;
-}
+};
 
 export const getDateTimeISO = (date: Date): string => {
   const year = date.getFullYear();
@@ -220,11 +226,11 @@ export const getDateTimeISO = (date: Date): string => {
   const seconds = String(date.getSeconds()).padStart(2, '0');
 
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-}
+};
 
 export const getCurrentDateTimeISO = (): string => {
   return getDateTimeISO(new Date());
-}
+};
 
 export const getDateWeekAgoISO = (): string => {
   const now = new Date();
@@ -239,14 +245,14 @@ export const getDateWeekAgoISO = (): string => {
   const seconds = String(weekAgo.getSeconds()).padStart(2, '0');
 
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-}
+};
 
 export const extractTime = (dateString: string): string => {
   const date = new Date(dateString);
   const hours = date.getHours().toString().padStart(2, '0');
   const minutes = date.getMinutes().toString().padStart(2, '0');
   return `${hours}:${minutes}`;
-}
+};
 
 // export const extractTime = (dateString: string): string => {
 //   const date = new Date(dateString);
@@ -259,10 +265,10 @@ export const extractTime = (dateString: string): string => {
 // };
 
 export const formatISOBeforeSend = (dateString: string): string => {
-  console.log(dateString,6666);
-  
-  return (new Date(dateString)).toISOString();
-}
+  console.log(dateString, 6666);
+
+  return new Date(dateString).toISOString();
+};
 
 export const formatYMD = (dateString: string): string => {
   const date = new Date(dateString);
@@ -278,7 +284,6 @@ export const formatYMD = (dateString: string): string => {
 };
 
 export const convertToCustomFormat = (dateString: string): string => {
-
   const dateObj = new Date(dateString);
   const year = dateObj.getUTCFullYear();
   const month = String(dateObj.getUTCMonth() + 1).padStart(2, '0');
@@ -286,7 +291,7 @@ export const convertToCustomFormat = (dateString: string): string => {
   const hours = String(dateObj.getUTCHours()).padStart(2, '0');
   const minutes = String(dateObj.getUTCMinutes()).padStart(2, '0');
   return `${year}-${month}-${day}T${hours}:${minutes}:00`;
-}
+};
 
 export const truncateDate = (dateString: string): string => {
   return dateString.split('.')[0];
@@ -295,32 +300,32 @@ export const truncateDate = (dateString: string): string => {
 export const daysDifference = (date1: string | Date, date2: string | Date): number => {
   const startDate = new Date(date1);
   const endDate = new Date(date2);
-  
+
   startDate.setHours(0, 0, 0, 0);
   endDate.setHours(0, 0, 0, 0);
-  
+
   const timeDifference = endDate.getTime() - startDate.getTime();
-  
+
   const dayDifference = Math.abs(timeDifference / (1000 * 60 * 60 * 24));
-  
+
   return dayDifference;
-}
+};
 
 export function parseToDate(isoString: string): string {
-  if (!isoString) return "";
+  if (!isoString) return '';
   const date = new Date(isoString);
   const year = date.getFullYear();
   // Месяцы в Date начинаются с 0, поэтому прибавляем 1 и дополняем нулём, если нужно
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
 
 export function parseToTime(isoString: string): string {
-  if (!isoString) return "";
+  if (!isoString) return '';
   const date = new Date(isoString);
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
   return `${hours}:${minutes}`;
 }

@@ -1,8 +1,10 @@
-import { IonCol, IonGrid, IonItem, IonLabel, IonList, IonRow } from "@ionic/react";
-import React from "react";
-import ItemList from "../itemList/itemList";
-import { TableCol, TableRow } from "../../models/interfaces/table.interface";
-import styles from "./table.module.css";
+import { IonCol, IonGrid, IonItem, IonLabel, IonList, IonRow } from '@ionic/react';
+import React from 'react';
+
+import ItemList from '../itemList/itemList';
+import { TableCol, TableRow } from '../../models/interfaces/table.interface';
+
+import styles from './table.module.css';
 
 type TableProps = {
   label: string;
@@ -31,7 +33,11 @@ export const Table: React.FC<TableProps> = ({ label, cols, rows }) => {
             <IonGrid>
               <IonRow className={styles.valueRow}>
                 {cols.map((col, index) => (
-                  <IonCol key={`${item.id}${col.label}`} size={col.size.toString()} className={styles.valueCol}>
+                  <IonCol
+                    key={`${item.id}${col.label}`}
+                    size={col.size.toString()}
+                    className={styles.valueCol}
+                  >
                     {item.values[index]}
                   </IonCol>
                 ))}

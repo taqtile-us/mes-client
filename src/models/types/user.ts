@@ -1,10 +1,11 @@
-import { ROLE } from "../enums/roles.enum";
-import { Permission } from "./permission";
+import { ROLE } from '../enums/roles.enum';
+
+import { Permission } from './permission';
 
 export type User = {
-    id: number;
-    username: string;
-    status: ROLE;
-    date_joined: string;
-    permissions?: Permission[];
-}
+  id: number;
+  username: string;
+  status: ROLE;
+  date_joined: string;
+  permissions?: Permission[];
+};

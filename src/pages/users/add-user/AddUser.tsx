@@ -1,51 +1,51 @@
-import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
-import { useState } from "react";
-import { useCookies } from "react-cookie";
-import { IonContent, IonList, IonNote, IonPage, IonToast } from "@ionic/react";
-import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { IonContent, IonList, IonNote, IonPage, IonToast } from '@ionic/react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { ROUTES } from "../../../shared/constants/routes";
-import { Preloader } from "../../../components/preloader/preloader";
-import { Header } from "../../../components/header/Header";
-import { ConfirmationModal } from "../../../components/confirmationModal/confirmationModal";
-import { createUser } from "../../../api/users";
-import { IAddUser } from "../../../models/interfaces/employee.interface";
-import { Input } from "../../../components/inputs/input/Input";
-import MenuListButton from "../../../components/menuListButton/MenuListButton";
-import Select from "../../../components/selects/select/Select";
-import { ROLE } from "../../../models/enums/roles.enum";
-import BottomButton from "../../../components/bottomButton/BottomButton";
-import { TOAST_DELAY } from "../../../constants/toastDelay";
-import { setSelectedWorkplace } from "../../../store/workpaceSlice";
-import "../../../styles/common.scss";
-import { isInvalidText } from "../../../utils/isInvalidText";
-import styles from "../users.module.scss";
-import isValidEmail from "../../../utils/isValidEmail";
-import { RootState } from "../../../store";
+import { ROUTES } from '../../../shared/constants/routes';
+import { Preloader } from '../../../components/preloader/preloader';
+import { Header } from '../../../components/header/Header';
+import { ConfirmationModal } from '../../../components/confirmationModal/confirmationModal';
+import { createUser } from '../../../api/users';
+import { IAddUser } from '../../../models/interfaces/employee.interface';
+import { Input } from '../../../components/inputs/input/Input';
+import MenuListButton from '../../../components/menuListButton/MenuListButton';
+import Select from '../../../components/selects/select/Select';
+import { ROLE } from '../../../models/enums/roles.enum';
+import BottomButton from '../../../components/bottomButton/BottomButton';
+import { TOAST_DELAY } from '../../../constants/toastDelay';
+import { setSelectedWorkplace } from '../../../store/workpaceSlice';
+import '../../../styles/common.scss';
+import { isInvalidText } from '../../../utils/isInvalidText';
+import styles from '../users.module.scss';
+import isValidEmail from '../../../utils/isValidEmail';
+import { RootState } from '../../../store';
 
 const AddUser = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<IAddUser>({
-    username: "",
-    last_name: "",
-    first_name: "",
-    password: "",
-    email: "",
+    username: '',
+    last_name: '',
+    first_name: '',
+    password: '',
+    email: '',
     role: ROLE.WORKER,
   } as IAddUser);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [customRole, setCustomRole] = useState(false);
   const [highlightRequired, setHighlightRequired] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState('');
   const [userExists, setUserExists] = useState(false);
   const roles = Object.values(ROLE)
-    .filter(role => !(getUserRole() === ROLE.ADMIN && role === ROLE.SUPERUSER))
-    .map(role => ({
+    .filter((role) => !(getUserRole() === ROLE.ADMIN && role === ROLE.SUPERUSER))
+    .map((role) => ({
       id: role,
       label: role,
       value: role,
@@ -55,16 +55,16 @@ const AddUser = () => {
   const minPasswordLength = 4;
 
   function getUserRole() {
-    return localStorage.getItem("userRole");
+    return localStorage.getItem('userRole');
   }
 
   const isChanged =
-    ["username", "last_name", "first_name", "password", "email"].some(key => !!user[key]) ||
+    ['username', 'last_name', 'first_name', 'password', 'email'].some((key) => !!user[key]) ||
     selectedWorkplace ||
     user.role != ROLE.WORKER;
 
   const goBack = () => {
-    history.push(ROUTES.USERS, { direction: "back" });
+    history.push(ROUTES.USERS, { direction: 'back' });
     dispatch(setSelectedWorkplace(null));
   };
 
@@ -118,7 +118,7 @@ const AddUser = () => {
           setHighlightRequired(false);
           goBack();
         })
-        .catch(error => {
+        .catch((error) => {
           setUserExists(true);
           setHighlightRequired(true);
           console.error(error);
@@ -150,13 +150,13 @@ const AddUser = () => {
   };
 
   const navigateWorkplaceClick = () => {
-    history.push(ROUTES.USER_WORKPLACES, { direction: "forward" });
+    history.push(ROUTES.USER_WORKPLACES, { direction: 'forward' });
   };
 
   return (
     <IonPage>
       <Header
-        title={t("operations.users.add")}
+        title={t('operations.users.add')}
         onBackClick={onNavigateBack}
         backButtonHref={ROUTES.USERS}
       ></Header>
@@ -168,112 +168,112 @@ const AddUser = () => {
         ) : (
           <>
             <div
-              style={{ height: "calc(100vh - 150px)", overflow: "scroll", paddingBottom: "20px" }}
+              style={{ height: 'calc(100vh - 150px)', overflow: 'scroll', paddingBottom: '20px' }}
             >
               <div className={styles.section}>
                 <IonNote className={`ion-padding ${styles.sectionNote}`}>
-                  {t("users.settings")}
+                  {t('users.settings')}
                 </IonNote>
 
                 <Input
-                  label={t("users.username")}
-                  value={user?.username || ""}
+                  label={t('users.username')}
+                  value={user?.username || ''}
                   required
-                  handleChange={event => setUser({ ...user, username: event.target.value })}
+                  handleChange={(event) => setUser({ ...user, username: event.target.value })}
                   state={
                     highlightRequired &&
                     (!user.username ||
                       isInvalidText(user.username, { numbers: true }) ||
                       userExists)
-                      ? "error"
-                      : "neutral"
+                      ? 'error'
+                      : 'neutral'
                   }
                   errorMessage={
                     isInvalidText(user.username, { numbers: true })
-                      ? t("form.invalidCharacters")
+                      ? t('form.invalidCharacters')
                       : userExists
-                        ? t("messages.employeeExists")
-                        : t("form.required")
+                        ? t('messages.employeeExists')
+                        : t('form.required')
                   }
                   maxLength={30}
                 />
                 <Input
-                  label={t("users.password")}
-                  value={user?.password || ""}
+                  label={t('users.password')}
+                  value={user?.password || ''}
                   type="password"
                   required
-                  handleChange={event => setUser({ ...user, password: event.target.value })}
+                  handleChange={(event) => setUser({ ...user, password: event.target.value })}
                   state={
                     highlightRequired && user.password.length < minPasswordLength
-                      ? "error"
-                      : "neutral"
+                      ? 'error'
+                      : 'neutral'
                   }
-                  errorMessage={t("form.passwordLength")}
+                  errorMessage={t('form.passwordLength')}
                   autocomplete="new-password"
                 />
                 <Input
-                  label={"Email"}
-                  value={user?.email || ""}
+                  label={'Email'}
+                  value={user?.email || ''}
                   required
-                  handleChange={event => setUser({ ...user, email: event.target.value })}
+                  handleChange={(event) => setUser({ ...user, email: event.target.value })}
                   state={
                     highlightRequired && (!user.email || !isValidEmail(user.email) || userExists)
-                      ? "error"
-                      : "neutral"
+                      ? 'error'
+                      : 'neutral'
                   }
                   errorMessage={
                     userExists
-                      ? t("messages.employeeExists")
+                      ? t('messages.employeeExists')
                       : !isValidEmail(user.email)
-                        ? t("form.invalidEmail")
-                        : t("form.required")
+                        ? t('form.invalidEmail')
+                        : t('form.required')
                   }
                   maxLength={30}
                 />
               </div>
               <div className={styles.section}>
-                <IonNote className={`ion-padding ${styles.sectionNote}`}>{t("users.info")}</IonNote>
+                <IonNote className={`ion-padding ${styles.sectionNote}`}>{t('users.info')}</IonNote>
 
                 <Input
-                  label={t("users.lastName")}
-                  value={user?.last_name || ""}
+                  label={t('users.lastName')}
+                  value={user?.last_name || ''}
                   required
-                  handleChange={event => setUser({ ...user, last_name: event.target.value })}
+                  handleChange={(event) => setUser({ ...user, last_name: event.target.value })}
                   state={
                     highlightRequired && (!user.last_name || isInvalidText(user.last_name))
-                      ? "error"
-                      : "neutral"
+                      ? 'error'
+                      : 'neutral'
                   }
                   errorMessage={
-                    isInvalidText(user.last_name) ? t("form.invalidCharacters") : t("form.required")
+                    isInvalidText(user.last_name) ? t('form.invalidCharacters') : t('form.required')
                   }
                   maxLength={30}
                   type="text"
                 />
                 <Input
-                  label={t("users.firstName")}
-                  value={user?.first_name || ""}
+                  label={t('users.firstName')}
+                  value={user?.first_name || ''}
                   required
-                  handleChange={event => setUser({ ...user, first_name: event.target.value })}
+                  handleChange={(event) => setUser({ ...user, first_name: event.target.value })}
                   state={
                     highlightRequired && (!user.first_name || isInvalidText(user.first_name))
-                      ? "error"
-                      : "neutral"
+                      ? 'error'
+                      : 'neutral'
                   }
                   errorMessage={
                     isInvalidText(user.first_name)
-                      ? t("form.invalidCharacters")
-                      : t("form.required")
+                      ? t('form.invalidCharacters')
+                      : t('form.required')
                   }
                   maxLength={30}
                   type="text"
                 />
 
                 <Select
-                  value={!customRole ? t("users.role") : user.role}
-                  placeholder={!customRole ? t("users.role") : user.role}
+                  value={!customRole ? t('users.role') : user.role}
+                  placeholder={!customRole ? t('users.role') : user.role}
                   selectList={roles}
-                  handleChange={event => {
+                  handleChange={(event) => {
                     setUser({ ...user, role: event.target.value });
                     setCustomRole(true);
                   }}
@@ -283,31 +283,31 @@ const AddUser = () => {
                   <>
                     <IonList inset={true}>
                       <MenuListButton
-                        title={selectedWorkplace?.name || t("users.workplace")}
+                        title={selectedWorkplace?.name || t('users.workplace')}
                         handleItemClick={navigateWorkplaceClick}
                       />
                     </IonList>
                     <Input
-                      label={t("users.workStartTime")}
-                      value={user.work_start_time || ""}
-                      handleChange={event =>
+                      label={t('users.workStartTime')}
+                      value={user.work_start_time || ''}
+                      handleChange={(event) =>
                         setUser({ ...user, work_start_time: event.target.value })
                       }
                       type="time"
                       required={true}
-                      state={highlightRequired && !user.work_start_time ? "error" : "neutral"}
-                      errorMessage={t("form.required")}
+                      state={highlightRequired && !user.work_start_time ? 'error' : 'neutral'}
+                      errorMessage={t('form.required')}
                     />
                     <Input
-                      label={t("users.workEndTime")}
-                      value={user.work_end_time || ""}
-                      handleChange={event =>
+                      label={t('users.workEndTime')}
+                      value={user.work_end_time || ''}
+                      handleChange={(event) =>
                         setUser({ ...user, work_end_time: event.target.value })
                       }
                       type="time"
                       required={true}
-                      state={highlightRequired && !user.work_end_time ? "error" : "neutral"}
-                      errorMessage={t("form.required")}
+                      state={highlightRequired && !user.work_end_time ? 'error' : 'neutral'}
+                      errorMessage={t('form.required')}
                     />
                   </>
                 )}
@@ -317,12 +317,12 @@ const AddUser = () => {
                 isOpen={!!toastMessage}
                 message={toastMessage || undefined}
                 duration={TOAST_DELAY}
-                onDidDismiss={() => setToastMessage("")}
+                onDidDismiss={() => setToastMessage('')}
               />
             </div>
             <BottomButton
               handleClick={openModal}
-              label={t("operations.save")}
+              label={t('operations.save')}
               disabled={!isChanged}
             />
           </>
@@ -333,9 +333,9 @@ const AddUser = () => {
         isOpen={isOpenModal}
         onClose={closeModal}
         onConfirm={handleConfirmModal}
-        title={`${t("operations.saveChanges")}?`}
-        confirmText={t("operations.save")}
-        cancelText={t("operations.cancel")}
+        title={`${t('operations.saveChanges')}?`}
+        confirmText={t('operations.save')}
+        cancelText={t('operations.cancel')}
       />
     </IonPage>
   );

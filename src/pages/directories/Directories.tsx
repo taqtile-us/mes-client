@@ -1,20 +1,21 @@
-import { IonContent, IonItem, IonList, IonPage, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../components/header/Header";
-import { ROUTES } from "../../shared/constants/routes";
-import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
-import MenuListButton from "../../components/menuListButton/MenuListButton";
-import { useCookies } from "react-cookie";
-import { getAllDirectories, getAllStaticDirectories } from "../../api/directory/directory";
-import { Preloader } from "../../components/preloader/preloader";
-import { Directory } from "../../models/interfaces/directory.interface";
+import { IonContent, IonItem, IonList, IonPage, useIonViewWillEnter } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { useCookies } from 'react-cookie';
+
+import MenuListButton from '../../components/menuListButton/MenuListButton';
+import { ROUTES } from '../../shared/constants/routes';
+import { Header } from '../../components/header/Header';
+import { getAllDirectories, getAllStaticDirectories } from '../../api/directory/directory';
+import { Preloader } from '../../components/preloader/preloader';
+import { Directory } from '../../models/interfaces/directory.interface';
 
 const Directories = () => {
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const [items, setItems] = useState<Directory[]>([]);
   const [staticItems, setStaticItems] = useState<string[]>([]);
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>('');
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -27,7 +28,7 @@ const Directories = () => {
   };
 
   useIonViewWillEnter(() => {
-    setSearchText("");
+    setSearchText('');
     setLoading(true);
 
     Promise.all([getAllDirectories(cookies.token), getAllStaticDirectories(cookies.token)])
@@ -35,7 +36,7 @@ const Directories = () => {
         setItems(responseDirectories.data);
         setStaticItems(responseStaticDirectories.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       })
       .finally(() => {
@@ -44,22 +45,22 @@ const Directories = () => {
   });
 
   const filteredStaticItems = useMemo(
-    () => staticItems.filter(item => item?.toLowerCase().includes(searchText.toLowerCase())),
-    [staticItems, searchText]
+    () => staticItems.filter((item) => item?.toLowerCase().includes(searchText.toLowerCase())),
+    [staticItems, searchText],
   );
 
   const filteredItems = useMemo(
-    () => items.filter(item => item.name.toLowerCase().includes(searchText.toLowerCase())),
-    [items, searchText]
+    () => items.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase())),
+    [items, searchText],
   );
 
   return (
     <IonPage>
       <Header
-        title={t("menu.directories")}
+        title={t('menu.directories')}
         backButtonHref={ROUTES.MENU}
         searchBar={Boolean(items?.length)}
-        searchPlaceholder={t("operations.directories.search")}
+        searchPlaceholder={t('operations.directories.search')}
         searchText={searchText}
         onSearchChange={handleSetSearch}
       />
@@ -70,12 +71,12 @@ const Directories = () => {
           </div>
         ) : items.length === 0 ? (
           <IonList inset={true}>
-            <IonItem>{t("messages.noDatabases")}</IonItem>
+            <IonItem>{t('messages.noDatabases')}</IonItem>
           </IonList>
         ) : (
           <>
             <IonList inset>
-              {filteredStaticItems.map(itemName => (
+              {filteredStaticItems.map((itemName) => (
                 <MenuListButton
                   key={itemName}
                   title={t(`directory.${itemName}.title`)}

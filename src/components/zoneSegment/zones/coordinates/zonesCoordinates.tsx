@@ -1,17 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useRef, useState, useEffect, Fragment } from "react";
-import Moveable from "react-moveable";
-import { IoIosCloseCircle } from "react-icons/io";
-import { generateString } from "../../../../utils/randomizer";
-import { Coordinat, DrawingCoordinates, NewCoordinates } from "../../../../models/interfaces/coordinates.interface";
-import Scale from "../../../scale/Scale";
-import { Scaleble } from "../../../scale/EditScale";
-import styles from "./zonesCoordinat.module.scss";
-import { FourPointsNewCoordinates } from "../../../../models/interfaces/coordinates.interface";
-import { useIonViewWillEnter } from "@ionic/react";
-import "./moveable.scss";
-import { API_BASE_URL } from "../../../../config";
+import { useRef, useState, useEffect, Fragment } from 'react';
+import Moveable from 'react-moveable';
+import { IoIosCloseCircle } from 'react-icons/io';
+import { useIonViewWillEnter } from '@ionic/react';
+
+import { generateString } from '../../../../utils/randomizer';
+import {
+  Coordinat,
+  DrawingCoordinates,
+  NewCoordinates,
+} from '../../../../models/interfaces/coordinates.interface';
+import Scale from '../../../scale/Scale';
+import { Scaleble } from '../../../scale/EditScale';
+import { FourPointsNewCoordinates } from '../../../../models/interfaces/coordinates.interface';
+import './moveable.scss';
+import { API_BASE_URL } from '../../../../config';
+
+import styles from './zonesCoordinat.module.scss';
 
 type PropsType = {
   setCoords: (coords: any) => void;
@@ -58,14 +64,14 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
 
   useIonViewWillEnter(() => {
     handleImageLoad();
-    window.addEventListener("resize", handleImageLoad);
+    window.addEventListener('resize', handleImageLoad);
 
     return () => {
-      window.removeEventListener("resize", handleImageLoad);
+      window.removeEventListener('resize', handleImageLoad);
     };
   });
 
-    useEffect(() => {
+  useEffect(() => {
     const handleResize = () => {
       if (image.current) {
         handleImageLoad();
@@ -73,12 +79,12 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
       }
     };
 
-    window.addEventListener("resize", handleResize);
-    document.addEventListener("fullscreenchange", handleResize);
+    window.addEventListener('resize', handleResize);
+    document.addEventListener('fullscreenchange', handleResize);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
-      document.removeEventListener("fullscreenchange", handleResize);
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('fullscreenchange', handleResize);
     };
   }, []);
 
@@ -124,7 +130,7 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
       if (fourPointsCoordinates.length >= 4) {
         setFourPointsCoordinates([]);
       } else {
-        setFourPointsCoordinates(prev => {
+        setFourPointsCoordinates((prev) => {
           const points = [...prev, { x: e.clientX - target.x, y: e.clientY - target.y }];
 
           const centroid = {
@@ -192,8 +198,14 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
     if (currentZoneId == -2) return;
     if (e && !targetRect) {
       const response = {
-        x: moveDraw.x - isStartDraw.x > 0 ? isStartDraw.x : isStartDraw.x - Math.abs(moveDraw.x - isStartDraw.x),
-        y: moveDraw.y - isStartDraw.y > 0 ? isStartDraw.y : isStartDraw.y - Math.abs(moveDraw.y - isStartDraw.y),
+        x:
+          moveDraw.x - isStartDraw.x > 0
+            ? isStartDraw.x
+            : isStartDraw.x - Math.abs(moveDraw.x - isStartDraw.x),
+        y:
+          moveDraw.y - isStartDraw.y > 0
+            ? isStartDraw.y
+            : isStartDraw.y - Math.abs(moveDraw.y - isStartDraw.y),
         width: Math.abs(moveDraw.x - isStartDraw.x),
         height: Math.abs(moveDraw.y - isStartDraw.y),
         id: generateString(),
@@ -250,16 +262,16 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
       setAllBox([...allBox, response]);
 
       const xCoords = Object.keys(newCoords)
-        .filter(coord => coord.startsWith("x"))
-        .map(key => newCoords[key]);
+        .filter((coord) => coord.startsWith('x'))
+        .map((key) => newCoords[key]);
 
       const yCoords = Object.keys(newCoords)
-        .filter(coord => coord.startsWith("y"))
-        .map(key => newCoords[key]);
+        .filter((coord) => coord.startsWith('y'))
+        .map((key) => newCoords[key]);
 
       const isOutsideBounds =
-        xCoords.some(x => x < 0 || x > image.current.naturalWidth) ||
-        yCoords.some(y => y < 0 || y > image.current.naturalHeight);
+        xCoords.some((x) => x < 0 || x > image.current.naturalWidth) ||
+        yCoords.some((y) => y < 0 || y > image.current.naturalHeight);
 
       setValidZone(!isOutsideBounds);
 
@@ -272,16 +284,16 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
     setAllBox(
       allBox.filter((el: NewCoordinates | FourPointsNewCoordinates) => {
         return !targetRectId.includes(el.id);
-      })
+      }),
     );
-    setTargetRect("");
+    setTargetRect('');
   };
 
-  const changeTarget = (currentTarget: any, type: "rect" | "polygon") => {
+  const changeTarget = (currentTarget: any, type: 'rect' | 'polygon') => {
     if (targetRect || targetPolygon) {
       setTargetRect(null);
     } else {
-      if (type === "rect") {
+      if (type === 'rect') {
         setTargetRect(currentTarget);
       } else {
         setTargetPolygon(currentTarget);
@@ -290,7 +302,7 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
   };
 
   const onChangeSize = () => {
-    const coordinatesLayout: any = document.querySelectorAll(".coordinates");
+    const coordinatesLayout: any = document.querySelectorAll('.coordinates');
 
     const proportionWidth = image.current.naturalWidth / image.current.width;
     const proportionHeight = image.current.naturalHeight / image.current.height;
@@ -298,11 +310,11 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
     const sendCoord: any[] = [];
     coordinatesLayout.forEach((element: any) => {
       if (!isFourPointsMode && !(element instanceof SVGElement)) {
-        const bufLeft = Number(element.style.left.replace(/px/gi, ""));
-        const bufTop = Number(element.style.top.replace(/px/gi, ""));
-        const bufWidth = Number(element.style.width.replace(/px/gi, ""));
-        const bufHeight = Number(element.style.height.replace(/px/gi, ""));
-        const bufTrans = element.style.transform.replace(/[^\d,-]/g, "").split(",");
+        const bufLeft = Number(element.style.left.replace(/px/gi, ''));
+        const bufTop = Number(element.style.top.replace(/px/gi, ''));
+        const bufWidth = Number(element.style.width.replace(/px/gi, ''));
+        const bufHeight = Number(element.style.height.replace(/px/gi, ''));
+        const bufTrans = element.style.transform.replace(/[^\d,-]/g, '').split(',');
         const bufTransWidth = Number(bufTrans[0]) || 0;
         const bufTransHeight = Number(bufTrans[1]) || 0;
         const totalX = bufTransWidth + bufLeft;
@@ -315,16 +327,16 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
           y2: bufHeight * proportionHeight + totalY * proportionHeight,
         };
 
-        console.log("coords", coords);
+        console.log('coords', coords);
         sendCoord.push(coords);
       }
 
       const isOutsideBounds = sendCoord.some(
-        coords =>
+        (coords) =>
           coords.x1 < 0 ||
           coords.y1 < 0 ||
           coords.x2 > image.current.naturalWidth ||
-          coords.y2 > image.current.naturalHeight
+          coords.y2 > image.current.naturalHeight,
       );
 
       setValidZone(!isOutsideBounds);
@@ -333,18 +345,18 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
   };
 
   const scaleHandler = (img: string) => {
-    const coordinatesLayout: any = document.querySelectorAll(".coordinates");
+    const coordinatesLayout: any = document.querySelectorAll('.coordinates');
 
     const proportionWidth = image.current.naturalWidth / image.current.width;
     const proportionHeight = image.current.naturalHeight / image.current.height;
 
     const sendCoord: Coordinat[] = [];
     coordinatesLayout.forEach((element: any) => {
-      const bufLeft = Number(element.style.left.replace(/px/gi, ""));
-      const bufTop = Number(element.style.top.replace(/px/gi, ""));
-      const bufWidth = Number(element.style.width.replace(/px/gi, ""));
-      const bufHeight = Number(element.style.height.replace(/px/gi, ""));
-      const bufTrans = element.style.transform.replace(/[^\d,-]/g, "").split(",");
+      const bufLeft = Number(element.style.left.replace(/px/gi, ''));
+      const bufTop = Number(element.style.top.replace(/px/gi, ''));
+      const bufWidth = Number(element.style.width.replace(/px/gi, ''));
+      const bufHeight = Number(element.style.height.replace(/px/gi, ''));
+      const bufTrans = element.style.transform.replace(/[^\d,-]/g, '').split(',');
       const bufTransWidth = Number(bufTrans[0]) || 0;
       const bufTransHeight = Number(bufTrans[1]) || 0;
       const totalX = bufTransWidth + bufLeft;
@@ -375,29 +387,29 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
             <svg
               className={styles.newCoordinates}
               style={{
-                width: "100%",
-                height: "100%",
-                position: "absolute",
-                top: "0px",
-                left: "0px",
+                width: '100%',
+                height: '100%',
+                position: 'absolute',
+                top: '0px',
+                left: '0px',
               }}
             >
               {fourPointsCoordinates.map((el, i) => {
-                return <circle key={i} cx={`${el.x}`} cy={`${el.y}`} r={"5"} fill={"white"} />;
+                return <circle key={i} cx={`${el.x}`} cy={`${el.y}`} r={'5'} fill={'white'} />;
               })}
               {fourPointsCoordinates.length === 4 && (
                 <polygon
-                  fill={"rgba(255, 123, 41, 0.5)"}
+                  fill={'rgba(255, 123, 41, 0.5)'}
                   points={`${fourPointsCoordinates[0].x},${fourPointsCoordinates[0].y} ${fourPointsCoordinates[1].x},${fourPointsCoordinates[1].y} ${fourPointsCoordinates[2].x},${fourPointsCoordinates[2].y}, ${fourPointsCoordinates[3].x},${fourPointsCoordinates[3].y}`}
                 />
               )}
             </svg>
           )}
           {zone.length > 0 &&
-            zone.map(el => (
+            zone.map((el) => (
               <div
                 id={`2-${el.id}`}
-                className={"coordinatesZone"}
+                className={'coordinatesZone'}
                 style={{
                   left: el.x,
                   top: el.y,
@@ -405,19 +417,23 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
                   height: el.height,
                   zIndex: isStartDraw ? 1 : 1001,
                 }}
-                onClick={e => changeTarget(e.target, "rect")}
+                onClick={(e) => changeTarget(e.target, 'rect')}
                 key={el.id}
               >
                 {el.name}
               </div>
             ))}
           {allBox.map((el: NewCoordinates | FourPointsNewCoordinates) => {
-            if (Object.keys(el).includes("x")) {
+            if (Object.keys(el).includes('x')) {
               const element = el as NewCoordinates;
               return (
                 <div
                   id={`2-${el.id}`}
-                  className={targetRect && targetRect.id === el.id ? "coordinates coordSelected" : "coordinates"}
+                  className={
+                    targetRect && targetRect.id === el.id
+                      ? 'coordinates coordSelected'
+                      : 'coordinates'
+                  }
                   style={{
                     left: element.x,
                     top: element.y,
@@ -425,12 +441,15 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
                     height: element.height,
                     zIndex: isStartDraw ? 1 : 1001,
                   }}
-                  onClick={e => changeTarget(e.target, "rect")}
+                  onClick={(e) => changeTarget(e.target, 'rect')}
                   key={el.id}
                 >
                   {itemName}
                   {targetRect && targetRect.id.includes(el.id) && (
-                    <IoIosCloseCircle className={styles.remove} onClick={() => removeCoord(targetRect.id)} />
+                    <IoIosCloseCircle
+                      className={styles.remove}
+                      onClick={() => removeCoord(targetRect.id)}
+                    />
                   )}
                 </div>
               );
@@ -441,22 +460,26 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
                   <svg
                     style={{
                       zIndex: isStartDraw ? 1 : 1001,
-                      width: "100%",
-                      height: "100%",
-                      position: "absolute",
-                      top: "0px",
-                      left: "0px",
+                      width: '100%',
+                      height: '100%',
+                      position: 'absolute',
+                      top: '0px',
+                      left: '0px',
                     }}
                   >
                     <polygon
                       id={`4-${element.id}`}
-                      stroke={"#fe6100"}
+                      stroke={'#fe6100'}
                       strokeWidth={1}
-                      fill={"rgba(255, 123, 41, 0.5)"}
+                      fill={'rgba(255, 123, 41, 0.5)'}
                       points={`${element.x1},${element.y1} ${element.x2},${element.y2} ${element.x3},${element.y3} ${element.x4},${element.y4}`}
-                      onClick={e => changeTarget(e.target, "polygon")}
+                      onClick={(e) => changeTarget(e.target, 'polygon')}
                     ></polygon>
-                    <text style={{ fontSize: 8, fill: "white" }} x={element.x1 + 4} y={element.y1 + 12}>
+                    <text
+                      style={{ fontSize: 8, fill: 'white' }}
+                      x={element.x1 + 4}
+                      y={element.y1 + 12}
+                    >
                       {itemName}
                     </text>
                   </svg>
@@ -479,16 +502,16 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
                   {coord.zoneType === 4 ? (
                     <svg
                       style={{
-                        width: "100%",
-                        height: "100%",
-                        position: "absolute",
-                        top: "0px",
-                        left: "0px",
+                        width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: '0px',
+                        left: '0px',
                       }}
                     >
                       <polygon
-                        fill={"rgba(33, 33, 33, 0.6)"}
-                        stroke={"#666666"}
+                        fill={'rgba(33, 33, 33, 0.6)'}
+                        stroke={'#666666'}
                         points={`${coord.x1 / proportionWidth},${coord.y1 / proportionHeight} ${
                           coord.x2 / proportionWidth
                         },${coord.y2 / proportionHeight} ${coord.x3 / proportionWidth},${
@@ -496,7 +519,7 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
                         }, ${coord.x4 / proportionWidth},${coord.y4 / proportionHeight}`}
                       />
                       <text
-                        style={{ fontSize: 8, fill: "white" }}
+                        style={{ fontSize: 8, fill: 'white' }}
                         x={(coord.x1 + 4) / proportionWidth}
                         y={(coord.y1 + 12) / proportionHeight}
                       >
@@ -525,14 +548,14 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
             })}
           <div
             className={styles.draw}
-            onClick={e => isFourPointsMode && createCoord(e)}
-            onMouseDown={e => !isFourPointsMode && startPosition(e)}
-            onMouseMove={e => !isFourPointsMode && movePosition(e)}
-            onMouseUp={e => !isFourPointsMode && endPosition(e)}
+            onClick={(e) => isFourPointsMode && createCoord(e)}
+            onMouseDown={(e) => !isFourPointsMode && startPosition(e)}
+            onMouseMove={(e) => !isFourPointsMode && movePosition(e)}
+            onMouseUp={(e) => !isFourPointsMode && endPosition(e)}
             style={
               targetRect || targetPolygon || currentZoneId == -2
-                ? { zIndex: 100, cursor: "pointer" }
-                : { zIndex: 1000, cursor: "crosshair" }
+                ? { zIndex: 100, cursor: 'pointer' }
+                : { zIndex: 1000, cursor: 'crosshair' }
             }
           ></div>
           {!!proportionHeight && (
@@ -550,7 +573,7 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
               coords={coordToScale}
               itemName={itemName}
               setIsScale={() => setIsScale(false)}
-              setCoordToScale={coord => setCoordToScale(coord)}
+              setCoordToScale={(coord) => setCoordToScale(coord)}
             />
           )}
           {isStartDraw && (
@@ -558,9 +581,13 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
               className={styles.newCoordinates}
               style={{
                 left:
-                  moveDraw.x - isStartDraw.x > 0 ? isStartDraw.x : isStartDraw.x - Math.abs(moveDraw.x - isStartDraw.x),
+                  moveDraw.x - isStartDraw.x > 0
+                    ? isStartDraw.x
+                    : isStartDraw.x - Math.abs(moveDraw.x - isStartDraw.x),
                 top:
-                  moveDraw.y - isStartDraw.y > 0 ? isStartDraw.y : isStartDraw.y - Math.abs(moveDraw.y - isStartDraw.y),
+                  moveDraw.y - isStartDraw.y > 0
+                    ? isStartDraw.y
+                    : isStartDraw.y - Math.abs(moveDraw.y - isStartDraw.y),
                 width: Math.abs(moveDraw.x - isStartDraw.x),
                 height: Math.abs(moveDraw.y - isStartDraw.y),
                 zIndex: 1,

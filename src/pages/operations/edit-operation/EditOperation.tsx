@@ -1,26 +1,27 @@
-import { useTranslation } from "react-i18next";
-import { ROUTES } from "../../../shared/constants/routes";
-import { useHistory, useParams } from "react-router-dom";
-import SingleInputPage from "../../../ui/signleInputPage/SingleInputPage";
-import { useState } from "react";
-import { useCookies } from "react-cookie";
-import { Preloader } from "../../../components/preloader/preloader";
-import { IonContent, IonPage, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../../components/header/Header";
-import { ConfirmationModal } from "../../../components/confirmationModal/confirmationModal";
-import { getOperation, updateOperation } from "../../../api/operations";
-import { TimeUnit } from "../../../models/types/timeUnit";
+import { useTranslation } from 'react-i18next';
+import { useHistory, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { IonContent, IonPage, useIonViewWillEnter } from '@ionic/react';
+
+import { Preloader } from '../../../components/preloader/preloader';
+import SingleInputPage from '../../../ui/signleInputPage/SingleInputPage';
+import { ROUTES } from '../../../shared/constants/routes';
+import { Header } from '../../../components/header/Header';
+import { ConfirmationModal } from '../../../components/confirmationModal/confirmationModal';
+import { getOperation, updateOperation } from '../../../api/operations';
+import { TimeUnit } from '../../../models/types/timeUnit';
 
 const EditDirectoryCard = () => {
   const { t } = useTranslation();
   const { id }: { id: string } = useParams();
   const history = useHistory();
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const [loading, setLoading] = useState(true);
-  const [operationName, setOperationName] = useState("");
+  const [operationName, setOperationName] = useState('');
   const [estimatedTime, setEstimatedTime] = useState();
   const [timeUnit, setTimeUnit] = useState<TimeUnit>();
-  const [initialOperationName, setInitialOperationName] = useState("");
+  const [initialOperationName, setInitialOperationName] = useState('');
   // const [initialEstimatedTime, setInitialEstimatedTime] = useState(estimatedTime);
   // const [initialTimeUnit, setInitialTimeUnit] = useState(timeUnit);
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -46,13 +47,13 @@ const EditDirectoryCard = () => {
     // setInitialTimeUnit(timeUnit);
     setLoading(true);
     getOperation(Number(id), cookies.token)
-      .then(response => {
+      .then((response) => {
         setOperationName(response.data.name);
         setInitialOperationName(response.data.name);
         // setTimeUnit(response.data.estimatedTimeUnit);
         // setEstimatedTime(response.data.estimatedTime);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       })
       .finally(() => {
@@ -61,14 +62,14 @@ const EditDirectoryCard = () => {
   });
 
   const navigateBack = () => {
-    history.push(ROUTES.OPERATION(id!), { direction: "back" });
+    history.push(ROUTES.OPERATION(id!), { direction: 'back' });
   };
 
   const handleSave = () => {
     if (operationName.trim()) {
       updateOperation(Number(id), operationName.trim(), estimatedTime!, timeUnit!, cookies.token)
         .then(() => navigateBack())
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
       return;
@@ -83,7 +84,7 @@ const EditDirectoryCard = () => {
     }
   };
 
-  const handleChangeOperationName = e => {
+  const handleChangeOperationName = (e) => {
     setOperationName(e.target.value);
   };
 
@@ -113,7 +114,11 @@ const EditDirectoryCard = () => {
 
   return (
     <IonPage>
-      <Header title={t("directory.operations.edit")} onBackClick={handleBackClick} backButtonHref={ROUTES.OPERATION(id)}></Header>
+      <Header
+        title={t('directory.operations.edit')}
+        onBackClick={handleBackClick}
+        backButtonHref={ROUTES.OPERATION(id)}
+      ></Header>
       <IonContent>
         {loading ? (
           <div className="preloader">
@@ -123,7 +128,7 @@ const EditDirectoryCard = () => {
           <>
             <SingleInputPage
               backHref={ROUTES.OPERATION(id)}
-              label={t("directory.operations.name")}
+              label={t('directory.operations.name')}
               value={operationName}
               required
               handleChange={handleChangeOperationName}
@@ -152,9 +157,9 @@ const EditDirectoryCard = () => {
         isOpen={isOpenModal}
         onClose={handleCloseModal}
         onConfirm={handleConfirmModal}
-        title={`${t("operations.saveChanges")}?`}
-        confirmText={t("operations.save")}
-        cancelText={t("operations.cancel")}
+        title={`${t('operations.saveChanges')}?`}
+        confirmText={t('operations.save')}
+        cancelText={t('operations.cancel')}
       />
     </IonPage>
   );

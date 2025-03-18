@@ -1,14 +1,15 @@
-import { IonButton, IonContent, IonIcon, IonLabel, IonModal } from "@ionic/react";
-import { Header } from "../../components/header/Header";
-import { EditWhiteIcon, TrashBin } from "../../assets/svg/SVGcomponent";
-import Fab from "../../components/fab/Fab";
-import { ReactNode, useRef, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
-import { deleteDirectory } from "../../api/directory/directory";
-import { useCookies } from "react-cookie";
-import { useTranslation } from "react-i18next";
-import InputReadonly from "../../components/inputs/inputReadonly/inputReadonly";
-import { ConfirmationModal } from "../../components/confirmationModal/confirmationModal";
+import { IonButton, IonContent, IonIcon, IonLabel, IonModal } from '@ionic/react';
+import { ReactNode, useRef, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next';
+
+import { Header } from '../../components/header/Header';
+import { EditWhiteIcon, TrashBin } from '../../assets/svg/SVGcomponent';
+import Fab from '../../components/fab/Fab';
+import { deleteDirectory } from '../../api/directory/directory';
+import InputReadonly from '../../components/inputs/inputReadonly/inputReadonly';
+import { ConfirmationModal } from '../../components/confirmationModal/confirmationModal';
 
 type CardsProps = {
   backHref: string;
@@ -20,10 +21,18 @@ type CardsProps = {
   deleteCard: (id: number, token: string) => Promise<void>;
 };
 
-const Card = ({ backHref, editHref, itemTitle, titleLabel, showConfirmationModal, deleteCard, handleCloseModal }: CardsProps) => {
+const Card = ({
+  backHref,
+  editHref,
+  itemTitle,
+  titleLabel,
+  showConfirmationModal,
+  deleteCard,
+  handleCloseModal,
+}: CardsProps) => {
   const { id }: any = useParams();
   const { t } = useTranslation();
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const history = useHistory();
 
   const handleFabClick = (path: string) => {
@@ -34,9 +43,9 @@ const Card = ({ backHref, editHref, itemTitle, titleLabel, showConfirmationModal
     deleteCard(Number(id), cookies.token)
       .then(() => {
         handleCancelClick();
-        history.push(backHref, { direction: "back" });
+        history.push(backHref, { direction: 'back' });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   };
@@ -47,7 +56,7 @@ const Card = ({ backHref, editHref, itemTitle, titleLabel, showConfirmationModal
 
   return (
     <>
-      <InputReadonly label={titleLabel ?? t("directory.name")} value={itemTitle} />
+      <InputReadonly label={titleLabel ?? t('directory.name')} value={itemTitle} />
       {editHref && (
         <Fab
           icon={EditWhiteIcon}
@@ -61,9 +70,9 @@ const Card = ({ backHref, editHref, itemTitle, titleLabel, showConfirmationModal
         isOpen={showConfirmationModal}
         onConfirm={handleDeleteClick}
         onClose={handleCancelClick}
-        title={`${t("operations.delete")} "${itemTitle}" ?`}
-        confirmText={t("operations.delete")}
-        cancelText={t("operations.cancel")}
+        title={`${t('operations.delete')} "${itemTitle}" ?`}
+        confirmText={t('operations.delete')}
+        cancelText={t('operations.cancel')}
       />
     </>
   );

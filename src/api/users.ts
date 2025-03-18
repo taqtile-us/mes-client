@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { IAddUser, IUpdateUser } from "../models/interfaces/employee.interface";
-import { API_BASE_URL } from "../config";
-import { getAxiosConfig } from "../utils/getAxiosConfig";
+import { IAddUser, IUpdateUser } from '../models/interfaces/employee.interface';
+import { API_BASE_URL } from '../config';
+import { getAxiosConfig } from '../utils/getAxiosConfig';
 
 // const API_PATHS = {
 //   ODOO_USERLIST: "employees/",
@@ -15,10 +15,10 @@ import { getAxiosConfig } from "../utils/getAxiosConfig";
 //   DEFAULT_WORKPLACES: "api/employees/workplaces/",
 // };
 
-const API_USER_LIST = "employees/";
-const API_USER_INFO = "auth/odoo/django/api/employees/get-user-info/";
-const API_USER_ADD = "auth/odoo/django/api/employees/create/";
-const API_WORKPLACES = "auth/odoo/django/api/employees/workplaces/";
+const API_USER_LIST = 'employees/';
+const API_USER_INFO = 'auth/odoo/django/api/employees/get-user-info/';
+const API_USER_ADD = 'auth/odoo/django/api/employees/create/';
+const API_WORKPLACES = 'auth/odoo/django/api/employees/workplaces/';
 
 const constructUrl = (endpoint: string) => `${API_BASE_URL}${endpoint}`;
 

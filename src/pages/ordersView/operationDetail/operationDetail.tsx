@@ -1,4 +1,5 @@
-import { ROUTES } from "../../../shared/constants/routes";
+import { ROUTES } from '../../../shared/constants/routes';
+
 import {
   IonButton,
   IonButtons,
@@ -9,24 +10,26 @@ import {
   IonTitle,
   IonToolbar,
   useIonViewWillEnter,
-} from "@ionic/react";
-import { useHistory, useParams } from "react-router-dom";
-import { useCookies } from "react-cookie";
-import { useState } from "react";
-import { getOrderViewOperation } from "../../../api/ordersView";
-import moment from "moment";
-import { GreenStatus, GreyStatus, Download } from "../../../assets/svg/SVGcomponent";
-import "./operationDetail.scss";
-import { Preloader } from "../../../components/preloader/preloader";
-import "../../../styles/common.scss";
-import { OrderDetail } from "../../../models/interfaces/ordersView.interface";
-import { arrowBack } from "ionicons/icons";
-import { downloadFile } from "../../../utils/downloadFile";
-import { API_BASE_URL } from "../../../config";
-import HlsVideoPlayer from "../../../components/hlsVideoPlayer/HlsVideoPlayer";
+} from '@ionic/react';
+import { useHistory, useParams } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { useState } from 'react';
+import moment from 'moment';
+
+import './operationDetail.scss';
+import '../../../styles/common.scss';
+import { arrowBack } from 'ionicons/icons';
+
+import { OrderDetail } from '../../../models/interfaces/ordersView.interface';
+import { Preloader } from '../../../components/preloader/preloader';
+import { GreenStatus, GreyStatus, Download } from '../../../assets/svg/SVGcomponent';
+import { getOrderViewOperation } from '../../../api/ordersView';
+import { downloadFile } from '../../../utils/downloadFile';
+import { API_BASE_URL } from '../../../config';
+import HlsVideoPlayer from '../../../components/hlsVideoPlayer/HlsVideoPlayer';
 
 export const OperationDetail = () => {
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const { timespanId, cameraId } = useParams<{
     orderId: string;
     itemId: string;
@@ -35,7 +38,7 @@ export const OperationDetail = () => {
     cameraId: string;
   }>();
   const [detail, setDetail] = useState<OrderDetail>({} as OrderDetail);
-  const [duration, setDuration] = useState("");
+  const [duration, setDuration] = useState('');
   const [loading, setLoading] = useState(true);
   const [videoIndex, setVideoIndex] = useState<number>(0);
   const history = useHistory();
@@ -44,18 +47,18 @@ export const OperationDetail = () => {
 
   useIonViewWillEnter(() => {
     getOrderViewOperation(cookies.token, parseInt(timespanId))
-      .then(response => {
+      .then((response) => {
         const operation = response.data;
         if (operation.videos.length === 0) {
           setNoVideo(true);
         }
         setDetail(response.data);
         if (cameraId) {
-          setVideoIndex(response.data.videos.findIndex(video => video.camera_ip === cameraId));
+          setVideoIndex(response.data.videos.findIndex((video) => video.camera_ip === cameraId));
         }
       })
-      .catch(err => {
-        setNoVideo(true)
+      .catch((err) => {
+        setNoVideo(true);
         console.log(err);
       })
       .finally(() => {
@@ -82,17 +85,17 @@ export const OperationDetail = () => {
 
   const onVideoLoad = (video: HTMLVideoElement) => {
     if (video.duration) {
-      setDuration(moment.utc(video.duration * 1000).format("HH:mm:ss"));
+      setDuration(moment.utc(video.duration * 1000).format('HH:mm:ss'));
     }
-  }
+  };
 
   return (
     <IonPage color="light">
-      <IonHeader style={{ position: "absolute" }}>
+      <IonHeader style={{ position: 'absolute' }}>
         <IonToolbar className="transparent">
           <IonButtons slot="start" className="header__start">
             <IonButton onClick={backHandler}>
-              <IonIcon style={{ fontSize: "18px" }} icon={arrowBack} color="light" mode="ios" />
+              <IonIcon style={{ fontSize: '18px' }} icon={arrowBack} color="light" mode="ios" />
             </IonButton>
           </IonButtons>
         </IonToolbar>
@@ -104,36 +107,37 @@ export const OperationDetail = () => {
           </div>
         ) : (
           <div className="videoWrapper">
-            {
-              noVideo ?
-              <IonTitle color={"light"}>No video available</IonTitle>
-              :
+            {noVideo ? (
+              <IonTitle color={'light'}>No video available</IonTitle>
+            ) : (
               <>
-              <div className="orderDetail ion-padding">
-                <div className="titleWrapper">
-                  <h4 className="title">{detail.oprName}</h4>
-                  <img src={Download} alt="download" onClick={() => handleDownload(videoIndex)} />
-                </div>
+                <div className="orderDetail ion-padding">
+                  <div className="titleWrapper">
+                    <h4 className="title">{detail.oprName}</h4>
+                    <img src={Download} alt="download" onClick={() => handleDownload(videoIndex)} />
+                  </div>
 
-                <div className="subtitle">
-                  <span>Time: </span>
-                  <span className="subtitle_value">{moment(detail.sTime).format("HH:mm:ss")} </span>
-                  <span>{duration && `(${duration})`}</span>
+                  <div className="subtitle">
+                    <span>Time: </span>
+                    <span className="subtitle_value">
+                      {moment(detail.sTime).format('HH:mm:ss')}{' '}
+                    </span>
+                    <span>{duration && `(${duration})`}</span>
+                  </div>
+                  <div className="subtitle">
+                    <span>Order: </span>
+                    <span className="subtitle_value">{detail.orId}</span>
+                  </div>
+                  <div className="status">
+                    <img src={detail.status === null ? GreyStatus : GreenStatus} />
+                  </div>
                 </div>
-                <div className="subtitle">
-                  <span>Order: </span>
-                  <span className="subtitle_value">{detail.orId}</span>
-                </div>
-                <div className="status">
-                  <img src={detail.status === null ? GreyStatus : GreenStatus} />
-                </div>
-              </div>
-              <HlsVideoPlayer
-                onLoad={onVideoLoad}
-                manifestPath={detail?.videos[videoIndex]?.playlist}
-              />
+                <HlsVideoPlayer
+                  onLoad={onVideoLoad}
+                  manifestPath={detail?.videos[videoIndex]?.playlist}
+                />
               </>
-          }
+            )}
           </div>
         )}
       </IonContent>

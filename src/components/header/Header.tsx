@@ -1,10 +1,18 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react';
+import {
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonTitle,
+  IonSearchbar,
+  IonButton,
+  IonIcon,
+} from '@ionic/react';
+import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-import { IonHeader, IonToolbar, IonButtons, IonTitle, IonSearchbar, IonButton, IonIcon } from "@ionic/react";
-import { useHistory } from "react-router-dom";
-import { Back } from "../../assets/svg/SVGcomponent";
-import { useTranslation } from "react-i18next";
-import "./Header.scss";
+import { Back } from '../../assets/svg/SVGcomponent';
+import './Header.scss';
 
 type HeaderProps = {
   title: ReactNode;
@@ -31,19 +39,21 @@ export const Header: React.FC<HeaderProps> = ({
   const { t } = useTranslation();
 
   const backHandler = () => {
-    onBackClick ? onBackClick() : history.push(backButtonHref || "", { direction: "back" });
+    onBackClick ? onBackClick() : history.push(backButtonHref || '', { direction: 'back' });
   };
   return (
-    <IonHeader className={searchBar ? "" : "ion-no-border"}>
+    <IonHeader className={searchBar ? '' : 'ion-no-border'}>
       <IonToolbar>
         {backButtonHref && (
           <IonButtons slot="start" className="header__start">
             <IonButton onClick={backHandler}>
-              <IonIcon style={{ fontSize: "18px" }} icon={Back} />
+              <IonIcon style={{ fontSize: '18px' }} icon={Back} />
             </IonButton>
           </IonButtons>
         )}
-        <IonTitle className={"header__title " + (backButtonHref || endButton ? "padding" : "")}>{title}</IonTitle>
+        <IonTitle className={'header__title ' + (backButtonHref || endButton ? 'padding' : '')}>
+          {title}
+        </IonTitle>
         {endButton && (
           <IonButtons slot="end" className="header__end">
             {endButton}
@@ -53,10 +63,10 @@ export const Header: React.FC<HeaderProps> = ({
       {searchBar && (
         <IonToolbar className="search__toolbar">
           <IonSearchbar
-            placeholder={searchPlaceholder ?? t("operations.search")}
+            placeholder={searchPlaceholder ?? t('operations.search')}
             debounce={300}
             value={searchText}
-            onIonInput={e => onSearchChange && onSearchChange(e.detail.value!)}
+            onIonInput={(e) => onSearchChange && onSearchChange(e.detail.value!)}
           />
         </IonToolbar>
       )}

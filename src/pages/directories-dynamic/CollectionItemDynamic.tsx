@@ -1,15 +1,17 @@
-import { IonContent, IonIcon, IonPage } from "@ionic/react";
-import { Header } from "../../components/header/Header";
-import { useEffect, useState } from "react";
-import { dynamicApiSlice, useGetCollectionItemQuery } from "../../store/dynamicApiSlice";
-import { directoriesMeta } from "./Meta";
-import Fab from "../../components/fab/Fab";
-import { EditWhiteIcon, TrashBin } from "../../assets/svg/SVGcomponent";
-import { useHistory, useParams } from "react-router-dom";
-import { ConfirmationModal } from "../../components/confirmationModal/confirmationModal";
-import InputReadonly from "../../components/inputs/inputReadonly/inputReadonly";
-import { useAppDispatch } from "../../store";
-import { useTranslation } from "react-i18next";
+import { IonContent, IonIcon, IonPage } from '@ionic/react';
+import { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
+import { Header } from '../../components/header/Header';
+import { dynamicApiSlice, useGetCollectionItemQuery } from '../../store/dynamicApiSlice';
+import Fab from '../../components/fab/Fab';
+import { EditWhiteIcon, TrashBin } from '../../assets/svg/SVGcomponent';
+import { ConfirmationModal } from '../../components/confirmationModal/confirmationModal';
+import InputReadonly from '../../components/inputs/inputReadonly/inputReadonly';
+import { useAppDispatch } from '../../store';
+
+import { directoriesMeta } from './Meta';
 
 type RouteParams = {
   collection: string;
@@ -37,13 +39,13 @@ export const CollectionItemDynamic = () => {
       dynamicApiSlice.endpoints.deleteCollectionItem.initiate({
         meta: directoriesMeta,
         itemId: Number(id),
-      })
+      }),
     );
     history.go(-1);
   };
 
   const onPressEdit = () => {
-    history.push(id + "/update");
+    history.push(id + '/update');
   };
 
   useEffect(() => {
@@ -62,12 +64,14 @@ export const CollectionItemDynamic = () => {
         <Header
           title={data[meta.displayField]}
           backButtonHref={`/configuration/${meta.collection}`}
-          endButton={<IonIcon onClick={onPressDelete} style={{ fontSize: "24px" }} icon={TrashBin}></IonIcon>}
+          endButton={
+            <IonIcon onClick={onPressDelete} style={{ fontSize: '24px' }} icon={TrashBin}></IonIcon>
+          }
         />
       )}
       <IonContent>
         {data &&
-          meta.fields.map(field => {
+          meta.fields.map((field) => {
             if (field.visible === true) {
               return (
                 <InputReadonly
@@ -84,9 +88,9 @@ export const CollectionItemDynamic = () => {
           isOpen={showConfirmationModal}
           onConfirm={deleteItem}
           onClose={onPressClose}
-          title={`${t("operations.delete")} "${data?.["name"]}"?`}
-          confirmText={t("operations.delete")}
-          cancelText={t("operations.cancel")}
+          title={`${t('operations.delete')} "${data?.['name']}"?`}
+          confirmText={t('operations.delete')}
+          cancelText={t('operations.cancel')}
         />
       </IonContent>
     </IonPage>

@@ -1,12 +1,14 @@
-import { useTranslation } from "react-i18next";
-import { FiveS } from "../../../assets/svg/SVGcomponent";
-import RequestReset from "./requestReset/RequestReset";
-import VerifyCode from "./verifyCode/VerifyCode";
-import ResetPassword from "./resetPassword/ResetPassword";
-import { useHistory } from "react-router";
-import Success from "./success/Success";
-import useSessionStorage from "../../../utils/useSessionStorage";
-import { IonContent, IonPage } from "@ionic/react";
+import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router';
+import { IonContent, IonPage } from '@ionic/react';
+
+import { FiveS } from '../../../assets/svg/SVGcomponent';
+import useSessionStorage from '../../../utils/useSessionStorage';
+
+import RequestReset from './requestReset/RequestReset';
+import VerifyCode from './verifyCode/VerifyCode';
+import ResetPassword from './resetPassword/ResetPassword';
+import Success from './success/Success';
 
 interface IRecoverData {
   email: string;
@@ -23,22 +25,25 @@ export interface IRecoverPasswordStepProps {
 const RecoverPassword = () => {
   const { t } = useTranslation();
   const history = useHistory();
-  const [currentStep, setCurrentStep] = useSessionStorage("currentStep", 1);
-  const [recoverData, setRecoverData] = useSessionStorage<IRecoverData>("recoverData", { email: "", code: "" });
+  const [currentStep, setCurrentStep] = useSessionStorage('currentStep', 1);
+  const [recoverData, setRecoverData] = useSessionStorage<IRecoverData>('recoverData', {
+    email: '',
+    code: '',
+  });
 
   const onPrevStep = () => {
     if (currentStep === 1) {
       history.go(-1);
-      setRecoverData({ email: "", code: "" });
+      setRecoverData({ email: '', code: '' });
     }
     setCurrentStep(1);
   };
 
   const onNextStep = () => {
     if (currentStep == 4) {
-      history.push("/");
+      history.push('/');
       setCurrentStep(1);
-      setRecoverData({email: "", code: ""});
+      setRecoverData({ email: '', code: '' });
       return;
     }
     setCurrentStep(currentStep + 1);
@@ -57,7 +62,7 @@ const RecoverPassword = () => {
         ) : (
           <div className="authorization">
             <img className="authorization__logo" src={FiveS} />
-            <h2 className="authorization__title">{`${t("form.auth.signin")} 5S Control`}</h2>
+            <h2 className="authorization__title">{`${t('form.auth.signin')} 5S Control`}</h2>
             <div className="authorization__container">
               {currentStep == 1 && (
                 <RequestReset

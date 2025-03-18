@@ -1,1 +1,1 @@
-export type TimeUnit = 'minutes' | 'hours'
+export type TimeUnit = 'minutes' | 'hours';

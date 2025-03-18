@@ -1,6 +1,8 @@
-import { IonIcon, IonLabel } from "@ionic/react";
-import DateIcon from "../../../assets/svg/calendar.svg";
-import style from "./style.module.scss";
+import { IonIcon, IonLabel } from '@ionic/react';
+
+import DateIcon from '../../../assets/svg/calendar.svg';
+
+import style from './style.module.scss';
 
 interface IInputDate {
   value: string;

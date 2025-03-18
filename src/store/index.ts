@@ -1,30 +1,31 @@
-import { configureStore } from '@reduxjs/toolkit'
-import orderReducer from './orderSlice'
-import userReducer from './userSlice'
-import timespanReducer from './timespanSlice'
-import reportDateSlice from './reportDateSlice'
-import ordersViewDateSlice from './ordersViewDateSlice'
-import workplaceReducer from './workpaceSlice'
-import { dynamicApiSlice } from './dynamicApiSlice'
-import { useDispatch, useSelector } from 'react-redux'
+import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
+
+import orderReducer from './orderSlice';
+import userReducer from './userSlice';
+import timespanReducer from './timespanSlice';
+import reportDateSlice from './reportDateSlice';
+import ordersViewDateSlice from './ordersViewDateSlice';
+import workplaceReducer from './workpaceSlice';
+import { dynamicApiSlice } from './dynamicApiSlice';
 
 const store = configureStore({
-    reducer: {
-        order: orderReducer,
-        user: userReducer,
-        currentTimespan: timespanReducer,
-        reportDate: reportDateSlice,
-        ordersViewDate: ordersViewDateSlice,
-        workplace: workplaceReducer,
-        [dynamicApiSlice.reducerPath]: dynamicApiSlice.reducer,
-    },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({ serializableCheck: false }).concat(dynamicApiSlice.middleware),
+  reducer: {
+    order: orderReducer,
+    user: userReducer,
+    currentTimespan: timespanReducer,
+    reportDate: reportDateSlice,
+    ordersViewDate: ordersViewDateSlice,
+    workplace: workplaceReducer,
+    [dynamicApiSlice.reducerPath]: dynamicApiSlice.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }).concat(dynamicApiSlice.middleware),
 });
 
 export default store;
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
-export const useAppDispatch = useDispatch.withTypes<AppDispatch>()
-export const useAppSelector = useSelector.withTypes<RootState>()
+export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
+export const useAppSelector = useSelector.withTypes<RootState>();

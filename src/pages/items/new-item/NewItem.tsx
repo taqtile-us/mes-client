@@ -1,20 +1,21 @@
-import { ROUTES } from "../../../shared/constants/routes";
-import { useTranslation } from "react-i18next";
-import { ChangeEvent, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import SingleInputPage from "../../../ui/signleInputPage/SingleInputPage";
-import { createDirectory } from "../../../api/directory/directory";
-import { useCookies } from "react-cookie";
-import { IonContent, IonPage } from "@ionic/react";
-import { Header } from "../../../components/header/Header";
-import { ConfirmationModal } from "../../../components/confirmationModal/confirmationModal";
-import { createItem } from "../../../api/items";
+import { useTranslation } from 'react-i18next';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { IonContent, IonPage } from '@ionic/react';
+
+import SingleInputPage from '../../../ui/signleInputPage/SingleInputPage';
+import { createDirectory } from '../../../api/directory/directory';
+import { ROUTES } from '../../../shared/constants/routes';
+import { Header } from '../../../components/header/Header';
+import { ConfirmationModal } from '../../../components/confirmationModal/confirmationModal';
+import { createItem } from '../../../api/items';
 
 const NewItem = () => {
   const { t } = useTranslation();
   const history = useHistory();
-  const [cookies] = useCookies(["token"]);
-  const [itemName, setItemName] = useState("");
+  const [cookies] = useCookies(['token']);
+  const [itemName, setItemName] = useState('');
   const [initialValue, setInitialValue] = useState(itemName);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [valueIsChanged, setValueIsChanged] = useState(false);
@@ -24,17 +25,17 @@ const NewItem = () => {
   }, []);
 
   const navigateBack = () => {
-    history.push(ROUTES.ITEMS, { direction: "back" });
+    history.push(ROUTES.ITEMS, { direction: 'back' });
   };
 
   const handleSave = () => {
     if (itemName.trim()) {
       createItem(itemName.trim(), cookies.token)
         .then(() => navigateBack())
-        .catch(error => console.error(error));
+        .catch((error) => console.error(error));
       return;
     }
-    console.error("empty input");
+    console.error('empty input');
   };
 
   const handleBackClick = () => {
@@ -45,7 +46,7 @@ const NewItem = () => {
     }
   };
 
-  const handleChangeInput = e => {
+  const handleChangeInput = (e) => {
     setItemName(e.target.value);
     if (e.target.value.trim() !== initialValue.trim()) {
       setValueIsChanged(true);
@@ -65,15 +66,15 @@ const NewItem = () => {
   return (
     <IonPage>
       <Header
-        title={t("directory.items.newItem")}
+        title={t('directory.items.newItem')}
         onBackClick={handleBackClick}
         backButtonHref={ROUTES.OPERATIONS}
       ></Header>
       <IonContent>
         <SingleInputPage
-          title={t("directory.items.newItem")}
+          title={t('directory.items.newItem')}
           backHref={ROUTES.ITEMS}
-          label={t("directory.items.name")}
+          label={t('directory.items.name')}
           value={itemName}
           required
           handleChange={handleChangeInput}
@@ -85,9 +86,9 @@ const NewItem = () => {
         isOpen={isOpenModal}
         onClose={handleCloseModal}
         onConfirm={handleConfirmModal}
-        title={`${t("operations.saveChanges")}?`}
-        confirmText={t("operations.save")}
-        cancelText={t("operations.cancel")}
+        title={`${t('operations.saveChanges')}?`}
+        confirmText={t('operations.save')}
+        cancelText={t('operations.cancel')}
       />
     </IonPage>
   );

@@ -1,15 +1,15 @@
-import { useIonViewDidEnter, useIonViewWillLeave } from "@ionic/react";
-import { Html5Qrcode } from "html5-qrcode";
-import { useEffect, useRef, useState } from "react";
-import "./qrScanner.scss";
-import { useTranslation } from "react-i18next";
+import { useIonViewDidEnter, useIonViewWillLeave } from '@ionic/react';
+import { Html5Qrcode } from 'html5-qrcode';
+import { useEffect, useRef, useState } from 'react';
+import './qrScanner.scss';
+import { useTranslation } from 'react-i18next';
 
 type QrCodeProps = {
   qrCodeSuccessCallback: (decodedText: string, decodedResult: any) => void;
 };
 
-const QR_ELEMENT_ID = "qr-reader";
-const cameraIdOrConfig = { facingMode: "environment" };
+const QR_ELEMENT_ID = 'qr-reader';
+const cameraIdOrConfig = { facingMode: 'environment' };
 const Html5QrcodeCameraScanConfig = {
   fps: 10,
   qrbox: 250,
@@ -28,18 +28,17 @@ const QrCode = ({ qrCodeSuccessCallback }: QrCodeProps) => {
     startScanning();
 
     return () => {
-      stopScanning(); 
+      stopScanning();
     };
   }, []);
 
   useIonViewDidEnter(() => {
     startScanning();
-  })
+  });
 
   useIonViewWillLeave(() => {
     stopScanning();
   });
-
 
   const startScanning = async () => {
     setScanning(true);
@@ -53,28 +52,29 @@ const QrCode = ({ qrCodeSuccessCallback }: QrCodeProps) => {
           if (decodedResult) {
             qrCodeSuccessCallback(decodedText, decodedResult);
           } else {
-            console.warn("Unsupported format detected:", decodedResult);
+            console.warn('Unsupported format detected:', decodedResult);
           }
         }
       },
-      errorMessage => {
+      (errorMessage) => {
         setError(errorMessage);
-      }
+      },
     );
   };
 
   const stopScanning = async () => {
     const scanner = qrCodeReaderRef?.current;
-    
+
     if (scanner?.isScanning) {
-      await scanner?.stop()
+      await scanner
+        ?.stop()
         .then(() => {
           setScanning(false);
           setQrCode(null);
         })
-        .catch(err => {
-          console.error("Failed to stop scanning:", err);
-        }); 
+        .catch((err) => {
+          console.error('Failed to stop scanning:', err);
+        });
     }
   };
 

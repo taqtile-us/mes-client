@@ -1,22 +1,23 @@
-import { IonContent, IonItem, IonList, IonPage, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../components/header/Header";
-import { ROUTES } from "../../shared/constants/routes";
-import { useTranslation } from "react-i18next";
-import { Plus } from "../../assets/svg/SVGcomponent";
-import Fab from "../../components/fab/Fab";
-import { useHistory } from "react-router-dom";
-import { useEffect, useState } from "react";
-import MenuListButton from "../../components/menuListButton/MenuListButton";
-import { useCookies } from "react-cookie";
-import { getAllDirectories } from "../../api/directory/directory";
-import { Preloader } from "../../components/preloader/preloader";
-import { Directory } from "../../models/interfaces/directory.interface";
+import { IonContent, IonItem, IonList, IonPage, useIonViewWillEnter } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+
+import { Header } from '../../components/header/Header';
+import { ROUTES } from '../../shared/constants/routes';
+import { Plus } from '../../assets/svg/SVGcomponent';
+import Fab from '../../components/fab/Fab';
+import MenuListButton from '../../components/menuListButton/MenuListButton';
+import { getAllDirectories } from '../../api/directory/directory';
+import { Preloader } from '../../components/preloader/preloader';
+import { Directory } from '../../models/interfaces/directory.interface';
 
 const GeneralDirectories = () => {
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const [items, setItems] = useState<Directory[]>([]);
   const [filteredItems, setFilteredItems] = useState<Directory[]>([]);
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>('');
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -34,13 +35,13 @@ const GeneralDirectories = () => {
   };
 
   useIonViewWillEnter(() => {
-    setSearchText("");
+    setSearchText('');
     setLoading(true);
     getAllDirectories(cookies.token)
-      .then(response => {
+      .then((response) => {
         setItems(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       })
       .finally(() => {
@@ -49,7 +50,9 @@ const GeneralDirectories = () => {
   });
 
   useEffect(() => {
-    const filtered = items.filter(item => item.name.toLowerCase().includes(searchText.toLowerCase()));
+    const filtered = items.filter((item) =>
+      item.name.toLowerCase().includes(searchText.toLowerCase()),
+    );
     setFilteredItems(filtered);
   }, [searchText]);
 
@@ -60,7 +63,7 @@ const GeneralDirectories = () => {
   return (
     <IonPage>
       <Header
-        title={t("menu.generalDirectories")}
+        title={t('menu.generalDirectories')}
         backButtonHref={ROUTES.CONFIGURATION}
         searchBar={Boolean(items?.length)}
         searchText={searchText}
@@ -76,7 +79,7 @@ const GeneralDirectories = () => {
             <Fab icon={Plus} handleFabClick={() => handleFabClick(ROUTES.DIRECTORIES_ADD)} />
             {items.length === 0 ? (
               <IonList inset={true}>
-                <IonItem>{t("messages.noDatabases")}</IonItem>
+                <IonItem>{t('messages.noDatabases')}</IonItem>
               </IonList>
             ) : (
               <IonList inset>
@@ -84,7 +87,9 @@ const GeneralDirectories = () => {
                   <MenuListButton
                     key={id}
                     title={name}
-                    handleItemClick={() => handleItemClick(ROUTES.DIRECTORIES_ITEM_CARD(String(id)))}
+                    handleItemClick={() =>
+                      handleItemClick(ROUTES.DIRECTORIES_ITEM_CARD(String(id)))
+                    }
                   />
                 ))}
               </IonList>

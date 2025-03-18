@@ -1,13 +1,14 @@
-import { IonContent, IonPage, IonToast, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../../components/header/Header";
-import { useTranslation } from "react-i18next";
-import { ROUTES } from "../../../shared/constants/routes";
-import { useParams } from "react-router";
-import { Table } from "../../../components/table/Table";
-import { ORDER_ITEM_REQUEST } from "../../../dispatcher";
-import { useState } from "react";
-import { Preloader } from "../../../components/preloader/preloader";
-import { TOAST_DELAY } from "../../../constants/toastDelay";
+import { IonContent, IonPage, IonToast, useIonViewWillEnter } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router';
+import { useState } from 'react';
+
+import { Header } from '../../../components/header/Header';
+import { ROUTES } from '../../../shared/constants/routes';
+import { Table } from '../../../components/table/Table';
+import { ORDER_ITEM_REQUEST } from '../../../dispatcher';
+import { Preloader } from '../../../components/preloader/preloader';
+import { TOAST_DELAY } from '../../../constants/toastDelay';
 
 const OrderProducts = () => {
   const { orderId } = useParams<{ orderId: string }>();
@@ -17,20 +18,27 @@ const OrderProducts = () => {
   const { t } = useTranslation();
 
   useIonViewWillEnter(() => {
-    ORDER_ITEM_REQUEST.getOrderItems(parseInt(orderId, 10), setOrderItems, setLoading, setToastMessage);
+    ORDER_ITEM_REQUEST.getOrderItems(
+      parseInt(orderId, 10),
+      setOrderItems,
+      setLoading,
+      setToastMessage,
+    );
   });
 
-  const productNames = Array.from(new Set(orderItems.map(({ orderItem }) => orderItem.productName)));
+  const productNames = Array.from(
+    new Set(orderItems.map(({ orderItem }) => orderItem.productName)),
+  );
   const rows = productNames.map((product, ind) => ({
     id: ind,
     values: [String(ind + 1), String(product)],
-    navigateTo: "",
+    navigateTo: '',
     navigationAllowed: false,
   }));
 
   return (
     <IonPage color="light">
-      <Header title={t("text.products")} backButtonHref={ROUTES.ORDER(orderId)} />
+      <Header title={t('text.products')} backButtonHref={ROUTES.ORDER(orderId)} />
       <IonContent>
         {isLoading ? (
           <div className="preloader">
@@ -39,10 +47,10 @@ const OrderProducts = () => {
         ) : (
           <Table
             cols={[
-              { label: t("orders.id"), size: 1 },
-              { label: t("orders.name"), size: 4 },
+              { label: t('orders.id'), size: 1 },
+              { label: t('orders.name'), size: 4 },
             ]}
-            label={""}
+            label={''}
             rows={rows}
           />
         )}

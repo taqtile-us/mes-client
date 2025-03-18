@@ -1,17 +1,17 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { API_BASE_URL } from "../config";
-import { getAxiosConfig } from "../utils/getAxiosConfig";
+import { API_BASE_URL } from '../config';
+import { getAxiosConfig } from '../utils/getAxiosConfig';
 
-const API_CAMERASELECT = "auth/odoo/django/api/camera-algorithms/camera/";
-const API_CAMERACREATE = "auth/odoo/django/api/cameras/create-camera/";
-const API_CAMERADELETE = "auth/odoo/django/api/camera-algorithms/delete-camera/";
-const API_CAMERAFIND = "auth/odoo/django/api/core/find_cameras/";
-const API_CAMERACHECK = "auth/odoo/django/api/cam-stream/cameras/verification";
-const API_CAMERAZONES = "auth/odoo/django/api/camera-algorithms/zone-cameras/";
-const API_ZONES = "auth/odoo/django/api/camera-algorithms/zone/";
-const API_ALGORITHMZONES = "auth/odoo/django/api/camera-algorithms/zones-algorithms/";
-const API_VIDEO = "auth/odoo/django/api/cam-stream/videos/availability";
+const API_CAMERASELECT = 'auth/odoo/django/api/camera-algorithms/camera/';
+const API_CAMERACREATE = 'auth/odoo/django/api/cameras/create-camera/';
+const API_CAMERADELETE = 'auth/odoo/django/api/camera-algorithms/delete-camera/';
+const API_CAMERAFIND = 'auth/odoo/django/api/core/find_cameras/';
+const API_CAMERACHECK = 'auth/odoo/django/api/cam-stream/cameras/verification';
+const API_CAMERAZONES = 'auth/odoo/django/api/camera-algorithms/zone-cameras/';
+const API_ZONES = 'auth/odoo/django/api/camera-algorithms/zone/';
+const API_ALGORITHMZONES = 'auth/odoo/django/api/camera-algorithms/zones-algorithms/';
+const API_VIDEO = 'auth/odoo/django/api/cam-stream/videos/availability';
 
 export const getSelectedCameras = (hostname, cookies) => {
   return axios.get(`${API_BASE_URL}${API_CAMERASELECT}`, getAxiosConfig(cookies));
@@ -24,9 +24,9 @@ export const postCamera = (hostname, IPCamera, username, password, cookies) => {
       ip: IPCamera,
       username: username,
       password: password,
-      url: "http://192.168.1.110",
+      url: 'http://192.168.1.110',
     },
-    getAxiosConfig(cookies)
+    getAxiosConfig(cookies),
   );
 };
 
@@ -40,10 +40,10 @@ export const findCamera = () => {
 
 export const checkCamera = (hostname, cameraIP, username, password) => {
   return fetch(`${API_BASE_URL}${API_CAMERACHECK}`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      "ngrok-skip-browser-warning": "true",
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true',
     },
     body: JSON.stringify({
       ip: cameraIP,
@@ -72,7 +72,7 @@ export const deleteCameraZones = (hostname, cookies, id) => {
 export const getAlgorithmZones = (hostname, cookies, camera) => {
   return axios.get(
     `${API_BASE_URL}${API_ALGORITHMZONES}?camera=${camera}`,
-    getAxiosConfig(cookies)
+    getAxiosConfig(cookies),
   );
 };
 
@@ -80,7 +80,7 @@ export const getVideo = (hostname, body) => {
   const { time, camera_ip } = body;
   return axios.get(
     `${API_BASE_URL}${API_VIDEO}?time=${time}&cameraIp=${camera_ip}`,
-    getAxiosConfig()
+    getAxiosConfig(),
   );
 };
 

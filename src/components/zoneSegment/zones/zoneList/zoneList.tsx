@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
-import styles from "../zones.module.scss";
-import Item from "./zoneItem";
-import { useTranslation } from "react-i18next";
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import styles from '../zones.module.scss';
+
+import Item from './zoneItem';
 
 export const ZoneList = ({
   saveZone,
@@ -28,8 +30,10 @@ export const ZoneList = ({
   };
 
   useEffect(() => {
-    const workplaces = cameraZones.map(zone => zone.workplace);
-    const filteredWorkplaces = workplaceList.filter(workplace => !workplaces.includes(workplace.operationName));
+    const workplaces = cameraZones.map((zone) => zone.workplace);
+    const filteredWorkplaces = workplaceList.filter(
+      (workplace) => !workplaces.includes(workplace.operationName),
+    );
     setWrokplaces(filteredWorkplaces);
     if (currentZoneId !== -1) {
       setIsNewZone(false);
@@ -44,9 +48,9 @@ export const ZoneList = ({
   return (
     <>
       <div className={styles.zones__header}>
-        <span>{t("camera.zones")}</span>
+        <span>{t('camera.zones')}</span>
         <span className={`${isBlockAdd ? styles.added : styles.add}`} onClick={addZoneHandler}>
-          + {t("camera.zoneSegment.add")}
+          + {t('camera.zoneSegment.add')}
         </span>
       </div>
 
@@ -70,15 +74,15 @@ export const ZoneList = ({
               name={zona.name}
               workplace={
                 zona.workplace && workplaceList.length > 0
-                  ? workplaceList.filter(item => item.operationName === zona.workplace)[0]
-                  : ""
+                  ? workplaceList.filter((item) => item.operationName === zona.workplace)[0]
+                  : ''
               }
-              setItemName={name => setItemName(name)}
+              setItemName={(name) => setItemName(name)}
               itemName={itemName}
-              setCurrentZoneId={id => setCurrentZoneId(id)}
+              setCurrentZoneId={(id) => setCurrentZoneId(id)}
               zona={zona}
               currentZoneId={currentZoneId}
-              setWorkplaceToSend={e => setWorkplaceToSend(e)}
+              setWorkplaceToSend={(e) => setWorkplaceToSend(e)}
               workplaceComboBox={workplace}
               isOpen={undefined}
               numberOfZones={undefined}
@@ -89,15 +93,15 @@ export const ZoneList = ({
             workplaceList={workplaces}
             saveZone={saveZone}
             deleteZone={deleteZone}
-            name={""}
-            workplace={""}
-            setItemName={name => setItemName(name)}
+            name={''}
+            workplace={''}
+            setItemName={(name) => setItemName(name)}
             itemName={itemName}
             isOpen={true}
-            setCurrentZoneId={id => setCurrentZoneId(id)}
+            setCurrentZoneId={(id) => setCurrentZoneId(id)}
             zona={{ id: -1 }}
             currentZoneId={currentZoneId}
-            setWorkplaceToSend={e => setWorkplaceToSend(e)}
+            setWorkplaceToSend={(e) => setWorkplaceToSend(e)}
             numberOfZones={cameraZones.length}
             workplaceComboBox={undefined}
           />

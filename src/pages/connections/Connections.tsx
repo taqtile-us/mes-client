@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { IonContent, IonList, IonItem, IonPage } from "@ionic/react";
-import { getConnectionsToDatabases } from "../../api/connections";
-import { useCookies } from "react-cookie";
-import { ConnectionsList } from "../../components/connectionsList/ConnectionsList";
-import { Preloader } from "../../components/preloader/preloader";
-import { ConnectionItem } from "../../models/interfaces/connectionItem.interface";
-import { ROUTES } from "../../shared/constants/routes";
-import { Header } from "../../components/header/Header";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useState } from 'react';
+import { IonContent, IonList, IonItem, IonPage } from '@ionic/react';
+import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next';
+
+import { getConnectionsToDatabases } from '../../api/connections';
+import { ConnectionsList } from '../../components/connectionsList/ConnectionsList';
+import { Preloader } from '../../components/preloader/preloader';
+import { ConnectionItem } from '../../models/interfaces/connectionItem.interface';
+import { ROUTES } from '../../shared/constants/routes';
+import { Header } from '../../components/header/Header';
 
 const Connections: React.FC = () => {
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const [connectionItems, setConnectionItems] = useState<ConnectionItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { t } = useTranslation();
@@ -34,14 +35,14 @@ const Connections: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
-        <Header title={t("config.erp")} backButtonHref={ROUTES.CONFIGURATION} />
+        <Header title={t('config.erp')} backButtonHref={ROUTES.CONFIGURATION} />
         {isLoading ? (
           <div className="preloader">
             <Preloader />
           </div>
         ) : connectionItems.length === 0 ? (
           <IonList inset={true}>
-            <IonItem>{t("messages.noDatabases")}</IonItem>
+            <IonItem>{t('messages.noDatabases')}</IonItem>
           </IonList>
         ) : (
           <ConnectionsList items={connectionItems} />

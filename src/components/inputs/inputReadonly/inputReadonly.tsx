@@ -1,5 +1,5 @@
-import { IonItem, IonLabel } from "@ionic/react";
-import "./inputReadonly.scss";
+import { IonItem, IonLabel } from '@ionic/react';
+import './inputReadonly.scss';
 
 type InputReadonlyProps = {
   label: string;

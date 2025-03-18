@@ -1,18 +1,19 @@
-import { useHistory, useParams } from "react-router-dom";
-import { ROUTES } from "../../../shared/constants/routes";
-import { useTranslation } from "react-i18next";
-import Card from "../../../ui/card/Card";
-import { useState } from "react";
-import { deleteDirectory, getDirectory } from "../../../api/directory/directory";
-import { useCookies } from "react-cookie";
-import { Directory } from "../../../models/interfaces/directory.interface";
-import { Preloader } from "../../../components/preloader/preloader";
-import { IonContent, IonIcon, IonPage, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../../components/header/Header";
-import { TrashBin } from "../../../assets/svg/SVGcomponent";
+import { useHistory, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { IonContent, IonIcon, IonPage, useIonViewWillEnter } from '@ionic/react';
+
+import { ROUTES } from '../../../shared/constants/routes';
+import Card from '../../../ui/card/Card';
+import { deleteDirectory, getDirectory } from '../../../api/directory/directory';
+import { Directory } from '../../../models/interfaces/directory.interface';
+import { Preloader } from '../../../components/preloader/preloader';
+import { Header } from '../../../components/header/Header';
+import { TrashBin } from '../../../assets/svg/SVGcomponent';
 
 const DirectoryCard = () => {
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const { id }: any = useParams();
   const { t } = useTranslation();
   const history = useHistory();
@@ -21,10 +22,10 @@ const DirectoryCard = () => {
 
   useIonViewWillEnter(() => {
     getDirectory(Number(id!), cookies.token)
-      .then(response => {
+      .then((response) => {
         setDirectory(response.data);
       })
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
   });
 
   const handleCloseModal = () => {
@@ -44,7 +45,9 @@ const DirectoryCard = () => {
       <Header
         title={directory?.name}
         backButtonHref={ROUTES.GENEREAL_DIRECTORIES}
-        endButton={<IonIcon onClick={handleOpenModal} style={{ fontSize: "24px" }} icon={TrashBin}></IonIcon>}
+        endButton={
+          <IonIcon onClick={handleOpenModal} style={{ fontSize: '24px' }} icon={TrashBin}></IonIcon>
+        }
       />
       <IonContent>
         {directory ? (

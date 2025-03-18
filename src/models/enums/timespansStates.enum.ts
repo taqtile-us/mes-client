@@ -1,4 +1,4 @@
 export enum TIMESPAN_STATES {
-    INPROCESS = 'in process',
-    DONE = 'done'
+  INPROCESS = 'in process',
+  DONE = 'done',
 }

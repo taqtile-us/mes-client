@@ -1,7 +1,9 @@
-import { IonLabel, IonSelect, IonSelectOption } from "@ionic/react";
-import "./Select.scss";
-import { SelectItem } from "../../../models/types/selectItem";
-import { useTranslation } from "react-i18next";
+import { IonLabel, IonSelect, IonSelectOption } from '@ionic/react';
+
+import './Select.scss';
+import { useTranslation } from 'react-i18next';
+
+import { SelectItem } from '../../../models/types/selectItem';
 
 type SelectProps = {
   value: string;
@@ -13,8 +15,16 @@ type SelectProps = {
   isLoading?: boolean;
 };
 
-const Select = ({ label, placeholder, selectList, value, handleChange, handleFocus, isLoading}: SelectProps) => {
-  const {t} = useTranslation();
+const Select = ({
+  label,
+  placeholder,
+  selectList,
+  value,
+  handleChange,
+  handleFocus,
+  isLoading,
+}: SelectProps) => {
+  const { t } = useTranslation();
 
   return (
     <div className="select__wrapper">
@@ -28,15 +38,17 @@ const Select = ({ label, placeholder, selectList, value, handleChange, handleFoc
         placeholder={placeholder}
         className="select"
       >
-
-        {isLoading ? 
-          <IonSelectOption disabled>{t("messages.loading")}...</IonSelectOption> 
-          : (selectList.length > 0 ? selectList.map(({ label, value }) => (
-          <IonSelectOption key={value} value={value}>
-            {label}
-          </IonSelectOption>)) 
-          : <IonSelectOption disabled>{t("messages.noData")}</IonSelectOption>)
-        }
+        {isLoading ? (
+          <IonSelectOption disabled>{t('messages.loading')}...</IonSelectOption>
+        ) : selectList.length > 0 ? (
+          selectList.map(({ label, value }) => (
+            <IonSelectOption key={value} value={value}>
+              {label}
+            </IonSelectOption>
+          ))
+        ) : (
+          <IonSelectOption disabled>{t('messages.noData')}</IonSelectOption>
+        )}
       </IonSelect>
     </div>
   );

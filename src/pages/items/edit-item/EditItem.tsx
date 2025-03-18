@@ -1,24 +1,25 @@
-import { useTranslation } from "react-i18next";
-import { ROUTES } from "../../../shared/constants/routes";
-import { useHistory, useParams } from "react-router-dom";
-import SingleInputPage from "../../../ui/signleInputPage/SingleInputPage";
-import { useState } from "react";
-import { useCookies } from "react-cookie";
-import { Preloader } from "../../../components/preloader/preloader";
-import { IonContent, IonPage, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../../components/header/Header";
-import { ConfirmationModal } from "../../../components/confirmationModal/confirmationModal";
-import { getOperation, updateOperation } from "../../../api/operations";
-import { TimeUnit } from "../../../models/types/timeUnit";
-import { getItem, updateItem } from "../../../api/items";
+import { useTranslation } from 'react-i18next';
+import { useHistory, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { IonContent, IonPage, useIonViewWillEnter } from '@ionic/react';
+
+import { Preloader } from '../../../components/preloader/preloader';
+import SingleInputPage from '../../../ui/signleInputPage/SingleInputPage';
+import { ROUTES } from '../../../shared/constants/routes';
+import { Header } from '../../../components/header/Header';
+import { ConfirmationModal } from '../../../components/confirmationModal/confirmationModal';
+import { getOperation, updateOperation } from '../../../api/operations';
+import { TimeUnit } from '../../../models/types/timeUnit';
+import { getItem, updateItem } from '../../../api/items';
 
 const EditItem = () => {
   const { t } = useTranslation();
   const { id }: { id: string } = useParams();
   const history = useHistory();
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const [loading, setLoading] = useState(true);
-  const [itemName, setItemName] = useState("");
+  const [itemName, setItemName] = useState('');
   const [initialValue, setInitialValue] = useState(itemName);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [valueIsChanged, setValueIsChanged] = useState(false);
@@ -27,10 +28,10 @@ const EditItem = () => {
     setInitialValue(itemName);
     setLoading(true);
     getItem(Number(id), cookies.token)
-      .then(response => {
+      .then((response) => {
         setItemName(response.data.name);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       })
       .finally(() => {
@@ -39,19 +40,19 @@ const EditItem = () => {
   });
 
   const navigateBack = () => {
-    history.push(ROUTES.ITEM(id), { direction: "back" });
+    history.push(ROUTES.ITEM(id), { direction: 'back' });
   };
 
   const handleSave = () => {
     if (itemName.trim()) {
       updateItem(Number(id), itemName.trim(), cookies.token)
         .then(() => navigateBack())
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
       return;
     }
-    console.error("empty input");
+    console.error('empty input');
   };
 
   const handleBackClick = () => {
@@ -62,7 +63,7 @@ const EditItem = () => {
     }
   };
 
-  const handleChangeInput = e => {
+  const handleChangeInput = (e) => {
     setItemName(e.target.value);
     if (e.target.value.trim() !== initialValue.trim()) {
       setValueIsChanged(true);
@@ -81,7 +82,11 @@ const EditItem = () => {
 
   return (
     <IonPage>
-      <Header title={t("directory.items.edit")} onBackClick={handleBackClick} backButtonHref={ROUTES.ITEM(id)}></Header>
+      <Header
+        title={t('directory.items.edit')}
+        onBackClick={handleBackClick}
+        backButtonHref={ROUTES.ITEM(id)}
+      ></Header>
       <IonContent>
         {loading ? (
           <div className="preloader">
@@ -90,7 +95,7 @@ const EditItem = () => {
         ) : (
           <SingleInputPage
             backHref={ROUTES.ITEM(id)}
-            label={t("directory.items.name")}
+            label={t('directory.items.name')}
             value={itemName}
             required
             handleChange={handleChangeInput}
@@ -103,9 +108,9 @@ const EditItem = () => {
         isOpen={isOpenModal}
         onClose={handleCloseModal}
         onConfirm={handleConfirmModal}
-        title={`${t("operations.saveChanges")}?`}
-        confirmText={t("operations.save")}
-        cancelText={t("operations.cancel")}
+        title={`${t('operations.saveChanges')}?`}
+        confirmText={t('operations.save')}
+        cancelText={t('operations.cancel')}
       />
     </IonPage>
   );

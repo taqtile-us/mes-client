@@ -1,13 +1,13 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { API_BASE_URL } from "../config";
-import { getAxiosConfig } from "../utils/getAxiosConfig";
+import { API_BASE_URL } from '../config';
+import { getAxiosConfig } from '../utils/getAxiosConfig';
 
-const API_ALGORITHM = "auth/odoo/django/api/camera-algorithms/algorithms-detail/";
-const API_POSTALGORITHM = "auth/odoo/django/api/camera-algorithms/create-process/";
-const API_GETPROCESS = "auth/odoo/django/api/camera-algorithms/get-process/";
-const API_POSTOPERATIONID = "auth/odoo/django/api/order/index_stanowisko/";
-const API_UPLOAD = "auth/odoo/django/api/camera-algorithms/upload-algorithm/";
+const API_ALGORITHM = 'auth/odoo/django/api/camera-algorithms/algorithms-detail/';
+const API_POSTALGORITHM = 'auth/odoo/django/api/camera-algorithms/create-process/';
+const API_GETPROCESS = 'auth/odoo/django/api/camera-algorithms/get-process/';
+const API_POSTOPERATIONID = 'auth/odoo/django/api/order/index_stanowisko/';
+const API_UPLOAD = 'auth/odoo/django/api/camera-algorithms/upload-algorithm/';
 
 export const getAveilableAlgorithms = (hostname, cookies) => {
   return axios.get(`${API_BASE_URL}${API_ALGORITHM}`, getAxiosConfig(cookies));

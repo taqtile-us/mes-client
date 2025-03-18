@@ -1,28 +1,29 @@
-import { useParams } from "react-router-dom";
-import { ROUTES } from "../../../shared/constants/routes";
-import Card from "../../../ui/card/Card";
-import { useState } from "react";
-import { useCookies } from "react-cookie";
-import { Preloader } from "../../../components/preloader/preloader";
-import { IonContent, IonPage, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../../components/header/Header";
-import { getOperation } from "../../../api/operations";
-import { IOperation } from "../../../models/interfaces/operation.interface";
-import { useTranslation } from "react-i18next";
+import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { IonContent, IonPage, useIonViewWillEnter } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+
+import { ROUTES } from '../../../shared/constants/routes';
+import Card from '../../../ui/card/Card';
+import { Preloader } from '../../../components/preloader/preloader';
+import { Header } from '../../../components/header/Header';
+import { getOperation } from '../../../api/operations';
+import { IOperation } from '../../../models/interfaces/operation.interface';
 
 const Operation = () => {
   const { t } = useTranslation();
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const { id }: { id: string } = useParams();
   const [operation, setOperation] = useState<IOperation>();
   const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
 
   useIonViewWillEnter(() => {
     getOperation(Number(id), cookies.token)
-      .then(response => {
+      .then((response) => {
         setOperation(response.data);
       })
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
   });
 
   const handleCloseModal = () => {
@@ -42,7 +43,7 @@ const Operation = () => {
             <Card
               deleteCard={deleteCard}
               itemTitle={operation.name}
-              titleLabel={t("directory.operations.name")}
+              titleLabel={t('directory.operations.name')}
               backHref={ROUTES.OPERATIONS}
               editHref={ROUTES.OPERATION_EDIT(id)}
               showConfirmationModal={showConfirmationModal}

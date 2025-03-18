@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { IonButton, IonLabel, IonList, IonModal } from "@ionic/react";
-import styles from "./styles.module.scss";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useState } from 'react';
+import { IonButton, IonLabel, IonList, IonModal } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+
+import styles from './styles.module.scss';
 const ModalSave = ({ isModalOpen, setIsModalOpen, handleSubmit }: IModal) => {
   const { t } = useTranslation();
   return (
     <IonModal isOpen={isModalOpen} onDidDismiss={() => setIsModalOpen(false)}>
       <IonList className={styles.list}>
-        <IonLabel className={styles.label}>{t("operations.saveChanges")}?</IonLabel>
+        <IonLabel className={styles.label}>{t('operations.saveChanges')}?</IonLabel>
         <IonList className={styles.list} class="ion-padding">
-          <IonButton onClick={handleSubmit}>{t("operations.save")}</IonButton>
+          <IonButton onClick={handleSubmit}>{t('operations.save')}</IonButton>
           <IonButton color="danger" fill="outline" onClick={() => setIsModalOpen(false)}>
-            {t("operations.cancel")}
+            {t('operations.cancel')}
           </IonButton>
         </IonList>
       </IonList>

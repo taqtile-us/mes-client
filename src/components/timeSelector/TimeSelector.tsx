@@ -1,7 +1,8 @@
-import { IonButton, IonDatetime, IonModal } from "@ionic/react";
-import { RefObject, useState } from "react";
-import { useTranslation } from "react-i18next";
-import styles from "./timeSelector.module.css";
+import { IonButton, IonDatetime, IonModal } from '@ionic/react';
+import { RefObject, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import styles from './timeSelector.module.css';
 
 type TimeSelectorProps = {
   time: string;
@@ -37,7 +38,7 @@ const TimeSelector = ({ time, modalRef, setTime, setSave }: TimeSelectorProps) =
       <IonButton
         size="small"
         fill="outline"
-        className={`${!isModalOpen && "outlined"} ${styles.button}`}
+        className={`${!isModalOpen && 'outlined'} ${styles.button}`}
         onClick={handleTimeClick}
       >
         {time}
@@ -49,12 +50,12 @@ const TimeSelector = ({ time, modalRef, setTime, setSave }: TimeSelectorProps) =
           value={selectedTime}
           onIonChange={(e) => setSelectedTime(e.detail.value as string)}
         />
-        <IonButton onClick={handleSave} style={{ margin: ".5rem", marginBottom: 0 }}>
-          {t("operations.save")}
+        <IonButton onClick={handleSave} style={{ margin: '.5rem', marginBottom: 0 }}>
+          {t('operations.save')}
         </IonButton>
-        <IonButton color="danger" style={{ margin: ".5rem" }} fill="outline" onClick={handleCancel}>
-          {t("operations.cancel")}
-        </IonButton>{" "}
+        <IonButton color="danger" style={{ margin: '.5rem' }} fill="outline" onClick={handleCancel}>
+          {t('operations.cancel')}
+        </IonButton>{' '}
       </IonModal>
     </>
   );

@@ -1,21 +1,25 @@
-import { useTranslation } from "react-i18next";
-import { ROUTES } from "../../../../shared/constants/routes";
-import { useHistory, useParams } from "react-router-dom";
-import SingleInputPage from "../../../../ui/signleInputPage/SingleInputPage";
-import { useState } from "react";
-import { useCookies } from "react-cookie";
-import { Preloader } from "../../../../components/preloader/preloader";
-import { IonContent, IonPage, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../../../components/header/Header";
-import { getDirectoryCategory, updateDirectoryCategory } from "../../../../api/directory/directoryCategories";
-import { Directory } from "../../../../models/interfaces/directory.interface";
-import { ConfirmationModal } from "../../../../components/confirmationModal/confirmationModal";
+import { useTranslation } from 'react-i18next';
+import { useHistory, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { IonContent, IonPage, useIonViewWillEnter } from '@ionic/react';
+
+import { Preloader } from '../../../../components/preloader/preloader';
+import SingleInputPage from '../../../../ui/signleInputPage/SingleInputPage';
+import { ROUTES } from '../../../../shared/constants/routes';
+import { Header } from '../../../../components/header/Header';
+import {
+  getDirectoryCategory,
+  updateDirectoryCategory,
+} from '../../../../api/directory/directoryCategories';
+import { Directory } from '../../../../models/interfaces/directory.interface';
+import { ConfirmationModal } from '../../../../components/confirmationModal/confirmationModal';
 
 const EditDirectoryCategory = () => {
   const { t } = useTranslation();
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const { refId, id } = useParams() as { refId: string; id: string };
-  const [directoryName, setDirectoryName] = useState("");
+  const [directoryName, setDirectoryName] = useState('');
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [initialValue, setInitialValue] = useState(directoryName);
@@ -26,11 +30,13 @@ const EditDirectoryCategory = () => {
     setInitialValue(directoryName);
     setLoading(true);
     getDirectoryCategory(Number(refId), cookies.token)
-      .then(response => {
-        const currentCatalog = response.data.find((catalog: Directory) => catalog.id === Number(id));
+      .then((response) => {
+        const currentCatalog = response.data.find(
+          (catalog: Directory) => catalog.id === Number(id),
+        );
         setDirectoryName(currentCatalog.name);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       })
       .finally(() => {
@@ -39,19 +45,19 @@ const EditDirectoryCategory = () => {
   });
 
   const navigateBack = () => {
-    history.push(ROUTES.DIRECTORY_CATEGORY_CARD(refId, id), { direction: "back" });
+    history.push(ROUTES.DIRECTORY_CATEGORY_CARD(refId, id), { direction: 'back' });
   };
 
   const handleSave = async () => {
     if (directoryName.trim()) {
       updateDirectoryCategory(Number(id), Number(refId), directoryName.trim(), cookies.token)
         .then(() => navigateBack())
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
       return;
     }
-    console.error("empty input");
+    console.error('empty input');
   };
 
   const handleBackClick = () => {
@@ -62,7 +68,7 @@ const EditDirectoryCategory = () => {
     navigateBack();
   };
 
-  const handleChangeInput = e => {
+  const handleChangeInput = (e) => {
     setDirectoryName(e.target.value);
     if (e.target.value.trim() !== initialValue.trim()) {
       setValueIsChanged(true);
@@ -84,7 +90,7 @@ const EditDirectoryCategory = () => {
   return (
     <IonPage>
       <Header
-        title={t("directory.edit")}
+        title={t('directory.edit')}
         onBackClick={handleBackClick}
         backButtonHref={ROUTES.DIRECTORY_CATEGORY_CARD(refId, id)}
       ></Header>
@@ -96,7 +102,7 @@ const EditDirectoryCategory = () => {
         ) : (
           <SingleInputPage
             backHref={ROUTES.DIRECTORY_CATEGORY_CARD(refId, id)}
-            label={t("directory.name")}
+            label={t('directory.name')}
             value={directoryName!}
             required
             handleChange={handleChangeInput}
@@ -110,9 +116,9 @@ const EditDirectoryCategory = () => {
         isOpen={isOpenModal}
         onClose={handleCloseModal}
         onConfirm={handleConfirmModal}
-        title={`${t("operations.saveChanges")}?`}
-        confirmText={t("operations.save")}
-        cancelText={t("operations.cancel")}
+        title={`${t('operations.saveChanges')}?`}
+        confirmText={t('operations.save')}
+        cancelText={t('operations.cancel')}
       />
     </IonPage>
   );

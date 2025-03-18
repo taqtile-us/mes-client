@@ -1,21 +1,22 @@
-import { IonContent, IonItem, IonList, IonPage, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../../components/header/Header";
-import { useTranslation } from "react-i18next";
-import { ROUTES } from "../../../shared/constants/routes";
-import { Preloader } from "../../../components/preloader/preloader";
-import { useCookies } from "react-cookie";
-import { useEffect, useState } from "react";
-import { IEmployee } from "../../../models/interfaces/employee.interface";
-import { useHistory, useParams } from "react-router";
-import { getAllEmployees } from "../../../api/employees";
-import MenuListButton from "../../../components/menuListButton/MenuListButton";
+import { IonContent, IonItem, IonList, IonPage, useIonViewWillEnter } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+import { useCookies } from 'react-cookie';
+import { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router';
+
+import { Header } from '../../../components/header/Header';
+import { ROUTES } from '../../../shared/constants/routes';
+import { Preloader } from '../../../components/preloader/preloader';
+import { IEmployee } from '../../../models/interfaces/employee.interface';
+import { getAllEmployees } from '../../../api/employees';
+import MenuListButton from '../../../components/menuListButton/MenuListButton';
 
 const IndividualReports = () => {
   const { t } = useTranslation();
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const [items, setItems] = useState<IEmployee[]>([]);
   const [filteredItems, setFilteredItems] = useState<IEmployee[]>([]);
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>('');
   const history = useHistory();
   const { orderId }: { orderId?: string } = useParams();
 
@@ -28,13 +29,13 @@ const IndividualReports = () => {
   };
 
   useIonViewWillEnter(() => {
-    setSearchText("");
+    setSearchText('');
     setLoading(true);
     getAllEmployees(cookies.token)
-      .then(response => {
+      .then((response) => {
         setItems(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       })
       .finally(() => {
@@ -43,21 +44,25 @@ const IndividualReports = () => {
   });
 
   useEffect(() => {
-    const filtered = items.filter(item => item.name.toLowerCase().includes(searchText.toLowerCase()));
+    const filtered = items.filter((item) =>
+      item.username.toLowerCase().includes(searchText.toLowerCase()),
+    );
     setFilteredItems(filtered);
   }, [searchText]);
 
   useEffect(() => {
-    items.length && setFilteredItems(items);
+    if (items.length) {
+      setFilteredItems(items);
+    }
   }, [items]);
 
   return (
     <IonPage>
       <Header
-        title={t("reports.individualReports")}
+        title={t('reports.individualReports')}
         backButtonHref={orderId ? ROUTES.REPORT_ORDERS : ROUTES.REPORTS}
         searchBar={!!items?.length}
-        searchPlaceholder={t("operations.users.search")}
+        searchPlaceholder={t('operations.users.search')}
         searchText={searchText}
         onSearchChange={handleSetSearch}
       />
@@ -70,16 +75,20 @@ const IndividualReports = () => {
           <>
             {items.length === 0 ? (
               <IonList inset={true}>
-                <IonItem>{t("messages.noDatabases")}</IonItem>
+                <IonItem>{t('messages.noDatabases')}</IonItem>
               </IonList>
             ) : (
               <IonList inset>
-                {filteredItems.map(({ id, name }) => (
+                {filteredItems.map(({ id, username }) => (
                   <MenuListButton
                     key={id}
-                    title={name}
+                    title={username}
                     handleItemClick={() =>
-                      handleItemClick(orderId ? ROUTES.REPORT_ORDER_EMPLOYEE(orderId, id) : ROUTES.REPORT_EMPLOYEE(id))
+                      handleItemClick(
+                        orderId
+                          ? ROUTES.REPORT_ORDER_EMPLOYEE(orderId, id)
+                          : ROUTES.REPORT_EMPLOYEE(id),
+                      )
                     }
                   />
                 ))}

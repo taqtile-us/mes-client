@@ -1,11 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fragment, useEffect, useRef, useState } from 'react';
-
-import { generateString } from '../../utils/randomizer';
-import { Coordinat, DrawingCoordinates, NewCoordinates } from '../../models/interfaces/coordinates.interface';
 import { IoIosCloseCircle } from 'react-icons/io';
 import Moveable from 'react-moveable';
+
+import { generateString } from '../../utils/randomizer';
+import {
+  Coordinat,
+  DrawingCoordinates,
+  NewCoordinates,
+} from '../../models/interfaces/coordinates.interface';
 import ZoomOut from '../zoomOut/zoomOut';
+
 import styles from './InventoryModal.module.scss';
 
 type PropsType = {
@@ -47,7 +52,7 @@ export const Scaleble: React.FC<PropsType> = ({
             ...el,
             id: generateString(11),
           };
-        })
+        }),
       );
     }
   }, []);

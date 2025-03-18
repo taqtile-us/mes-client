@@ -1,16 +1,25 @@
-import { IonContent, IonItem, IonList, IonPage, useIonRouter, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../../components/header/Header";
-import { useTranslation } from "react-i18next";
-import { ROUTES } from "../../../shared/constants/routes";
-import { useHistory, useParams } from "react-router";
-import MenuListButton from "../../../components/menuListButton/MenuListButton";
-import { useState } from "react";
-import { Preloader } from "../../../components/preloader/preloader";
-import { useCookies } from "react-cookie";
-import { getOrderViewOperation } from "../../../api/ordersView";
-import { OrderDetail, VideoDataStatus } from "../../../models/interfaces/ordersView.interface";
-import styles from "./timespan.module.scss";
-import { API_BASE_URL } from "../../../config";
+import {
+  IonContent,
+  IonItem,
+  IonList,
+  IonPage,
+  useIonRouter,
+  useIonViewWillEnter,
+} from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+import { useHistory, useParams } from 'react-router';
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
+
+import { Header } from '../../../components/header/Header';
+import { ROUTES } from '../../../shared/constants/routes';
+import MenuListButton from '../../../components/menuListButton/MenuListButton';
+import { Preloader } from '../../../components/preloader/preloader';
+import { getOrderViewOperation } from '../../../api/ordersView';
+import { OrderDetail, VideoDataStatus } from '../../../models/interfaces/ordersView.interface';
+import { API_BASE_URL } from '../../../config';
+
+import styles from './timespan.module.scss';
 
 const TimespanCameras = () => {
   const { orderId, itemId, operationId, timespanId } = useParams<{
@@ -19,7 +28,7 @@ const TimespanCameras = () => {
     operationId: string;
     timespanId: string;
   }>();
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   // const [detail, setDetail] = useState<OrderDetail>({} as OrderDetail);
   const [videos, setVideos] = useState<VideoDataStatus[]>();
   const [loading, setLoading] = useState(false);
@@ -31,13 +40,13 @@ const TimespanCameras = () => {
   useIonViewWillEnter(() => {
     setLoading(true);
     getOrderViewOperation(cookies.token, parseInt(timespanId))
-      .then(response => {
+      .then((response) => {
         console.log(response.data);
         const operation = response.data;
         // setDetail(response.data);
         setVideos(response.data.videos);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         console.log(err);
       })
@@ -46,15 +55,15 @@ const TimespanCameras = () => {
       });
   });
 
-  const getCameraDate = fileName => {
-    const parts = fileName.split("/");
+  const getCameraDate = (fileName) => {
+    const parts = fileName.split('/');
     const fileData = parts[parts.length - 1];
-    const datePart = fileData.split("_")[0];
+    const datePart = fileData.split('_')[0];
 
-    return datePart.split("-").reverse().join(".");
+    return datePart.split('-').reverse().join('.');
   };
 
-  const filteredVideos = videos?.filter(video => video.status) || [];
+  const filteredVideos = videos?.filter((video) => video.status) || [];
 
   const cameraBlock = (video: VideoDataStatus) => (
     <div className={styles.camera}>
@@ -72,12 +81,12 @@ const TimespanCameras = () => {
 
   const onBackClick = () => {
     history.go(-1);
-  }
+  };
 
   return (
     <IonPage>
       <Header
-        title={t("camera.plural")}
+        title={t('camera.plural')}
         backButtonHref={ROUTES.ORDER_TIMESPAN_EDIT(orderId, itemId, operationId, timespanId)}
         onBackClick={onBackClick}
       />
@@ -90,16 +99,22 @@ const TimespanCameras = () => {
           <>
             {filteredVideos.length === 0 ? (
               <IonList inset>
-                <IonItem>{t("messages.noCameras")}</IonItem>
+                <IonItem>{t('messages.noCameras')}</IonItem>
               </IonList>
             ) : (
-              filteredVideos.map(video => (
+              filteredVideos.map((video) => (
                 <IonList inset key={video.file_name}>
                   <MenuListButton
                     title={cameraBlock(video)}
                     handleItemClick={() =>
                       handleItemClick(
-                        ROUTES.ORDER_TIMESPAN_CAMERA(orderId, itemId, operationId, timespanId, video.camera_ip!)
+                        ROUTES.ORDER_TIMESPAN_CAMERA(
+                          orderId,
+                          itemId,
+                          operationId,
+                          timespanId,
+                          video.camera_ip!,
+                        ),
                       )
                     }
                   />

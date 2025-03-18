@@ -8,7 +8,7 @@ export interface State {
 }
 
 export type Action =
-  | { type: "SET_EMAIL"; payload: string }
-  | { type: "SET_PASSWORD"; payload: string }
-  | { type: "SET_ERROR_RESPONSE"; payload: string }
-  | { type: "SET_ERROR_PASSWORD" };
+  | { type: 'SET_EMAIL'; payload: string }
+  | { type: 'SET_PASSWORD'; payload: string }
+  | { type: 'SET_ERROR_RESPONSE'; payload: string }
+  | { type: 'SET_ERROR_PASSWORD' };

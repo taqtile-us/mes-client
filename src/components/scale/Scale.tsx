@@ -1,6 +1,7 @@
 import { de } from 'date-fns/locale';
-import styles from './scale.module.scss';
 import { MdOutlineFullscreen } from 'react-icons/md';
+
+import styles from './scale.module.scss';
 type PropsType = {
   className?: string;
   onClick: () => void;

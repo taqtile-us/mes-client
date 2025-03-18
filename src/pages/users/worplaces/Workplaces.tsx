@@ -1,17 +1,18 @@
-import { IonContent, IonPage, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../../components/header/Header";
-import { useTranslation } from "react-i18next";
-import { ROUTES } from "../../../shared/constants/routes";
-import { useEffect, useState } from "react";
-import SelectList from "../../../components/selects/selectList/SelectList";
-import { IWorkplace } from "../../../models/interfaces/workplace.interface";
-import { getWorkplaces } from "../../../api/users";
-import { useCookies } from "react-cookie";
-import { SelectItem } from "../../../models/types/selectItem";
-import { Preloader } from "../../../components/preloader/preloader";
-import { useDispatch, useSelector } from "react-redux";
-import { setSelectedWorkplace } from "../../../store/workpaceSlice";
-import { useHistory, useParams } from "react-router";
+import { IonContent, IonPage, useIonViewWillEnter } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router';
+
+import { Header } from '../../../components/header/Header';
+import { ROUTES } from '../../../shared/constants/routes';
+import SelectList from '../../../components/selects/selectList/SelectList';
+import { IWorkplace } from '../../../models/interfaces/workplace.interface';
+import { getWorkplaces } from '../../../api/users';
+import { SelectItem } from '../../../models/types/selectItem';
+import { Preloader } from '../../../components/preloader/preloader';
+import { setSelectedWorkplace } from '../../../store/workpaceSlice';
 
 const Workplaces = () => {
   const dispatch = useDispatch();
@@ -27,17 +28,19 @@ const Workplaces = () => {
 
   useIonViewWillEnter(() => {
     getWorkplaces(cookies.token)
-      .then(response => response.data)
-      .then(data => {
-        setWorkplaces(data.map((e: IWorkplace) => {
+      .then((response) => response.data)
+      .then((data) => {
+        setWorkplaces(
+          data.map((e: IWorkplace) => {
             return {
-                id: e.id,
-                label: e.name,
-                value: e.id.toString() 
-            }
-        }));
+              id: e.id,
+              label: e.name,
+              value: e.id.toString(),
+            };
+          }),
+        );
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       })
       .finally(() => {
@@ -47,28 +50,38 @@ const Workplaces = () => {
 
   const handleWorkplaceChange = (e: CustomEvent) => {
     const selectedId = Number(e.detail.value);
-    const selectedWorkplace = workplaces.find(workplace => workplace.id.toString() === selectedId.toString());
+    const selectedWorkplace = workplaces.find(
+      (workplace) => workplace.id.toString() === selectedId.toString(),
+    );
 
     if (selectedWorkplace) {
       navigateBack();
-      dispatch(setSelectedWorkplace({id: selectedId, name: selectedWorkplace.label}));
+      dispatch(setSelectedWorkplace({ id: selectedId, name: selectedWorkplace.label }));
     }
   };
 
   const navigateBack = () => {
-    history.push(backRoute, { direction: "back" });
+    history.push(backRoute, { direction: 'back' });
   };
 
   return (
     <IonPage>
-      <Header title={t("workplace.assign")} onBackClick={navigateBack} backButtonHref={backRoute}></Header>
+      <Header
+        title={t('workplace.assign')}
+        onBackClick={navigateBack}
+        backButtonHref={backRoute}
+      ></Header>
       <IonContent>
         {loading ? (
           <div className="preloader">
             <Preloader />
           </div>
         ) : (
-          <SelectList selectList={workplaces} value={selectedWorkplace?.id?.toString()} handleChange={handleWorkplaceChange} />
+          <SelectList
+            selectList={workplaces}
+            value={selectedWorkplace?.id?.toString()}
+            handleChange={handleWorkplaceChange}
+          />
         )}
       </IonContent>
     </IonPage>

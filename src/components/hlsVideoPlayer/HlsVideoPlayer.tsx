@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import Hls from 'hls.js';
+
 import { API_BASE_URL } from '../../config';
 
 interface VideoPlayerProps {
@@ -23,7 +24,6 @@ const HlsVideoPlayer = ({ manifestPath, onLoad }: VideoPlayerProps) => {
       timeLogger = setInterval(() => {
         console.log('currentTime:', videoElement.currentTime);
       }, 1000);
-      
     }
 
     if (Hls.isSupported() && playlistUrl) {
@@ -42,7 +42,7 @@ const HlsVideoPlayer = ({ manifestPath, onLoad }: VideoPlayerProps) => {
       videoElement.src = playlistUrl;
       videoElement.addEventListener('loadedmetadata', () => {
         console.log(12);
-        
+
         videoElement.play();
       });
     }
@@ -57,13 +57,12 @@ const HlsVideoPlayer = ({ manifestPath, onLoad }: VideoPlayerProps) => {
 
   return (
     <video
-      ref={playerRef} 
+      ref={playerRef}
       controls
       onLoadedData={() => onLoad && onLoad(playerRef.current as HTMLVideoElement)}
       style={{ width: '100%', height: '100%' }}
-    >
-    </video>
+    ></video>
   );
-}
+};
 
 export default HlsVideoPlayer;

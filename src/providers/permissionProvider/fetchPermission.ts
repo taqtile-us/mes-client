@@ -1,5 +1,5 @@
-import rolesPermissions from "../../constants/rolesPermissions";
+import rolesPermissions from '../../constants/rolesPermissions';
 
 export const fetchPermission = (role: string, permission: string): boolean => {
-    return rolesPermissions[role]?.includes(permission) || false;
+  return rolesPermissions[role]?.includes(permission) || false;
 };

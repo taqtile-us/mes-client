@@ -1,18 +1,19 @@
-import { useHistory, useParams } from "react-router-dom";
-import { ROUTES } from "../../../shared/constants/routes";
-import { useTranslation } from "react-i18next";
-import Card from "../../../ui/card/Card";
-import { useState } from "react";
-import { useCookies } from "react-cookie";
-import { Preloader } from "../../../components/preloader/preloader";
-import { IonContent, IonIcon, IonPage, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../../components/header/Header";
-import { TrashBin } from "../../../assets/svg/SVGcomponent";
-import { getItem } from "../../../api/items";
-import { IItem } from "../../../models/interfaces/item.interface";
+import { useHistory, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { IonContent, IonIcon, IonPage, useIonViewWillEnter } from '@ionic/react';
+
+import { Preloader } from '../../../components/preloader/preloader';
+import Card from '../../../ui/card/Card';
+import { ROUTES } from '../../../shared/constants/routes';
+import { Header } from '../../../components/header/Header';
+import { TrashBin } from '../../../assets/svg/SVGcomponent';
+import { getItem } from '../../../api/items';
+import { IItem } from '../../../models/interfaces/item.interface';
 
 const Item = () => {
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const { id }: { id: string } = useParams();
   const { t } = useTranslation();
   const [item, setItem] = useState<IItem>();
@@ -20,10 +21,10 @@ const Item = () => {
 
   useIonViewWillEnter(() => {
     getItem(Number(id), cookies.token)
-      .then(response => {
+      .then((response) => {
         setItem(response.data);
       })
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
   });
 
   const handleCloseModal = () => {
@@ -46,7 +47,7 @@ const Item = () => {
           <Card
             deleteCard={deleteCard}
             itemTitle={item.name}
-            titleLabel={t("directory.items.name")}
+            titleLabel={t('directory.items.name')}
             backHref={ROUTES.ITEMS}
             editHref={ROUTES.ITEM_EDIT(id)}
             showConfirmationModal={showConfirmationModal}

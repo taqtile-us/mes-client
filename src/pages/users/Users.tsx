@@ -1,23 +1,23 @@
-import { IonContent, IonItem, IonList, IonPage, useIonViewWillEnter } from "@ionic/react";
-import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
+import { IonContent, IonItem, IonList, IonPage, useIonViewWillEnter } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 
-import MenuListButton from "../../components/menuListButton/MenuListButton";
-import { ROUTES } from "../../shared/constants/routes";
-import { Header } from "../../components/header/Header";
-import { Preloader } from "../../components/preloader/preloader";
-import { IUser } from "../../models/interfaces/employee.interface";
-import { getUserList } from "../../api/users";
-import Fab from "../../components/fab/Fab";
-import { Plus } from "../../assets/svg/SVGcomponent";
+import MenuListButton from '../../components/menuListButton/MenuListButton';
+import { ROUTES } from '../../shared/constants/routes';
+import { Header } from '../../components/header/Header';
+import { Preloader } from '../../components/preloader/preloader';
+import { IUser } from '../../models/interfaces/employee.interface';
+import { getUserList } from '../../api/users';
+import Fab from '../../components/fab/Fab';
+import { Plus } from '../../assets/svg/SVGcomponent';
 
 const Users = () => {
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(['token']);
   const [items, setItems] = useState<IUser[]>([]);
   const [filteredItems, setFilteredItems] = useState<IUser[]>([]);
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>('');
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -35,20 +35,20 @@ const Users = () => {
   };
 
   useIonViewWillEnter(() => {
-    setSearchText("");
+    setSearchText('');
     setLoading(true);
     getUserList(cookies.token)
-      .then(response => response.data)
-      .then(users => {
+      .then((response) => response.data)
+      .then((users) => {
         setItems(
           users.sort((a: IUser, b: IUser) => {
             const nameA = constructName(a);
             const nameB = constructName(b);
-            return nameA.localeCompare(nameB, undefined, { sensitivity: "base" });
-          })
+            return nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
+          }),
         );
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       })
       .finally(() => {
@@ -57,7 +57,7 @@ const Users = () => {
   });
 
   useEffect(() => {
-    const filtered = items.filter(item => {
+    const filtered = items.filter((item) => {
       const displayedName = constructName(item);
       return displayedName.toLowerCase().includes(searchText.toLowerCase());
     });
@@ -77,10 +77,10 @@ const Users = () => {
   return (
     <IonPage>
       <Header
-        title={t("menu.users")}
+        title={t('menu.users')}
         backButtonHref={ROUTES.MENU}
         searchBar={Boolean(items?.length)}
-        searchPlaceholder={t("operations.users.search")}
+        searchPlaceholder={t('operations.users.search')}
         searchText={searchText}
         onSearchChange={handleSetSearch}
       />
@@ -94,11 +94,11 @@ const Users = () => {
             <Fab icon={Plus} handleFabClick={() => handleFabClick(ROUTES.USER_ADD)} />
             {items.length === 0 ? (
               <IonList inset={true}>
-                <IonItem>{t("messages.noDatabases")}</IonItem>
+                <IonItem>{t('messages.noDatabases')}</IonItem>
               </IonList>
             ) : (
               <IonList inset>
-                {filteredItems.map(user => (
+                {filteredItems.map((user) => (
                   <MenuListButton
                     key={user.id}
                     title={constructName(user)}

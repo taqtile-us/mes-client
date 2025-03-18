@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { API_BASE_URL } from "../config";
-import { getAxiosConfig } from "../utils/getAxiosConfig";
+import { API_BASE_URL } from '../config';
+import { getAxiosConfig } from '../utils/getAxiosConfig';
 
-const API_EMPLOYEES = "employees/";
+const API_EMPLOYEES = 'employees/';
 
 const constructUrl = (endpoint: string) => `${API_BASE_URL}${endpoint}`;
 

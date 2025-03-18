@@ -9,11 +9,13 @@ import {
   IonSearchbar,
   IonTitle,
   IonToolbar,
-} from "@ionic/react";
-import { OrderItem } from "../../../models/interfaces/orderItem.interface";
-import { useEffect, useState } from "react";
-import "./SearchModal.scss";
-import { useTranslation } from "react-i18next";
+} from '@ionic/react';
+
+import { OrderItem } from '../../../models/interfaces/orderItem.interface';
+
+import { useEffect, useState } from 'react';
+import './SearchModal.scss';
+import { useTranslation } from 'react-i18next';
 
 type SearchModalProps = {
   isOpen: boolean;
@@ -31,8 +33,8 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
   }, [orders]);
 
   const onSearch = (event: CustomEvent) => {
-    const query = event.detail.value?.toLowerCase() || "";
-    setSearchResult(orders.filter(order => order.orId.toLowerCase().includes(query)));
+    const query = event.detail.value?.toLowerCase() || '';
+    setSearchResult(orders.filter((order) => order.orId.toLowerCase().includes(query)));
   };
 
   return (
@@ -40,15 +42,15 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton onClick={onClose}>{t("operations.cancel")}</IonButton>
+            <IonButton onClick={onClose}>{t('operations.cancel')}</IonButton>
           </IonButtons>
-          <IonTitle>{t("ordersView.orderSearch")}</IonTitle>
+          <IonTitle>{t('ordersView.orderSearch')}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <IonSearchbar onIonInput={onSearch} placeholder={t("operations.search")} />
+        <IonSearchbar onIonInput={onSearch} placeholder={t('operations.search')} />
         <IonList className="ordersSearchList">
-          {searchResult.map(order => (
+          {searchResult.map((order) => (
             <IonItem
               key={order.orId}
               onClick={() => {

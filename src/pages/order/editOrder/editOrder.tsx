@@ -1,19 +1,21 @@
-import React, { useState, useEffect, useRef } from "react";
-import { IonPage, IonContent, IonToast, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../../components/header/Header";
-import { ROUTES } from "../../../shared/constants/routes";
-import { useParams, useHistory } from "react-router-dom";
-import { ORDER_REQUEST } from "../../../dispatcher";
-import { useTranslation } from "react-i18next";
-import { TOAST_DELAY } from "./../../../constants/toastDelay";
-import { IOrders } from "../../../models/interfaces/orders.interface";
-import BottomButton from "../../../components/bottomButton/BottomButton";
-import { Preloader } from "../../../components/preloader/preloader";
-import { Input } from "../../../components/inputs/input/Input";
-import DateSelector from "../../../components/dateSelector/DateSelector";
-import { ConfirmationModal } from "../../../components/confirmationModal/confirmationModal";
-import { getCurrentDateTimeISO } from "../../../utils/parseInputDate";
-import { isInvalidText } from "../../../utils/isInvalidText";
+import React, { useState, useEffect, useRef } from 'react';
+import { IonPage, IonContent, IonToast, useIonViewWillEnter } from '@ionic/react';
+import { useParams, useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
+import { ORDER_REQUEST } from '../../../dispatcher';
+import { ROUTES } from '../../../shared/constants/routes';
+import { Header } from '../../../components/header/Header';
+import { IOrders } from '../../../models/interfaces/orders.interface';
+import BottomButton from '../../../components/bottomButton/BottomButton';
+import { Preloader } from '../../../components/preloader/preloader';
+import { Input } from '../../../components/inputs/input/Input';
+import DateSelector from '../../../components/dateSelector/DateSelector';
+import { ConfirmationModal } from '../../../components/confirmationModal/confirmationModal';
+import { getCurrentDateTimeISO } from '../../../utils/parseInputDate';
+import { isInvalidText } from '../../../utils/isInvalidText';
+
+import { TOAST_DELAY } from './../../../constants/toastDelay';
 
 const EditOrder: React.FC = () => {
   const history = useHistory();
@@ -23,8 +25,8 @@ const EditOrder: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [orderName, setOrderName] = useState<string>("");
-  const [orderDate, setOrderDate] = useState<string>("");
+  const [orderName, setOrderName] = useState<string>('');
+  const [orderDate, setOrderDate] = useState<string>('');
   const dateModalRef = useRef<HTMLIonModalElement>(null);
 
   const isChanged = orderName !== order.name || orderDate !== order.estimatedAt;
@@ -41,7 +43,7 @@ const EditOrder: React.FC = () => {
 
   const openModal = () => {
     setIsModalOpen(true);
-  }
+  };
 
   const saveOrder = async () => {
     setLoading(true);
@@ -51,7 +53,7 @@ const EditOrder: React.FC = () => {
       { name: orderName, estimatedAt: orderDate },
       setLoading,
       setToastMessage,
-      navigateTo
+      navigateTo,
     );
   };
 
@@ -68,12 +70,12 @@ const EditOrder: React.FC = () => {
     navigateTo();
   };
 
-  const navigateTo = () => history.push(ROUTES.ORDER(id), { direction: "back" });
+  const navigateTo = () => history.push(ROUTES.ORDER(id), { direction: 'back' });
 
   return (
     <IonPage>
       <Header
-        title={`${t("operations.edit")} ${order?.orderNumber}`}
+        title={`${t('operations.edit')} ${order?.orderNumber}`}
         onBackClick={handleBackClick}
         backButtonHref={ROUTES.ORDER(id)}
       />
@@ -85,25 +87,28 @@ const EditOrder: React.FC = () => {
         ) : (
           <>
             <Input
-              label={t("orders.orderName")}
+              label={t('orders.orderName')}
               value={orderName}
               required
-              handleChange={e => setOrderName(e.detail.value!)}
-              state={isInvalidText(orderName, {numbers: true, spaces: true}) ? "error" : "neutral"}
-              errorMessage={t("form.invalidCharacters")}
+              handleChange={(e) => setOrderName(e.detail.value!)}
+              state={
+                isInvalidText(orderName, { numbers: true, spaces: true }) ? 'error' : 'neutral'
+              }
+              errorMessage={t('form.invalidCharacters')}
             />
             <DateSelector
-              label={t("orders.estimatedAt")}
+              label={t('orders.estimatedAt')}
               date={orderDate}
               modalRef={dateModalRef}
               setDate={setOrderDate}
               minDate={getCurrentDateTimeISO()}
             />
 
-            <BottomButton 
-              handleClick={openModal} 
-              disabled={!(isChanged && !isInvalidText(orderName, {numbers: true, spaces: true}))} 
-              label={t("operations.save")} />
+            <BottomButton
+              handleClick={openModal}
+              disabled={!(isChanged && !isInvalidText(orderName, { numbers: true, spaces: true }))}
+              label={t('operations.save')}
+            />
 
             <IonToast
               isOpen={!!toastMessage}
@@ -117,9 +122,9 @@ const EditOrder: React.FC = () => {
               isOpen={isModalOpen}
               onClose={handleCloseModal}
               onConfirm={saveOrder}
-              title={`${t("operations.saveChanges")}?`}
-              confirmText={t("operations.save")}
-              cancelText={t("operations.cancel")}
+              title={`${t('operations.saveChanges')}?`}
+              confirmText={t('operations.save')}
+              cancelText={t('operations.cancel')}
             />
           </>
         )}

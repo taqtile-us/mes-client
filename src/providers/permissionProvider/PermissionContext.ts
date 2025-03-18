@@ -1,14 +1,15 @@
 import React from 'react';
+
 import { Permission } from '../../models/types/permission';
 
 type PermissionContextType = {
-    isAllowedTo: (permission: Permission) => boolean;
-}
+  isAllowedTo: (permission: Permission) => boolean;
+};
 
 const defaultBehaviour: PermissionContextType = {
-    isAllowedTo: () => false
-}
+  isAllowedTo: () => false,
+};
 
-const PermissionContext = React.createContext<PermissionContextType>( defaultBehaviour);
+const PermissionContext = React.createContext<PermissionContextType>(defaultBehaviour);
 
 export default PermissionContext;

@@ -1,26 +1,24 @@
 import React, { useMemo } from 'react';
+
 import { Permission } from '../../models/types/permission';
-import PermissionContext from "./PermissionContext";
-import { fetchPermission } from './fetchPermission';
 import rolesPermissions from '../../constants/rolesPermissions';
 
+import PermissionContext from './PermissionContext';
+import { fetchPermission } from './fetchPermission';
+
 type PermissionProviderProps = {
-    role: string;
-    children: React.ReactNode;
+  role: string;
+  children: React.ReactNode;
 };
 
 const PermissionProvider: React.FC<PermissionProviderProps> = ({ role, children }) => {
-    const isAllowedTo = (permission: string): boolean => {
-        return rolesPermissions[role]?.includes(permission) || false;
-    };
+  const isAllowedTo = (permission: string): boolean => {
+    return rolesPermissions[role]?.includes(permission) || false;
+  };
 
-    const value = useMemo(() => ({ isAllowedTo }), [role]);
+  const value = useMemo(() => ({ isAllowedTo }), [role]);
 
-    return (
-        <PermissionContext.Provider value={value}>
-            {children}
-        </PermissionContext.Provider>
-    );
+  return <PermissionContext.Provider value={value}>{children}</PermissionContext.Provider>;
 };
 
 export default PermissionProvider;

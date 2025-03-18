@@ -1,7 +1,7 @@
-import { Html5QrcodeCameraScanConfig, Html5QrcodeScanner } from "html5-qrcode";
-import { useEffect, useRef, useState } from "react";
-import "./qrScanner.scss";
-import { useIonViewWillLeave, useIonViewDidEnter } from "@ionic/react";
+import { Html5QrcodeCameraScanConfig, Html5QrcodeScanner } from 'html5-qrcode';
+import { useEffect, useRef, useState } from 'react';
+import './qrScanner.scss';
+import { useIonViewWillLeave, useIonViewDidEnter } from '@ionic/react';
 
 type Html5QrcodePluginProps = {
   fps?: number;
@@ -13,9 +13,9 @@ type Html5QrcodePluginProps = {
   qrCodeErrorCallback?: (error: any) => void;
 };
 
-const qrcodeRegionId = "html5qr-code-full-region";
+const qrcodeRegionId = 'html5qr-code-full-region';
 
-const Html5QrcodePlugin: React.FC<Html5QrcodePluginProps> = props => {
+const Html5QrcodePlugin: React.FC<Html5QrcodePluginProps> = (props) => {
   const html5QrcodeScannerRef = useRef<Html5QrcodeScanner | null>(null);
   let hasScanned = false;
   let initialized = false;
@@ -38,20 +38,20 @@ const Html5QrcodePlugin: React.FC<Html5QrcodePluginProps> = props => {
           hasScanned = true;
           props.qrCodeSuccessCallback(decodedText, decodedResult);
         } else {
-          console.warn("Unsupported format detected:", decodedResult);
+          console.warn('Unsupported format detected:', decodedResult);
         }
       },
-      error => {
+      (error) => {
         if (verbose) {
-          console.error("Error during scanning:", error);
+          console.error('Error during scanning:', error);
         }
         props.qrCodeErrorCallback && props.qrCodeErrorCallback(error);
-      }
+      },
     );
 
     return () => {
-      scanner.clear().catch(error => {
-        console.error("Failed to clear html5QrcodeScanner. ", error);
+      scanner.clear().catch((error) => {
+        console.error('Failed to clear html5QrcodeScanner. ', error);
       });
     };
   }, []);

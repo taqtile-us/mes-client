@@ -1,7 +1,30 @@
-import React, { useState, useRef, useEffect } from "react";
-import { IonButton, IonContent, IonLabel, IonToast, IonPage, IonList, useIonViewWillEnter } from "@ionic/react";
-import { useHistory } from "react-router-dom";
-import { useParams } from "react-router";
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  IonButton,
+  IonContent,
+  IonLabel,
+  IonToast,
+  IonPage,
+  IonList,
+  useIonViewWillEnter,
+} from '@ionic/react';
+import { useHistory } from 'react-router-dom';
+import { useParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
+
+import { ROUTES } from '../../../shared/constants/routes';
+import { Header } from '../../../components/header/Header';
+import { Preloader } from '../../../components/preloader/preloader';
+import InputReadonly from '../../../components/inputs/inputReadonly/inputReadonly';
+import { ConfirmationModal } from '../../../components/confirmationModal/confirmationModal';
+import TimeSelector from '../../../components/timeSelector/TimeSelector';
+import { Camera } from '../../../assets/svg/SVGcomponent';
+import DateSelector from '../../../components/dateSelector/DateSelector';
+
+import { TOAST_DELAY } from './../../../constants/toastDelay';
+import { ITimespan } from './../../../models/interfaces/orders.interface';
+import style from './styles.module.scss';
+import { TIMESPAN_REQUEST } from './../../../dispatcher';
 import {
   getTimeDifference,
   mergeDateAndTime,
@@ -10,20 +33,7 @@ import {
   formatTime,
   parseToDate,
   parseToTime,
-} from "./../../../utils/parseInputDate";
-import { TIMESPAN_REQUEST } from "./../../../dispatcher";
-import style from "./styles.module.scss";
-import { ITimespan } from "./../../../models/interfaces/orders.interface";
-import { ROUTES } from "../../../shared/constants/routes";
-import { useTranslation } from "react-i18next";
-import { TOAST_DELAY } from "./../../../constants/toastDelay";
-import { Header } from "../../../components/header/Header";
-import { Preloader } from "../../../components/preloader/preloader";
-import InputReadonly from "../../../components/inputs/inputReadonly/inputReadonly";
-import { ConfirmationModal } from "../../../components/confirmationModal/confirmationModal";
-import TimeSelector from "../../../components/timeSelector/TimeSelector";
-import { Camera } from "../../../assets/svg/SVGcomponent";
-import DateSelector from "../../../components/dateSelector/DateSelector";
+} from './../../../utils/parseInputDate';
 const RADIX = 10;
 
 const EditTimespan: React.FC = () => {
@@ -42,21 +52,31 @@ const EditTimespan: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const history = useHistory();
-  
-  const { hours, minutes } = formatTime(durationTime);
-  const status = !timespan.startedAt ? t("orders.statusValues.pending") : (!timespan.finishedAt ? t("orders.statusValues.inProgress") : t("orders.statusValues.done"));
 
-  const [startDate, setStartDate] = useState<string>("");
-  const [startTime, setStartTime] = useState<string>("");
-  const [finishDate, setFinishDate] = useState<string>("");
-  const [finishTime, setFinishTime] = useState<string>("");
+  const { hours, minutes } = formatTime(durationTime);
+  const status = !timespan.startedAt
+    ? t('orders.statusValues.pending')
+    : !timespan.finishedAt
+      ? t('orders.statusValues.inProgress')
+      : t('orders.statusValues.done');
+
+  const [startDate, setStartDate] = useState<string>('');
+  const [startTime, setStartTime] = useState<string>('');
+  const [finishDate, setFinishDate] = useState<string>('');
+  const [finishTime, setFinishTime] = useState<string>('');
   const startDateModalRef = useRef<HTMLIonModalElement>(null);
   const startTimeModalRef = useRef<HTMLIonModalElement>(null);
   const finishDateModalRef = useRef<HTMLIonModalElement>(null);
   const finishTimeModalRef = useRef<HTMLIonModalElement>(null);
-  
+
   useIonViewWillEnter(() => {
-    timespanId && TIMESPAN_REQUEST.getTimespan(parseInt(timespanId, RADIX), setTimespan, setLoading, setToastMessage);
+    timespanId &&
+      TIMESPAN_REQUEST.getTimespan(
+        parseInt(timespanId, RADIX),
+        setTimespan,
+        setLoading,
+        setToastMessage,
+      );
   });
 
   useEffect(() => {
@@ -102,21 +122,21 @@ const EditTimespan: React.FC = () => {
 
   const handleSave = () => {
     if (!startDate) {
-      showToastMessage("Please select a valid start date");
+      showToastMessage('Please select a valid start date');
       return;
     }
     if (!startTime) {
-      showToastMessage("Please select a valid start time");
+      showToastMessage('Please select a valid start time');
       return;
     }
 
     const startedAt = formatISOBeforeSend(mergeDateAndTime(startDate, startTime));
-    let finishedAt = "";
+    let finishedAt = '';
     if (finishDate && finishTime) {
       const startISO = mergeDateAndTime(startDate, startTime);
       const finishISO = mergeDateAndTime(finishDate, finishTime);
       if (finishISO < startISO) {
-        showToastMessage("Finish cannot be earlier than Start");
+        showToastMessage('Finish cannot be earlier than Start');
         setIsSaveModalOpen(false);
         return;
       }
@@ -124,12 +144,12 @@ const EditTimespan: React.FC = () => {
     }
     const nowISO = getCurrentDateTimeISO();
     if (startedAt > nowISO) {
-      showToastMessage("Start date/time cannot be in the future");
+      showToastMessage('Start date/time cannot be in the future');
       setIsSaveModalOpen(false);
       return;
     }
     if (finishedAt && finishedAt > nowISO) {
-      showToastMessage("Finish date/time cannot be in the future");
+      showToastMessage('Finish date/time cannot be in the future');
       setIsSaveModalOpen(false);
       return;
     }
@@ -141,15 +161,15 @@ const EditTimespan: React.FC = () => {
         setLoading,
         setToastMessage,
       )
-      .then(() => {
-        setSave(true);
-        setIsModalOpen(false);
-        handleNavigate();
-      })
-      .catch(() => {
-        setToastMessage("Time overlaps with another timespan");
-        setIsSaveModalOpen(false);
-      });
+        .then(() => {
+          setSave(true);
+          setIsModalOpen(false);
+          handleNavigate();
+        })
+        .catch(() => {
+          setToastMessage('Time overlaps with another timespan');
+          setIsSaveModalOpen(false);
+        });
     }
   };
 
@@ -171,14 +191,16 @@ const EditTimespan: React.FC = () => {
   return (
     <IonPage>
       <Header
-        title={t("orders.implementationTime")}
+        title={t('orders.implementationTime')}
         backButtonHref={ROUTES.ORDER_ITEM(String(orderId), String(itemId))}
         onBackClick={backClick}
         endButton={
           <img
             src={Camera}
             alt="camera"
-            onClick={() => history.push(ROUTES.ORDER_TIMESPAN_CAMERAS(orderId, itemId, operationId, timespanId))}
+            onClick={() =>
+              history.push(ROUTES.ORDER_TIMESPAN_CAMERAS(orderId, itemId, operationId, timespanId))
+            }
           />
         }
       />
@@ -191,68 +213,72 @@ const EditTimespan: React.FC = () => {
           <>
             {startDate && startTime && (
               <>
-                <InputReadonly label={t("orders.surname")} value={timespan.employeeName} />
-                <InputReadonly label={t("orders.status")} value={status} />
+                <InputReadonly label={t('orders.surname')} value={timespan.employeeName} />
+                <InputReadonly label={t('orders.status')} value={status} />
 
                 <IonList className={`${style.page} ion-padding`}>
                   <IonList className={style.sized}>
                     <div className={style.container}>
-                      <IonLabel className={style.label}>{t("orders.startOperation")}</IonLabel>
-                       {startDate && startTime && (
-                          <>
+                      <IonLabel className={style.label}>{t('orders.startOperation')}</IonLabel>
+                      {startDate && startTime && (
+                        <>
                           <DateSelector
-                          label=""
-                          date={startDate}
-                          setDate={setStartDate}
-                          modalRef={startDateModalRef}
-                          time={false}
-                          setSave={setSave}
-                        />
-                        <TimeSelector
-                          time={startTime}
-                          modalRef={startTimeModalRef}
-                          setTime={setStartTime}
-                          setSave={setSave}
-                           />
+                            label=""
+                            date={startDate}
+                            setDate={setStartDate}
+                            modalRef={startDateModalRef}
+                            time={false}
+                            setSave={setSave}
+                          />
+                          <TimeSelector
+                            time={startTime}
+                            modalRef={startTimeModalRef}
+                            setTime={setStartTime}
+                            setSave={setSave}
+                          />
                         </>
-                       )}
+                      )}
                     </div>
                   </IonList>
 
                   <IonList className={style.sized}>
                     <div className={style.container}>
-                      <IonLabel className={style.label}>{t("orders.finishOperation")}</IonLabel>
-                     {finishDate && finishTime &&(
-                       <>
-                      <DateSelector
-                        label=""
-                        date={finishDate}
-                        setDate={setFinishDate}
-                        modalRef={finishDateModalRef}
-                        time={false}
-                        setSave={setSave}
-                      />
-                      <TimeSelector
-                        time={finishTime}
-                        modalRef={finishTimeModalRef}
-                        setTime={setFinishTime}
-                        setSave={setSave}
-                         />
-                      </>
-                     )}
+                      <IonLabel className={style.label}>{t('orders.finishOperation')}</IonLabel>
+                      {finishDate && finishTime && (
+                        <>
+                          <DateSelector
+                            label=""
+                            date={finishDate}
+                            setDate={setFinishDate}
+                            modalRef={finishDateModalRef}
+                            time={false}
+                            setSave={setSave}
+                          />
+                          <TimeSelector
+                            time={finishTime}
+                            modalRef={finishTimeModalRef}
+                            setTime={setFinishTime}
+                            setSave={setSave}
+                          />
+                        </>
+                      )}
                     </div>
 
                     {!finishDate && !finishTime && (
-                      <IonButton expand="block" onClick={handleFinishNow} disabled={!startTime && !startDate || !!finishDate && !!finishTime}>
-                        {t("operations.finish")}
+                      <IonButton
+                        expand="block"
+                        onClick={handleFinishNow}
+                        disabled={(!startTime && !startDate) || (!!finishDate && !!finishTime)}
+                      >
+                        {t('operations.finish')}
                       </IonButton>
                     )}
                   </IonList>
 
                   <div className={style.time}>
-                    <IonLabel className={style.label}>{t("orders.operationTime")}</IonLabel>
-                    <IonLabel className={style.timeLabel}>{`${hours} ${t("time.hour")} ${
-                      minutes ? minutes + " " + t("time.min") : ""
+                    <IonLabel className={style.label}>{t('orders.operationTime')}</IonLabel>
+                    <IonLabel className={style.timeLabel}>{`${hours} ${t('time.hour')} ${
+                      minutes ? minutes + ' ' + t('time.min') : ''
                     }`}</IonLabel>
                   </div>
 
@@ -271,9 +297,9 @@ const EditTimespan: React.FC = () => {
                   onDismiss={() => setIsSaveModalOpen(false)}
                   onCancel={handleNavigate}
                   onConfirm={handleSave}
-                  title={`${t("operations.saveChanges")}?`}
-                  confirmText={t("operations.save")}
-                  cancelText={t("operations.cancel")}
+                  title={`${t('operations.saveChanges')}?`}
+                  confirmText={t('operations.save')}
+                  cancelText={t('operations.cancel')}
                 />
               </>
             )}

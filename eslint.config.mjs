@@ -22,7 +22,7 @@ export default [
     ...js.configs.recommended,
   },
   {
-    files: ['**/*.ts', '**/*.tsx', '**/*.domain.ts', '**/*.repository.ts'],
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -39,10 +39,14 @@ export default [
       'import': importPlugin,
     },
     rules: {
+       '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      
+      'prettier/prettier': ['error', { 'singleQuote': true, 'printWidth': 100 }],
+      'quotes': ['error', 'single'],
       ...tsPlugin.configs.recommended.rules,
       ...airbnbTypescriptBase.rules,
       ...prettierConfig.rules,
-      'prettier/prettier': ['error', { 'printWidth': 100 }],
       'import/order': [
                 'error',
                 {
