@@ -1,28 +1,28 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useTranslation } from "react-i18next";
-import { ROUTES } from "../../../shared/constants/routes";
 import { useHistory, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCookies } from "react-cookie";
-import { Preloader } from "../../../components/preloader/preloader";
 import {
   IonButton,
   IonContent,
   IonPage,
   IonSegment,
   IonSegmentButton,
-  IonText,
   IonToast,
   useIonViewWillEnter,
 } from "@ionic/react";
+
+import { Preloader } from "../../../components/preloader/preloader";
+import { ROUTES } from "../../../shared/constants/routes";
 import { Header } from "../../../components/header/Header";
 import { ConfirmationModal } from "../../../components/confirmationModal/confirmationModal";
-import BottomButton from "../../../components/bottomButton/BottomButton";
 import { TOAST_DELAY } from "../../../constants/toastDelay";
 import CameraSegment from "../../../components/cameraSegment/cameraSegment";
-import { findCamera, getSelectedCameras } from "../../../api/cameraRequest";
+import { findCamera } from "../../../api/cameraRequest";
 import { getProcessByCamera, postAlgorithnDependences } from "../../../api/algorithmRequest";
 import Zones from "../../../components/zoneSegment/zones/zones";
-import { SelectItem } from "../../../models/types/selectItem";
 
 const EditCamera = () => {
   const { t } = useTranslation();
@@ -91,7 +91,7 @@ const EditCamera = () => {
   };
 
   const showAddCameras = cameras => {
-    findCamera(window.location.hostname)
+    findCamera()
       .then(response => {
         if (response.data && response.data.results) {
           const allCameras = response.data.results;
@@ -145,7 +145,11 @@ const EditCamera = () => {
 
   return (
     <IonPage>
-      <Header title={t("camera.configuration")} onBackClick={navigateBack} backButtonHref={ROUTES.USERS}></Header>
+      <Header
+        title={t("camera.configuration")}
+        onBackClick={navigateBack}
+        backButtonHref={ROUTES.USERS}
+      ></Header>
       <IonContent>
         {loading ? (
           <div className="preloader">
@@ -176,7 +180,9 @@ const EditCamera = () => {
                   editMode={true}
                 />
               )}
-              {selectedSegment === "zone" && <Zones cameraSelect={cameraSelect} isCreateCamera={false} />}
+              {selectedSegment === "zone" && (
+                <Zones cameraSelect={cameraSelect} isCreateCamera={false} />
+              )}
             </div>
 
             <IonToast
@@ -186,7 +192,13 @@ const EditCamera = () => {
               onDidDismiss={() => setToastMessage("")}
             />
             {selectedSegment === "camera" && (
-              <IonButton className="ion-padding" expand="full" id="open-toast" onClick={handleSave} disabled={isBlank}>
+              <IonButton
+                className="ion-padding"
+                expand="full"
+                id="open-toast"
+                onClick={handleSave}
+                disabled={isBlank}
+              >
                 {t("operations.save")}
               </IonButton>
             )}

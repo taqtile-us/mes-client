@@ -1,22 +1,31 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
-import { IonContent, IonFooter, IonList, IonPage, IonText, useIonViewWillEnter } from "@ionic/react";
+import {
+  IonContent,
+  IonFooter,
+  IonList,
+  IonPage,
+  IonText,
+  useIonViewWillEnter,
+} from "@ionic/react";
+import { useTranslation } from "react-i18next";
+import { isMobile } from "react-device-detect";
+
 import { getCurrentUserInfo } from "../../api/users";
 import { ROUTES } from "../../shared/constants/routes";
 import { Header } from "../../components/header/Header";
 import { DollarSign, MenuLogo, Orders } from "../../assets/svg/SVGcomponent";
 import { Logout } from "../../components/logout/Logout";
-import { useTranslation } from "react-i18next";
 import MenuListButton from "../../components/menuListButton/MenuListButton";
 import Restricted from "../../providers/permissionProvider/Restricted";
-import { isMobile } from "react-device-detect";
-import "./Menu.scss";
 import { Preloader } from "../../components/preloader/preloader";
 import { ITimespan } from "../../models/interfaces/orders.interface";
 import { TIMESPAN_REQUEST } from "../../dispatcher";
 import { APP_VERSION } from "../../config";
 import { IUser } from "../../models/interfaces/employee.interface";
+import "./Menu.scss";
 
 export const Menu: React.FC = () => {
   const [cookies, , removeCookie] = useCookies(["token"]);
@@ -29,7 +38,7 @@ export const Menu: React.FC = () => {
   const { t } = useTranslation();
   const workInProgress = timespans[0] && !timespans[0].finishedAt;
 
-  useIonViewWillEnter( () => {
+  useIonViewWillEnter(() => {
     if (!cookies.token) return;
     (async () => {
       try {
@@ -97,12 +106,6 @@ export const Menu: React.FC = () => {
                   handleItemClick={() => handleItemClick(ROUTES.CONFIGURATION)}
                 />
               </Restricted>
-              <Restricted to="view_reference">
-                <MenuListButton
-                  title={t("menu.databaseConnections")}
-                  handleItemClick={() => handleItemClick(ROUTES.SWITCHER)}
-                />
-              </Restricted>
               {!isMobile && (
                 <Restricted to="view_cameras">
                   <MenuListButton
@@ -166,4 +169,3 @@ export const Menu: React.FC = () => {
 };
 
 export default Menu;
-

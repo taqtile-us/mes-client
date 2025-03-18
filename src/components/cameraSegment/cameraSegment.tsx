@@ -1,15 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IonNote } from "@ionic/react";
 import { useState } from "react";
+import { useCookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
+
 import Select from "../selects/select/Select";
 import { Input } from "../inputs/input/Input";
 import "../../styles/common.scss";
 import CameraTest from "../cameraTest/cameraTest";
-import styles from "./cameraSegment.module.scss";
 import { SelectItem } from "../../models/types/selectItem";
 import InputReadonly from "../inputs/inputReadonly/inputReadonly";
-import { useTranslation } from "react-i18next";
 import { findCamera, getSelectedCameras } from "../../api/cameraRequest";
-import { useCookies } from "react-cookie";
+
+import styles from "./cameraSegment.module.scss";
 
 type CameraSegmentProps = {
   cameraIP: string;
@@ -57,7 +61,7 @@ const CameraSegment: React.FC<CameraSegmentProps> = ({
   };
 
   const showAddCameras = cameras => {
-    findCamera(window.location.hostname)
+    findCamera()
       .then(response => {
         if (response.data && response.data.results) {
           const allCameras = response.data.results;
@@ -85,13 +89,15 @@ const CameraSegment: React.FC<CameraSegmentProps> = ({
         }
         showAddCameras(cameras);
       })
-      .catch(console.log)
+      .catch(console.log);
   };
 
   return (
     <div className={styles.cameraSegment}>
       <div className={styles.section}>
-        <IonNote className={`ion-padding ${styles.sectionNote}`}>{t("camera.cameraSegment.connection")}</IonNote>
+        <IonNote className={`ion-padding ${styles.sectionNote}`}>
+          {t("camera.cameraSegment.connection")}
+        </IonNote>
         {editMode ? (
           <InputReadonly label={t("camera.cameraSegment.cameraIp")} value={cameraIP} />
         ) : (
@@ -127,7 +133,9 @@ const CameraSegment: React.FC<CameraSegmentProps> = ({
         />
       </div>
       <div className={styles.section}>
-        <IonNote className={`ion-padding ${styles.sectionNote}`}>{t("camera.cameraSegment.settings")}</IonNote>
+        <IonNote className={`ion-padding ${styles.sectionNote}`}>
+          {t("camera.cameraSegment.settings")}
+        </IonNote>
         <Input
           label={t("camera.cameraSegment.displayedName")}
           value={cameraName}

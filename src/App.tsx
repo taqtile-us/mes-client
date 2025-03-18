@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
 import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { useCookies } from "react-cookie";
+import { useDispatch } from "react-redux";
 
 import "./i18";
 import "./index.scss";
@@ -20,7 +22,6 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 
 import { ROUTES } from "./shared/constants/routes";
-
 import { Menu } from "./pages/menu/Menu";
 import Connection from "./pages/connections/connection/Connection";
 import Connections from "./pages/connections/Connections";
@@ -46,7 +47,6 @@ import AddOrderOperation from "./pages/order/addOrderOperation/addOrderOperation
 import NewTimespan from "./pages/timespan/newTimespan/newTimespan";
 import EditTimespan from "./pages/timespan/editTimespan/editTimespan";
 import { Authorization } from "./pages/authorization/Authorization";
-import { isVerifyToken } from "./api/authorization";
 import { OperationDetail } from "./pages/ordersView/operationDetail/operationDetail";
 import Scanner from "./pages/scanner/Scanner";
 import OrderItems from "./pages/order/orderItem/orderItem";
@@ -63,7 +63,6 @@ import Employees from "./pages/employees/Employees";
 import Employee from "./pages/employees/employee/Employee";
 import AddOrderItemInfo from "./pages/order/addOrderItem/addOrderItemInfo";
 import PermissionProvider from "./providers/permissionProvider/PermissionProvider";
-import { useDispatch } from "react-redux";
 import { setUserRole } from "./store/userSlice";
 import Language from "./pages/language/Language";
 import Reports from "./pages/reports/Reports";
@@ -90,8 +89,7 @@ import EmployeeTasks from "./pages/tasks/employeeTasks/EmployeeTasks";
 import GetTask from "./pages/tasks/getTask/GetTask";
 import EditTask from "./pages/tasks/editTask/EditTask";
 import RecoverPassword from "./pages/authorization/recoverPassword/RecoverPassword";
-import ConnectionSwitcher from "./pages/connections/connectionSwitcher";
-
+// import ConnectionSwitcher from "./pages/connections/connectionSwitcher";
 
 setupIonicReact();
 
@@ -145,9 +143,6 @@ function App() {
               </Route>
               <Route exact path={ROUTES.CONNECTIONS}>
                 <Connections />
-              </Route>
-              <Route exact path={ROUTES.SWITCHER}>
-                <ConnectionSwitcher />
               </Route>
               <Route exact path={ROUTES.CONNECTIONS_ADD}>
                 <NewConnection />
@@ -263,7 +258,15 @@ function App() {
               <Route exact path={ROUTES.ORDER_TIMESPAN(":orderId", ":itemId", ":operationId")}>
                 <NewTimespan />
               </Route>
-              <Route exact path={ROUTES.ORDER_TIMESPAN_EDIT(":orderId", ":itemId", ":operationId", ":timespanId")}>
+              <Route
+                exact
+                path={ROUTES.ORDER_TIMESPAN_EDIT(
+                  ":orderId",
+                  ":itemId",
+                  ":operationId",
+                  ":timespanId"
+                )}
+              >
                 <EditTimespan />
               </Route>
               <Route exact path={ROUTES.EMPLOYEE_TASK_GET(":timespanId")}>
@@ -272,12 +275,26 @@ function App() {
               <Route exact path={ROUTES.EMPLOYEE_TASK_EDIT(":timespanId")}>
                 <EditTask />
               </Route>
-              <Route exact path={ROUTES.ORDER_TIMESPAN_CAMERAS(":orderId", ":itemId", ":operationId", ":timespanId")}>
+              <Route
+                exact
+                path={ROUTES.ORDER_TIMESPAN_CAMERAS(
+                  ":orderId",
+                  ":itemId",
+                  ":operationId",
+                  ":timespanId"
+                )}
+              >
                 <TimespanCameras />
               </Route>
               <Route
                 exact
-                path={ROUTES.ORDER_TIMESPAN_CAMERA(":orderId", ":itemId", ":operationId", ":timespanId", ":cameraId")}
+                path={ROUTES.ORDER_TIMESPAN_CAMERA(
+                  ":orderId",
+                  ":itemId",
+                  ":operationId",
+                  ":timespanId",
+                  ":cameraId"
+                )}
               >
                 <OperationDetail />
               </Route>
@@ -373,7 +390,7 @@ function App() {
               <Route exact path="/">
                 <Authorization />
               </Route>
-              <Redirect to="/"/>
+              <Redirect to="/" />
             </IonRouterOutlet>
           )}
         </PermissionProvider>

@@ -1,16 +1,14 @@
 export const ROUTES = {
-
   MENU: "/",
 
   AUTHORIZATION: "/authorization",
   RECOVER_PASSWORD: "/recover-password",
   CONFIGURATION: "/configuration",
-  SWITCHER: "/switcher",
+  // SWITCHER: "/switcher",
   CONNECTIONS: "/configuration/connections",
   CONNECTIONS_ADD: "/configuration/connections/add",
   CONNECTIONS_ITEM: (erp: string) => `/configuration/connections/${erp}`,
-  CONNECTIONS_EDIT: (erp: string) =>
-    `/configuration/connections/${erp}/edit`,
+  CONNECTIONS_EDIT: (erp: string) => `/configuration/connections/${erp}/edit`,
 
   GENEREAL_DIRECTORIES: "/general-directories",
   DIRECTORIES_ADD: "/general-directories/add",
@@ -46,29 +44,49 @@ export const ROUTES = {
   ORDER_ITEM: (orderId: string, itemId: string) => `/order/${orderId}/item/${itemId}`,
   ORDER_ITEM_EDIT: (orderId: string, itemId: string) => `/order/${orderId}/item/${itemId}/edit`,
   ORDER_ITEM_ADD: (orderId: string, itemId: string) => `/order/${orderId}/item/${itemId}/add`,
-  ORDER_OPERATION: (orderId: string, itemId: string, operationId: string) => `/order/${orderId}/item/${itemId}/operation/${operationId}`,
+  ORDER_OPERATION: (orderId: string, itemId: string, operationId: string) =>
+    `/order/${orderId}/item/${itemId}/operation/${operationId}`,
   ORDER_PRODUCTS: (orderId: string) => `/order/${orderId}/products`,
   ORDER_ADD_ITEM: `/order/items/add`,
   ORDER_ADD_ITEM_INFO: `/order/items/add/info`,
   ORDER_ADD_OPERATION: `/order/items/add/info/operations`,
-  ORDER_OPERATION_ADD_REFERENCE: (orderId: string, itemId: string, operationId: string, refId: string) => `/order/${orderId}/item/${itemId}/operation/${operationId}/reference/${refId}`,
-  ORDER_TIMESPAN: (orderId: string, itemId: string, operationId: string) => `/order/${orderId}/item/${itemId}/operation/${operationId}/timespan`,
-  ORDER_TIMESPAN_EDIT: (orderId: string, itemId: string, operationId: string, timespanId: string) => `/order/${orderId}/item/${itemId}/operation/${operationId}/timespan/${timespanId}/edit`,
-  ORDER_TIMESPAN_CAMERAS: (orderId: string, itemId: string, operationId: string, timespanId: string) => `/order/${orderId}/item/${itemId}/operation/${operationId}/timespan/${timespanId}/cameras`,
-  ORDER_TIMESPAN_CAMERA: (orderId: string, itemId: string, operationId: string, timespanId: string, cameraId: string) => `/order/${orderId}/item/${itemId}/operation/${operationId}/timespan/${timespanId}/camera/${cameraId}`,
+  ORDER_OPERATION_ADD_REFERENCE: (
+    orderId: string,
+    itemId: string,
+    operationId: string,
+    refId: string
+  ) => `/order/${orderId}/item/${itemId}/operation/${operationId}/reference/${refId}`,
+  ORDER_TIMESPAN: (orderId: string, itemId: string, operationId: string) =>
+    `/order/${orderId}/item/${itemId}/operation/${operationId}/timespan`,
+  ORDER_TIMESPAN_EDIT: (orderId: string, itemId: string, operationId: string, timespanId: string) =>
+    `/order/${orderId}/item/${itemId}/operation/${operationId}/timespan/${timespanId}/edit`,
+  ORDER_TIMESPAN_CAMERAS: (
+    orderId: string,
+    itemId: string,
+    operationId: string,
+    timespanId: string
+  ) => `/order/${orderId}/item/${itemId}/operation/${operationId}/timespan/${timespanId}/cameras`,
+  ORDER_TIMESPAN_CAMERA: (
+    orderId: string,
+    itemId: string,
+    operationId: string,
+    timespanId: string,
+    cameraId: string
+  ) =>
+    `/order/${orderId}/item/${itemId}/operation/${operationId}/timespan/${timespanId}/camera/${cameraId}`,
 
-  EMPLOYEE_TASK_GET: (timespanId: string) => (`/timespan/${timespanId}`),
-  EMPLOYEE_TASK_EDIT:(timespanId: string) => (`/timespan/${timespanId}/edit`),
-  EMPLOYEE_TASKS :(userId: string) => `/user/${userId}/timespans`,
-  
+  EMPLOYEE_TASK_GET: (timespanId: string) => `/timespan/${timespanId}`,
+  EMPLOYEE_TASK_EDIT: (timespanId: string) => `/timespan/${timespanId}/edit`,
+  EMPLOYEE_TASKS: (userId: string) => `/user/${userId}/timespans`,
+
   REPORTS: `/reports`,
   REPORT_FULL: `/report`,
   REPORT_INDIVIDUAL: `/reports-individual`,
-  REPORT_EMPLOYEE: (employeeId) => `/report/${employeeId}`,
+  REPORT_EMPLOYEE: employeeId => `/report/${employeeId}`,
   REPORT_ORDERS: `/report-orders`,
-  REPORT_ORDER: (orderId) => `/report-order/${orderId}`,
-  REPORT_ORDER_FULL: (orderId) => `/report-order/${orderId}/full`,
-  REPORT_ORDER_INDIVIDUAL: (orderId) => `/report-order/${orderId}/individual`,
+  REPORT_ORDER: orderId => `/report-order/${orderId}`,
+  REPORT_ORDER_FULL: orderId => `/report-order/${orderId}/full`,
+  REPORT_ORDER_INDIVIDUAL: orderId => `/report-order/${orderId}/individual`,
   REPORT_ORDER_EMPLOYEE: (orderId, employeeId) => `/report-order/${orderId}/employee/${employeeId}`,
 
   SCANNER_QR: `/scanner`,

@@ -1,11 +1,12 @@
 import { IonContent, IonItem, IonList, IonPage, useIonViewWillEnter } from "@ionic/react";
-import { Header } from "../../components/header/Header";
-import { ROUTES } from "../../shared/constants/routes";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
-import MenuListButton from "../../components/menuListButton/MenuListButton";
 import { useCookies } from "react-cookie";
+
+import MenuListButton from "../../components/menuListButton/MenuListButton";
+import { ROUTES } from "../../shared/constants/routes";
+import { Header } from "../../components/header/Header";
 import { Preloader } from "../../components/preloader/preloader";
 import { IUser } from "../../models/interfaces/employee.interface";
 import { getUserList } from "../../api/users";
@@ -39,12 +40,14 @@ const Users = () => {
     getUserList(cookies.token)
       .then(response => response.data)
       .then(users => {
-        setItems(users.sort((a: IUser, b: IUser) => {
-          const nameA = constructName(a);
-          const nameB = constructName(b);
-          return nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
-        }));
-      })  
+        setItems(
+          users.sort((a: IUser, b: IUser) => {
+            const nameA = constructName(a);
+            const nameB = constructName(b);
+            return nameA.localeCompare(nameB, undefined, { sensitivity: "base" });
+          })
+        );
+      })
       .catch(error => {
         console.error(error);
       })
@@ -56,17 +59,20 @@ const Users = () => {
   useEffect(() => {
     const filtered = items.filter(item => {
       const displayedName = constructName(item);
-      return displayedName.toLowerCase().includes(searchText.toLowerCase())});
+      return displayedName.toLowerCase().includes(searchText.toLowerCase());
+    });
     setFilteredItems(filtered);
   }, [searchText]);
 
   useEffect(() => {
-    items.length && setFilteredItems(items);
+    if (items.length) {
+      setFilteredItems(items);
+    }
   }, [items]);
 
   const constructName = (user: IUser) => {
-    return `${user.lastName} ${user.firstName}`;
-  }
+    return `${user.last_name} ${user.first_name}`;
+  };
 
   return (
     <IonPage>
@@ -85,14 +91,14 @@ const Users = () => {
           </div>
         ) : (
           <>
-          <Fab icon={Plus} handleFabClick={() => handleFabClick(ROUTES.USER_ADD)} />
+            <Fab icon={Plus} handleFabClick={() => handleFabClick(ROUTES.USER_ADD)} />
             {items.length === 0 ? (
               <IonList inset={true}>
                 <IonItem>{t("messages.noDatabases")}</IonItem>
               </IonList>
             ) : (
               <IonList inset>
-                {filteredItems.map((user) => (
+                {filteredItems.map(user => (
                   <MenuListButton
                     key={user.id}
                     title={constructName(user)}

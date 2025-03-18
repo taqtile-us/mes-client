@@ -1,23 +1,25 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { IonContent, IonListHeader, IonPage, useIonViewWillEnter } from "@ionic/react";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router";
 
-import { getSelectedCameras, findCamera, deleteCameraAPI } from "../../api/cameraRequest";
+import { getSelectedCameras, deleteCameraAPI } from "../../api/cameraRequest";
 import { getProcess } from "../../api/algorithmRequest";
 import { parsingAlgorithmName } from "../../utils/parsingAlgorithmName";
 import { DeleteRedIcon, Plus } from "../../assets/svg/SVGcomponent";
 import { Notification } from "../../components/notification/notification";
-
-import styles from "./camera.module.scss";
 import "./cameras.scss";
 import { ConfirmationModal } from "../../components/confirmationModal/confirmationModal";
 import Fab from "../../components/fab/Fab";
-import { IonContent, IonListHeader, IonPage, useIonViewWillEnter } from "@ionic/react";
 import { Header } from "../../components/header/Header";
 import { ROUTES } from "../../shared/constants/routes";
-import { useTranslation } from "react-i18next";
 import { Preloader } from "../../components/preloader/preloader";
-import { useHistory } from "react-router";
 import { API_BASE_URL } from "../../config";
+
+import styles from "./camera.module.scss";
 
 const Cameras = () => {
   const [cookies] = useCookies(["token"]);
@@ -155,7 +157,9 @@ const Cameras = () => {
                   })}
                 </div>
               )}
-              {isNotificationAfterCreate && <Notification status={true} message={t("camera.saved")} />}
+              {isNotificationAfterCreate && (
+                <Notification status={true} message={t("camera.saved")} />
+              )}
               {error && <div style={{ color: "red", fontSize: "26px" }}>{error}</div>}
               <ConfirmationModal
                 type="danger"
