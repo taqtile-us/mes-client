@@ -1,20 +1,14 @@
 import axios from "axios";
+
 import { API_BASE_URL } from "../config";
+import { getAxiosConfig } from "../utils/getAxiosConfig";
 
-const BASE_URL = API_BASE_URL;
-const API_OPERATION = "operations/";
+const API_OPERATIONS = "operations/";
 
-const axiosConfig = (cookies: string) => ({
-  headers: {
-    Authorization: cookies,
-    "ngrok-skip-browser-warning": "true",
-  },
-});
-
-const constructUrl = (endpoint: string) => `${BASE_URL}${endpoint}`;
+const constructUrl = (endpoint: string) => `${API_BASE_URL}${endpoint}`;
 
 export const getAllOperations = (cookies: string) => {
-  return axios.get(constructUrl(API_OPERATION), axiosConfig(cookies));
+  return axios.get(constructUrl(API_OPERATIONS), getAxiosConfig(cookies));
 };
 
 export const createOperation = (
@@ -24,17 +18,14 @@ export const createOperation = (
   cookies: string
 ) => {
   return axios.post(
-    constructUrl(API_OPERATION),
+    constructUrl(API_OPERATIONS),
     { name, estimatedTime, estimatedTimeUnit },
-    axiosConfig(cookies)
+    getAxiosConfig(cookies)
   );
 };
 
 export const getOperation = (operationId: number, cookies: string) => {
-  return axios.get(
-    constructUrl(`${API_OPERATION}${operationId}/`),
-    axiosConfig(cookies)
-  );
+  return axios.get(constructUrl(`${API_OPERATIONS}${operationId}/`), getAxiosConfig(cookies));
 };
 
 export const updateOperation = (
@@ -45,8 +36,8 @@ export const updateOperation = (
   cookies: string
 ) => {
   return axios.patch(
-    constructUrl(`${API_OPERATION}${operationId}/`),
+    constructUrl(`${API_OPERATIONS}${operationId}/`),
     { name, estimatedTime, estimatedTimeUnit },
-    axiosConfig(cookies)
+    getAxiosConfig(cookies)
   );
 };

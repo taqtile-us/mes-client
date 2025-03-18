@@ -1,31 +1,25 @@
 import axios from "axios";
+
 import { API_BASE_URL } from "../../config";
+import { getAxiosConfig } from "../../utils/getAxiosConfig";
 
-const BASE_URL = API_BASE_URL;
-const API_DIRECTORY = "reference-items";
-const REFERENCE = 'reference';
+const API_DIRECTORY_ITEMS = "reference-items/";
+const API_DIRECTORY = "reference/";
 
-const axiosConfig = (cookies: string) => ({
-  headers: {
-    Authorization: cookies,
-    "ngrok-skip-browser-warning": "true",
-  },
-});
-
-const constructUrl = (endpoint: string) => `${BASE_URL}${endpoint}`;
+const constructUrl = (endpoint: string) => `${API_BASE_URL}${endpoint}`;
 
 export const createDirectoryCategory = (name: string, referenceId: number, cookies: string) => {
   return axios.post(
-    constructUrl(API_DIRECTORY),
+    constructUrl(API_DIRECTORY_ITEMS),
     { name, referenceId },
-    axiosConfig(cookies)
+    getAxiosConfig(cookies)
   );
 };
 
 export const getDirectoryCategory = (referenceId: number, cookies: string) => {
   return axios.get(
-    constructUrl(`${API_DIRECTORY}${REFERENCE}${referenceId}/`),
-    axiosConfig(cookies)
+    constructUrl(`${API_DIRECTORY_ITEMS}${API_DIRECTORY}${referenceId}/`),
+    getAxiosConfig(cookies)
   );
 };
 
@@ -36,15 +30,12 @@ export const updateDirectoryCategory = (
   cookies: string
 ) => {
   return axios.patch(
-    constructUrl(`${API_DIRECTORY}${id}/`),
+    constructUrl(`${API_DIRECTORY_ITEMS}${id}/`),
     { name, referenceId },
-    axiosConfig(cookies)
+    getAxiosConfig(cookies)
   );
 };
 
 export const deleteDirectoryCategory = (id: number, cookies: string) => {
-  return axios.delete(
-    constructUrl(`${API_DIRECTORY}${id}/`),
-    axiosConfig(cookies)
-  );
+  return axios.delete(constructUrl(`${API_DIRECTORY_ITEMS}${id}/`), getAxiosConfig(cookies));
 };

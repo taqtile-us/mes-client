@@ -1,58 +1,42 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../config';
+import axios from "axios";
 
-const BASE_URL: string = API_BASE_URL;
-const API_OPERATIONS = 'api/new-order/operations/';
-const API_ORDERLIST = 'api/new-order/orders/';
-const API_OPERATION = 'api/new-order/order-detail/';
-const API_WORKPLACE = 'api/new-order/whnet-operations/';
-const API_FILTRATIONDATA = 'api/new-order/filtration-data';
+import { API_BASE_URL } from "../config";
+import { getAxiosConfig } from "../utils/getAxiosConfig";
 
-interface AxiosConfig {
-  headers: {
-    Authorization: string;
-    'ngrok-skip-browser-warning': string;
-  };
-}
+const API_OPERATIONS = "auth/odoo/django/api/new-order/operations/";
+const API_ORDERLIST = "auth/odoo/django/api/new-order/orders/";
+const API_OPERATION = "auth/odoo/django/api/new-order/order-detail/";
+const API_WORKPLACE = "auth/odoo/django/api/new-order/whnet-operations/";
+const API_FILTRATIONDATA = "auth/odoo/django/api/new-order/filtration-data";
 
-const axiosConfig = (cookies: string): AxiosConfig => ({
-  headers: {
-    Authorization: cookies,
-    'ngrok-skip-browser-warning': 'true',
-  },
-});
-
-const constructUrl = (endpoint: string): string => `${BASE_URL}${endpoint}`;
+const constructUrl = (endpoint: string): string => `${API_BASE_URL}${endpoint}`;
 
 export const getOrderViewOperations = (cookies: string, startDate: string, endDate: string) => {
   return axios.get(
     constructUrl(`${API_OPERATIONS}?from=${startDate}&to=${endDate}`),
-    axiosConfig(cookies)
+    getAxiosConfig(cookies)
   );
 };
 
 export const getOrderViewOrderList = (cookies: string, startDate: string, endDate: string) => {
   return axios.get(
     constructUrl(`${API_ORDERLIST}?from=${startDate}&to=${endDate}`),
-    axiosConfig(cookies)
+    getAxiosConfig(cookies)
   );
 };
 
 export const getOrderViewOperation = (cookies: string, id: number) => {
-  return axios.get(
-    constructUrl(`${API_OPERATION}?operation=${id}`),
-    axiosConfig(cookies)
-  );
+  return axios.get(constructUrl(`${API_OPERATION}?operation=${id}`), getAxiosConfig(cookies));
 };
 
 export const getWorkplaceList = (cookies: string) => {
-  return axios.get(constructUrl(API_WORKPLACE), axiosConfig(cookies));
+  return axios.get(constructUrl(API_WORKPLACE), getAxiosConfig(cookies));
 };
 
 export const getFiltrationData = (cookies: string) => {
-  return axios.get(constructUrl(API_FILTRATIONDATA), axiosConfig(cookies));
+  return axios.get(constructUrl(API_FILTRATIONDATA), getAxiosConfig(cookies));
 };
 
-export const patchFiltrationData = (cookies: string, body: any) => {
-  return axios.put(constructUrl(API_FILTRATIONDATA), body, axiosConfig(cookies));
+export const patchFiltrationData = (cookies: string, body: unknown) => {
+  return axios.put(constructUrl(API_FILTRATIONDATA), body, getAxiosConfig(cookies));
 };

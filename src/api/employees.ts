@@ -1,27 +1,16 @@
 import axios from "axios";
+
 import { API_BASE_URL } from "../config";
+import { getAxiosConfig } from "../utils/getAxiosConfig";
 
-const BASE_URL = API_BASE_URL;
-const API_EMPLOYEE = "employees";
+const API_EMPLOYEES = "employees/";
 
-const axiosConfig = (cookies: string) => ({
-  headers: {
-    Authorization: cookies,
-    "ngrok-skip-browser-warning": "true",
-  },
-});
-
-const constructUrl = (endpoint: string) => `${BASE_URL}${endpoint}`;
+const constructUrl = (endpoint: string) => `${API_BASE_URL}${endpoint}`;
 
 export const getAllEmployees = (cookies: string) => {
-  return axios.get(constructUrl(API_EMPLOYEE), axiosConfig(cookies));
+  return axios.get(constructUrl(API_EMPLOYEES), getAxiosConfig(cookies));
 };
 
 export const getEmployee = (employeeId: number, cookies: string) => {
-  console.log(88);
-  
-  return axios.get(
-    constructUrl(`${API_EMPLOYEE}/${employeeId}/`),
-    axiosConfig(cookies)
-  );
+  return axios.get(constructUrl(`${API_EMPLOYEES}${employeeId}/`), getAxiosConfig(cookies));
 };
