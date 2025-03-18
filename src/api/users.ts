@@ -16,7 +16,7 @@ import { getAxiosConfig } from '../utils/getAxiosConfig';
 // };
 
 const API_USER_LIST = 'employees/';
-const API_USER_INFO = 'api/employees/get-user-info/';
+const API_USER_INFO = 'auth/odoo/user-info/';
 const API_USER_ADD = 'api/employees/create/';
 const API_WORKPLACES = 'api/employees/workplaces/';
 
@@ -27,7 +27,7 @@ export const getUserList = (cookies: string) => {
 };
 
 export const getCurrentUserInfo = (cookies: string) => {
-  return axios.get(`${API_DJANGO_URL}${API_USER_INFO}`, getAxiosConfig(cookies));
+  return axios.get(`${API_BASE_URL}${API_USER_INFO}`, getAxiosConfig(cookies));
 };
 
 export const getUser = (id: number, cookies: string) => {
