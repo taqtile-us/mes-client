@@ -1,10 +1,12 @@
 import { useTranslation } from "react-i18next";
-import { ROUTES } from "../../../shared/constants/routes";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
-import { Preloader } from "../../../components/preloader/preloader";
 import { IonContent, IonList, IonNote, IonPage, IonToast } from "@ionic/react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { ROUTES } from "../../../shared/constants/routes";
+import { Preloader } from "../../../components/preloader/preloader";
 import { Header } from "../../../components/header/Header";
 import { ConfirmationModal } from "../../../components/confirmationModal/confirmationModal";
 import { createUser } from "../../../api/users";
@@ -15,12 +17,12 @@ import Select from "../../../components/selects/select/Select";
 import { ROLE } from "../../../models/enums/roles.enum";
 import BottomButton from "../../../components/bottomButton/BottomButton";
 import { TOAST_DELAY } from "../../../constants/toastDelay";
-import { useDispatch, useSelector } from "react-redux";
 import { setSelectedWorkplace } from "../../../store/workpaceSlice";
 import "../../../styles/common.scss";
 import { isInvalidText } from "../../../utils/isInvalidText";
-import styles from '../users.module.scss'
+import styles from "../users.module.scss";
 import isValidEmail from "../../../utils/isValidEmail";
+import { RootState } from "../../../store";
 
 const AddUser = () => {
   const { t } = useTranslation();
@@ -28,7 +30,14 @@ const AddUser = () => {
   const history = useHistory();
   const [cookies] = useCookies(["token"]);
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<IAddUser>({username: "", last_name: "", first_name: "", password: "", email: "", role: ROLE.WORKER} as IAddUser);
+  const [user, setUser] = useState<IAddUser>({
+    username: "",
+    last_name: "",
+    first_name: "",
+    password: "",
+    email: "",
+    role: ROLE.WORKER,
+  } as IAddUser);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [customRole, setCustomRole] = useState(false);
   const [highlightRequired, setHighlightRequired] = useState(false);
@@ -37,15 +46,15 @@ const AddUser = () => {
   const roles = Object.values(ROLE)
     .filter(role => !(getUserRole() === ROLE.ADMIN && role === ROLE.SUPERUSER))
     .map(role => ({
-        id: role,
-        label: role,
-        value: role
+      id: role,
+      label: role,
+      value: role,
     }));
-  const { selectedWorkplace } = useSelector((state: any) => state.workplace);
+  const { selectedWorkplace } = useSelector((state: RootState) => state.workplace);
   const [backOnClose, setBackOnClose] = useState(false);
   const minPasswordLength = 4;
 
-  function getUserRole () {
+  function getUserRole() {
     return localStorage.getItem("userRole");
   }
 
@@ -57,7 +66,7 @@ const AddUser = () => {
   const goBack = () => {
     history.push(ROUTES.USERS, { direction: "back" });
     dispatch(setSelectedWorkplace(null));
-  }
+  };
 
   const onNavigateBack = () => {
     if (!isChanged) {
@@ -78,13 +87,15 @@ const AddUser = () => {
       isInvalidText(user.username, { numbers: true, spaces: true }) ||
       isInvalidText(user.first_name) ||
       isInvalidText(user.last_name) ||
-      !isValidEmail(user.email)
+      !isValidEmail(user.email) ||
+      (user.role === ROLE.WORKER &&
+        (!selectedWorkplace || !user.work_start_time || !user.work_end_time))
     ) {
       setHighlightRequired(true);
       return false;
     }
     return true;
-  }
+  };
 
   const handleSave = () => {
     setBackOnClose(false);
@@ -97,23 +108,23 @@ const AddUser = () => {
         first_name: user.first_name,
         password: user.password,
         role: user.role,
-        workplace: user.role === ROLE.WORKER ? selectedWorkplace?.id ?? null : null,
+        workplace: user.role === ROLE.WORKER ? (selectedWorkplace?.id ?? null) : null,
         work_start_time: user.work_start_time,
-        work_end_time: user.work_end_time
-      }
+        work_end_time: user.work_end_time,
+      };
       createUser(data, cookies.token)
         .then(() => {
-            setUserExists(false);
-            setHighlightRequired(false);
-            goBack();
+          setUserExists(false);
+          setHighlightRequired(false);
+          goBack();
         })
         .catch(error => {
-            setUserExists(true);
-            setHighlightRequired(true);
-            console.error(error);
+          setUserExists(true);
+          setHighlightRequired(true);
+          console.error(error);
         })
         .finally(() => {
-            setLoading(false);
+          setLoading(false);
         });
       return;
     }
@@ -134,17 +145,21 @@ const AddUser = () => {
   };
 
   const handleConfirmModal = () => {
-   setIsOpenModal(false);
+    setIsOpenModal(false);
     handleSave();
   };
 
   const navigateWorkplaceClick = () => {
     history.push(ROUTES.USER_WORKPLACES, { direction: "forward" });
-  }
+  };
 
   return (
     <IonPage>
-      <Header title={t("operations.users.add")} onBackClick={onNavigateBack} backButtonHref={ROUTES.USERS}></Header>
+      <Header
+        title={t("operations.users.add")}
+        onBackClick={onNavigateBack}
+        backButtonHref={ROUTES.USERS}
+      ></Header>
       <IonContent>
         {loading ? (
           <div className="preloader">
@@ -152,9 +167,13 @@ const AddUser = () => {
           </div>
         ) : (
           <>
-            <div style={{ height: "calc(100vh - 150px)", overflow: "scroll", paddingBottom: "20px" }}>
+            <div
+              style={{ height: "calc(100vh - 150px)", overflow: "scroll", paddingBottom: "20px" }}
+            >
               <div className={styles.section}>
-                <IonNote className={`ion-padding ${styles.sectionNote}`}>{t("users.settings")}</IonNote>
+                <IonNote className={`ion-padding ${styles.sectionNote}`}>
+                  {t("users.settings")}
+                </IonNote>
 
                 <Input
                   label={t("users.username")}
@@ -163,7 +182,9 @@ const AddUser = () => {
                   handleChange={event => setUser({ ...user, username: event.target.value })}
                   state={
                     highlightRequired &&
-                    (!user.username || isInvalidText(user.username, { numbers: true }) || userExists)
+                    (!user.username ||
+                      isInvalidText(user.username, { numbers: true }) ||
+                      userExists)
                       ? "error"
                       : "neutral"
                   }
@@ -171,8 +192,8 @@ const AddUser = () => {
                     isInvalidText(user.username, { numbers: true })
                       ? t("form.invalidCharacters")
                       : userExists
-                      ? t("messages.employeeExists")
-                      : t("form.required")
+                        ? t("messages.employeeExists")
+                        : t("form.required")
                   }
                   maxLength={30}
                 />
@@ -182,7 +203,11 @@ const AddUser = () => {
                   type="password"
                   required
                   handleChange={event => setUser({ ...user, password: event.target.value })}
-                  state={highlightRequired && user.password.length < minPasswordLength ? "error" : "neutral"}
+                  state={
+                    highlightRequired && user.password.length < minPasswordLength
+                      ? "error"
+                      : "neutral"
+                  }
                   errorMessage={t("form.passwordLength")}
                   autocomplete="new-password"
                 />
@@ -192,14 +217,16 @@ const AddUser = () => {
                   required
                   handleChange={event => setUser({ ...user, email: event.target.value })}
                   state={
-                    highlightRequired && (!user.email || !isValidEmail(user.email) || userExists) ? "error" : "neutral"
+                    highlightRequired && (!user.email || !isValidEmail(user.email) || userExists)
+                      ? "error"
+                      : "neutral"
                   }
                   errorMessage={
                     userExists
                       ? t("messages.employeeExists")
                       : !isValidEmail(user.email)
-                      ? t("form.invalidEmail")
-                      : t("form.required")
+                        ? t("form.invalidEmail")
+                        : t("form.required")
                   }
                   maxLength={30}
                 />
@@ -212,8 +239,14 @@ const AddUser = () => {
                   value={user?.last_name || ""}
                   required
                   handleChange={event => setUser({ ...user, last_name: event.target.value })}
-                  state={highlightRequired && (!user.last_name || isInvalidText(user.last_name)) ? "error" : "neutral"}
-                  errorMessage={isInvalidText(user.last_name) ? t("form.invalidCharacters") : t("form.required")}
+                  state={
+                    highlightRequired && (!user.last_name || isInvalidText(user.last_name))
+                      ? "error"
+                      : "neutral"
+                  }
+                  errorMessage={
+                    isInvalidText(user.last_name) ? t("form.invalidCharacters") : t("form.required")
+                  }
                   maxLength={30}
                   type="text"
                 />
@@ -223,9 +256,15 @@ const AddUser = () => {
                   required
                   handleChange={event => setUser({ ...user, first_name: event.target.value })}
                   state={
-                    highlightRequired && (!user.first_name || isInvalidText(user.first_name)) ? "error" : "neutral"
+                    highlightRequired && (!user.first_name || isInvalidText(user.first_name))
+                      ? "error"
+                      : "neutral"
                   }
-                  errorMessage={isInvalidText(user.first_name) ? t("form.invalidCharacters") : t("form.required")}
+                  errorMessage={
+                    isInvalidText(user.first_name)
+                      ? t("form.invalidCharacters")
+                      : t("form.required")
+                  }
                   maxLength={30}
                   type="text"
                 />
@@ -242,29 +281,35 @@ const AddUser = () => {
 
                 {user.role === ROLE.WORKER && (
                   <>
-                  <IonList inset={true}>
-                    <MenuListButton
-                      title={selectedWorkplace?.name || t("users.workplace")}
-                      handleItemClick={navigateWorkplaceClick}
-                      // state={highlightRequired && !selectedWorkplace && user.role === ROLE.WORKER ? "error" : "neutral"}
-                      // errorMessage={t("form.selectWorkplace")}
-                    />
-                  </IonList>
+                    <IonList inset={true}>
+                      <MenuListButton
+                        title={selectedWorkplace?.name || t("users.workplace")}
+                        handleItemClick={navigateWorkplaceClick}
+                      />
+                    </IonList>
                     <Input
-                    label={t("users.workStartTime")}
-                    value={user.work_start_time || ""}
-                    handleChange={event => setUser({ ...user, work_start_time: event.target.value })}
-                    type="time"
-                    required={false}
-                  />
-                  <Input
-                    label={t("users.workEndTime")}
-                    value={user.work_end_time || ""}
-                    handleChange={event => setUser({ ...user, work_end_time: event.target.value })}
-                    type="time"
-                    required={false}
-                  />
-                </>
+                      label={t("users.workStartTime")}
+                      value={user.work_start_time || ""}
+                      handleChange={event =>
+                        setUser({ ...user, work_start_time: event.target.value })
+                      }
+                      type="time"
+                      required={true}
+                      state={highlightRequired && !user.work_start_time ? "error" : "neutral"}
+                      errorMessage={t("form.required")}
+                    />
+                    <Input
+                      label={t("users.workEndTime")}
+                      value={user.work_end_time || ""}
+                      handleChange={event =>
+                        setUser({ ...user, work_end_time: event.target.value })
+                      }
+                      type="time"
+                      required={true}
+                      state={highlightRequired && !user.work_end_time ? "error" : "neutral"}
+                      errorMessage={t("form.required")}
+                    />
+                  </>
                 )}
               </div>
 
@@ -275,7 +320,11 @@ const AddUser = () => {
                 onDidDismiss={() => setToastMessage("")}
               />
             </div>
-            <BottomButton handleClick={openModal} label={t("operations.save")} disabled={!isChanged} />
+            <BottomButton
+              handleClick={openModal}
+              label={t("operations.save")}
+              disabled={!isChanged}
+            />
           </>
         )}
       </IonContent>
