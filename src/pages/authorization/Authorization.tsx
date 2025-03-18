@@ -1,20 +1,19 @@
 import { useCookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
+import { IonContent, IonPage } from "@ionic/react";
+import { Link } from "react-router-dom";
+import React, { useReducer, KeyboardEvent } from "react";
+import { useDispatch } from "react-redux";
+
 import { authorizationRequest } from "../../api/authorization";
 import { Input } from "../../components/inputs/input/Input";
-
 import { FiveS } from "../../assets/svg/SVGcomponent";
-
-import "./Authorization.scss";
-import { useTranslation } from "react-i18next";
 import { setUserRole } from "../../store/userSlice";
-import { useDispatch } from "react-redux";
 import { ROUTES } from "../../shared/constants/routes";
-import { Link } from "react-router-dom";
-import { IonContent, IonPage } from "@ionic/react";
 import { AuthResponse } from "../../models/interfaces/authResponse.interface";
-import React, { useReducer, KeyboardEvent } from "react";
 import { State, Action } from "../../models/interfaces/authorization.interface";
-
+import { getCurrentUserInfo } from "../../api/users";
+import "./Authorization.scss";
 
 export const Authorization: React.FC = () => {
   const dispatch = useDispatch();
@@ -35,7 +34,12 @@ export const Authorization: React.FC = () => {
       case "SET_EMAIL":
         return { ...state, email: action.payload, correctEmail: action.payload.length < 25 };
       case "SET_PASSWORD":
-        return { ...state, password: action.payload, correctPassword: action.payload.length < 20, errorPassword: false };
+        return {
+          ...state,
+          password: action.payload,
+          correctPassword: action.payload.length < 20,
+          errorPassword: false,
+        };
       case "SET_ERROR_RESPONSE":
         return { ...state, errorResponse: action.payload };
       case "SET_ERROR_PASSWORD":
@@ -54,8 +58,20 @@ export const Authorization: React.FC = () => {
     }
 
     try {
+      let token: string | null = null;
+      let role: string | null = null;
       const user: AuthResponse = await authorizationRequest(state.email, state.password);
-      const { role, token } = user;
+      if (user?.access) {
+        const userDefault = await getCurrentUserInfo(`JWT ${user.access}`);
+        token = user.access;
+        if (userDefault.data) {
+          role = userDefault.data.role;
+        }
+      } else {
+        token = user.token;
+        role = user.role;
+      }
+      console.log(user, "user");
 
       if (token) {
         setCookie("token", `JWT ${token}`, { path: "/" });
@@ -96,7 +112,9 @@ export const Authorization: React.FC = () => {
               type="text"
               placeholder={t("form.auth.loginPlaceholder")}
               state={state.errorResponse ? "error" : "neutral"}
-              handleChange={(e) => dispatchState({ type: "SET_EMAIL", payload: e.target.value.trimStart() })}
+              handleChange={e =>
+                dispatchState({ type: "SET_EMAIL", payload: e.target.value.trimStart() })
+              }
             />
             <Input
               label={t("form.auth.pwd")}
@@ -106,8 +124,10 @@ export const Authorization: React.FC = () => {
               type="password"
               placeholder={t("form.auth.pwdPlaceholder")}
               state={state.errorResponse ? "error" : "neutral"}
-              handleChange={(e) => dispatchState({ type: "SET_PASSWORD", payload: e.target.value.trimStart() })}
-              onKeyDown={(e) => pressEnter(e)}
+              handleChange={e =>
+                dispatchState({ type: "SET_PASSWORD", payload: e.target.value.trimStart() })
+              }
+              onKeyDown={e => pressEnter(e)}
             />
             <Link
               className="authorization-page__password-recovery-link"
@@ -121,14 +141,9 @@ export const Authorization: React.FC = () => {
               </span>
             )}
             {state.errorPassword && (
-              <span className="authorization-page__error-password">
-                {t("form.required")}
-              </span>
+              <span className="authorization-page__error-password">{t("form.required")}</span>
             )}
-            <button
-              className={"authorization-page__submit-button"}
-              onClick={handleLogin}
-            >
+            <button className={"authorization-page__submit-button"} onClick={handleLogin}>
               {t("form.auth.submit")}
             </button>
           </div>
