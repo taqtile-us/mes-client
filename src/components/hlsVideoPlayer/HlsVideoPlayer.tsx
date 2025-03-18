@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Hls from 'hls.js';
 
-import { API_BASE_URL } from '../../config';
+import { API_DJANGO_URL } from '../../config';
 
 interface VideoPlayerProps {
   manifestPath: string;
@@ -12,7 +12,7 @@ const HlsVideoPlayer = ({ manifestPath, onLoad }: VideoPlayerProps) => {
   const playerRef = useRef<HTMLVideoElement | null>(null);
   useEffect(() => {
     let hls: Hls | null = null;
-    const playlistUrl = API_BASE_URL + manifestPath;
+    const playlistUrl = API_DJANGO_URL + manifestPath;
     const videoElement = playerRef.current;
     console.log(manifestPath, 1);
     let timeLogger;

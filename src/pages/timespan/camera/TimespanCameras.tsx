@@ -1,11 +1,4 @@
-import {
-  IonContent,
-  IonItem,
-  IonList,
-  IonPage,
-  useIonRouter,
-  useIonViewWillEnter,
-} from '@ionic/react';
+import { IonContent, IonItem, IonList, IonPage, useIonViewWillEnter } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useParams } from 'react-router';
 import { useState } from 'react';
@@ -16,8 +9,8 @@ import { ROUTES } from '../../../shared/constants/routes';
 import MenuListButton from '../../../components/menuListButton/MenuListButton';
 import { Preloader } from '../../../components/preloader/preloader';
 import { getOrderViewOperation } from '../../../api/ordersView';
-import { OrderDetail, VideoDataStatus } from '../../../models/interfaces/ordersView.interface';
-import { API_BASE_URL } from '../../../config';
+import { VideoDataStatus } from '../../../models/interfaces/ordersView.interface';
+import { API_DJANGO_URL } from '../../../config';
 
 import styles from './timespan.module.scss';
 
@@ -69,7 +62,7 @@ const TimespanCameras = () => {
     <div className={styles.camera}>
       <img
         className={styles.camera__image}
-        src={`${API_BASE_URL}images/${video.camera_ip}/snapshot.jpg`}
+        src={`${API_DJANGO_URL}images/${video.camera_ip}/snapshot.jpg`}
         alt="Camera"
       />
       <div className={styles.camera__info}>

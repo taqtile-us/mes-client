@@ -17,7 +17,7 @@ import Fab from '../../components/fab/Fab';
 import { Header } from '../../components/header/Header';
 import { ROUTES } from '../../shared/constants/routes';
 import { Preloader } from '../../components/preloader/preloader';
-import { API_BASE_URL } from '../../config';
+import { API_DJANGO_URL } from '../../config';
 
 import styles from './camera.module.scss';
 
@@ -123,7 +123,7 @@ const Cameras = () => {
                         <div onClick={() => handleClickCamera(el)}>
                           <img
                             className={styles.cameras__list_image}
-                            src={`${API_BASE_URL}images/${el.id}/snapshot.jpg`}
+                            src={`${API_DJANGO_URL}images/${el.id}/snapshot.jpg`}
                             alt={t('camera.title')}
                           />
                           <div>

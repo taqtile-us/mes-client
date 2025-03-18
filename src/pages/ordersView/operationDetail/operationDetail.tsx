@@ -1,5 +1,3 @@
-import { ROUTES } from '../../../shared/constants/routes';
-
 import {
   IonButton,
   IonButtons,
@@ -25,7 +23,7 @@ import { Preloader } from '../../../components/preloader/preloader';
 import { GreenStatus, GreyStatus, Download } from '../../../assets/svg/SVGcomponent';
 import { getOrderViewOperation } from '../../../api/ordersView';
 import { downloadFile } from '../../../utils/downloadFile';
-import { API_BASE_URL } from '../../../config';
+import { API_DJANGO_URL } from '../../../config';
 import HlsVideoPlayer from '../../../components/hlsVideoPlayer/HlsVideoPlayer';
 
 export const OperationDetail = () => {
@@ -68,7 +66,7 @@ export const OperationDetail = () => {
 
   const handleDownload = (index = 0) => {
     if (detail && detail.videos[index] && detail.videos[index].status) {
-      const videoUrl = `${API_BASE_URL}${detail?.videos[index].file_name}`;
+      const videoUrl = `${API_DJANGO_URL}${detail?.videos[index].file_name}`;
 
       downloadFile(videoUrl, detail.videos[index].file_name);
     }

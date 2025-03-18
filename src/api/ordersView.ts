@@ -1,15 +1,15 @@
 import axios from 'axios';
 
-import { API_BASE_URL } from '../config';
+import { API_DJANGO_URL } from '../config';
 import { getAxiosConfig } from '../utils/getAxiosConfig';
 
-const API_OPERATIONS = 'auth/odoo/django/api/new-order/operations/';
-const API_ORDERLIST = 'auth/odoo/django/api/new-order/orders/';
-const API_OPERATION = 'auth/odoo/django/api/new-order/order-detail/';
-const API_WORKPLACE = 'auth/odoo/django/api/new-order/whnet-operations/';
-const API_FILTRATIONDATA = 'auth/odoo/django/api/new-order/filtration-data';
+const API_OPERATIONS = 'api/new-order/operations/';
+const API_ORDERLIST = 'api/new-order/orders/';
+const API_OPERATION = 'api/new-order/order-detail/';
+const API_WORKPLACE = 'api/new-order/whnet-operations/';
+const API_FILTRATIONDATA = 'api/new-order/filtration-data';
 
-const constructUrl = (endpoint: string): string => `${API_BASE_URL}${endpoint}`;
+const constructUrl = (endpoint: string): string => `${API_DJANGO_URL}${endpoint}`;
 
 export const getOrderViewOperations = (cookies: string, startDate: string, endDate: string) => {
   return axios.get(

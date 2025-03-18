@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-import { API_BASE_URL } from '../config';
+import { API_DJANGO_URL } from '../config';
 import { getAxiosConfig } from '../utils/getAxiosConfig';
 
-const API_STATUS_DATA = 'auth/odoo/django/api/connector/status/';
-const API_CONNECTIONS = 'auth/odoo/django/api/connector/connections/';
-const API_GET_CONNECTIONS = 'auth/odoo/django/api/order/get-connections/';
+const API_STATUS_DATA = 'api/connector/status/';
+const API_CONNECTIONS = 'api/connector/connections/';
+const API_GET_CONNECTIONS = 'api/order/get-connections/';
 
-const constructUrl = (endpoint: string) => `${API_BASE_URL}${endpoint}`;
+const constructUrl = (endpoint: string) => `${API_DJANGO_URL}${endpoint}`;
 
 export const getStatusData = (hostname: string, cookies: string) => {
   return axios.get(constructUrl(API_STATUS_DATA), getAxiosConfig(cookies));

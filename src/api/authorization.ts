@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-import { API_BASE_URL } from '../config';
+import { API_BASE_URL, API_DJANGO_URL } from '../config';
 
 const API_AUTH = 'auth/odoo/login/';
-const API_VERIFY_TOKEN = 'auth/odoo/django/api/auth/jwt/verify/';
-const API_REQUEST_RESET_PASSWORD = 'auth/odoo/django/api/employees/password-reset/';
-const API_VERIFY_CODE = 'auth/odoo/django/api/employees/verify-reset-code/';
-const API_RESET_PASSWORD = 'auth/odoo/django/api/employees/set-new-password/';
+const API_VERIFY_TOKEN = 'api/auth/jwt/verify/';
+const API_REQUEST_RESET_PASSWORD = 'api/employees/password-reset/';
+const API_VERIFY_CODE = 'api/employees/verify-reset-code/';
+const API_RESET_PASSWORD = 'api/employees/set-new-password/';
 
 export const authorizationRequest = async <T>(email: string, password: string): Promise<T> => {
   const response = await axios.post<T>(`${API_BASE_URL}${API_AUTH}`, {
@@ -19,21 +19,21 @@ export const authorizationRequest = async <T>(email: string, password: string): 
 
 export const isVerifyToken = (cookies: string) => {
   cookies = cookies?.split(' ')[1];
-  return axios.post(`${API_BASE_URL}${API_VERIFY_TOKEN}`, {
+  return axios.post(`${API_DJANGO_URL}${API_VERIFY_TOKEN}`, {
     token: cookies,
     'ngrok-skip-browser-warning': 'true',
   });
 };
 
 export const requestResetPassword = (email: string, lang: string) => {
-  return axios.post(`${API_BASE_URL}${API_REQUEST_RESET_PASSWORD}`, {
+  return axios.post(`${API_DJANGO_URL}${API_REQUEST_RESET_PASSWORD}`, {
     email,
     language_code: lang,
   });
 };
 
 export const verifyCode = (email: string, code: string) => {
-  return axios.post(`${API_BASE_URL}${API_VERIFY_CODE}`, {
+  return axios.post(`${API_DJANGO_URL}${API_VERIFY_CODE}`, {
     email,
     code,
   });
@@ -45,7 +45,7 @@ export const resetPassword = (
   newPassword: string,
   confirmPassword: string,
 ) => {
-  return axios.post(`${API_BASE_URL}${API_RESET_PASSWORD}`, {
+  return axios.post(`${API_DJANGO_URL}${API_RESET_PASSWORD}`, {
     email,
     code,
     new_password: newPassword,

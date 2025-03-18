@@ -15,7 +15,7 @@ import Scale from '../../../scale/Scale';
 import { Scaleble } from '../../../scale/EditScale';
 import { FourPointsNewCoordinates } from '../../../../models/interfaces/coordinates.interface';
 import './moveable.scss';
-import { API_BASE_URL } from '../../../../config';
+import { API_DJANGO_URL } from '../../../../config';
 
 import styles from './zonesCoordinat.module.scss';
 
@@ -381,7 +381,7 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
             ref={image}
             className={styles.image_container_img}
             onLoad={handleImageLoad}
-            src={`${API_BASE_URL}images/${currentSelect}/snapshot.jpg`}
+            src={`${API_DJANGO_URL}images/${currentSelect}/snapshot.jpg`}
           />
           {fourPointsCoordinates.length !== 0 && isFourPointsMode && (
             <svg
@@ -561,7 +561,9 @@ export const ZonesCoordinates: React.FC<PropsType> = ({
           {!!proportionHeight && (
             <div className={styles.scale} style={{ zIndex: isStartDraw ? 1 : 2001 }}>
               <Scale
-                onClick={() => scaleHandler(`${API_BASE_URL}images/${currentSelect}/snapshot.jpg`)}
+                onClick={() =>
+                  scaleHandler(`${API_DJANGO_URL}images/${currentSelect}/snapshot.jpg`)
+                }
               />
             </div>
           )}
