@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowDown, DeleteWhite } from '../../../../assets/svg/SVGcomponent';
 import { Input } from '../../../inputs/input/Input';
 import styles from '../zones.module.scss';
-import Select from '../../../selects/select/Select';
+import DynamicSelectInput from '../../../selects/select/Select';
 import { DeleteButton } from '../../../deleteButton/DeleteButton';
 
 const Item = ({
@@ -86,7 +86,7 @@ const Item = ({
             placeholder={t('camera.zoneSegment.namePlaceholder')}
             maxLength={30}
           />
-          <Select
+          <DynamicSelectInput
             label={t('camera.workplace')}
             value={value || zona.workplace}
             placeholder={value || t('camera.zoneSegment.select')}

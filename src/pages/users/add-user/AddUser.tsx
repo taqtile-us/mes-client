@@ -13,7 +13,7 @@ import { createUser } from '../../../api/users';
 import { IAddUser } from '../../../models/interfaces/employee.interface';
 import { Input } from '../../../components/inputs/input/Input';
 import MenuListButton from '../../../components/menuListButton/MenuListButton';
-import Select from '../../../components/selects/select/Select';
+import DynamicSelectInput from '../../../components/selects/select/Select';
 import { ROLE } from '../../../models/enums/roles.enum';
 import BottomButton from '../../../components/bottomButton/BottomButton';
 import { TOAST_DELAY } from '../../../constants/toastDelay';
@@ -268,7 +268,7 @@ const AddUser = () => {
                   type="text"
                 />
 
-                <Select
+                <DynamicSelectInput
                   value={!customRole ? t('users.role') : user.role}
                   placeholder={!customRole ? t('users.role') : user.role}
                   selectList={roles}

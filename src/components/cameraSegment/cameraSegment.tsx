@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IonNote } from '@ionic/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 
-import Select from '../selects/select/Select';
+import DynamicSelectInput from '../selects/select/Select';
 import { Input } from '../inputs/input/Input';
 import '../../styles/common.scss';
 import CameraTest from '../cameraTest/cameraTest';
@@ -56,12 +54,12 @@ const CameraSegment: React.FC<CameraSegmentProps> = ({
     };
   });
 
-  const handleSelectCamera = (e: any) => {
-    setCameraIP(e.target.value);
+  const handleSelectCamera = (selectedIP: string) => {
+    setCameraIP(selectedIP);
   };
 
   const showAddCameras = (cameras) => {
-    findCamera()
+    findCamera(window.location.hostname)
       .then((response) => {
         if (response.data && response.data.results) {
           const allCameras = response.data.results;
@@ -92,6 +90,10 @@ const CameraSegment: React.FC<CameraSegmentProps> = ({
       .catch(console.log);
   };
 
+  useEffect(() => {
+    fetchCameras();
+  }, []);
+
   return (
     <div className={styles.cameraSegment}>
       <div className={styles.section}>
@@ -101,14 +103,13 @@ const CameraSegment: React.FC<CameraSegmentProps> = ({
         {editMode ? (
           <InputReadonly label={t('camera.cameraSegment.cameraIp')} value={cameraIP} />
         ) : (
-          <Select
+          <DynamicSelectInput
             label={t('camera.cameraSegment.cameraIp')}
-            value={cameraIP!}
+            value={cameraIP || ''}
             placeholder={t('camera.cameraSegment.select')}
             selectList={selectCameraList}
             handleChange={handleSelectCamera}
             isLoading={isLoading}
-            handleFocus={fetchCameras}
           />
         )}
 

@@ -13,7 +13,7 @@ import { getUser, updateUser } from '../../../api/users';
 import { IUpdateUser, IUser } from '../../../models/interfaces/employee.interface';
 import { Input } from '../../../components/inputs/input/Input';
 import MenuListButton from '../../../components/menuListButton/MenuListButton';
-import Select from '../../../components/selects/select/Select';
+import DynamicSelectInput from '../../../components/selects/select/Select';
 import { ROLE } from '../../../models/enums/roles.enum';
 import BottomButton from '../../../components/bottomButton/BottomButton';
 import { TOAST_DELAY } from '../../../constants/toastDelay';
@@ -303,7 +303,7 @@ const EditUser = () => {
                   type="text"
                 />
 
-                <Select
+                <DynamicSelectInput
                   value={user.role}
                   placeholder={user.role}
                   selectList={roles}
